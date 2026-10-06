@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "autoname": "PQR-.########",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["item_code", "batch_no", "serial_no", "qr_payload"],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "batch_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Batch",
+   "options": "Batch",
+   "reqd": 1
+  },
+  {
+   "fieldname": "serial_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Product Serial",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "qr_payload",
+   "fieldtype": "Data",
+   "label": "QR Value",
+   "length": 500,
+   "read_only": 1,
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "module": "Product QR",
+ "name": "Product QR Serial",
+ "permissions": [
+  {"create": 1, "read": 1, "role": "System Manager"},
+  {"create": 1, "read": 1, "role": "Stock Manager"},
+  {"create": 1, "read": 1, "role": "Stock User"}
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
