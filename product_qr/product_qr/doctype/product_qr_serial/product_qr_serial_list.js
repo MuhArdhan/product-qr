@@ -8,7 +8,7 @@ frappe.listview_settings["Product QR Serial"] = {
 				fields: [
 					{ fieldname: "item_code", fieldtype: "Link", options: "Item", label: __("Item"), reqd: 1 },
 					{
-						fieldname: "batch_no", fieldtype: "Link", options: "Batch", label: __("Batch"), reqd: 1,
+						fieldname: "batch_no", fieldtype: "Link", options: "Batch", label: __("Batch"),
 						get_query: () => ({ filters: { item: dialog.get_value("item_code") || "" } }),
 					},
 					{ fieldname: "quantity", fieldtype: "Int", label: __("Number of Labels"), default: 1, reqd: 1 },

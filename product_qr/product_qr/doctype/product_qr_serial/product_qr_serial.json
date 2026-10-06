@@ -1,9 +1,15 @@
 {
  "actions": [],
- "autoname": "PQR-.########",
+ "autoname": "S.###",
+ "creation": "2026-10-06 08:37:36.353810",
  "doctype": "DocType",
  "engine": "InnoDB",
- "field_order": ["item_code", "batch_no", "serial_no", "qr_payload"],
+ "field_order": [
+  "item_code",
+  "batch_no",
+  "serial_no",
+  "qr_payload"
+ ],
  "fields": [
   {
    "fieldname": "item_code",
@@ -20,16 +26,14 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Batch",
-   "options": "Batch",
-   "reqd": 1
+   "options": "Batch"
   },
   {
    "fieldname": "serial_no",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Product Serial",
-   "read_only": 1,
-   "unique": 1
+   "read_only": 1
   },
   {
    "fieldname": "qr_payload",
@@ -40,15 +44,33 @@
    "unique": 1
   }
  ],
- "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-10-06 09:08:52.170669",
+ "modified_by": "ropierpnext@gmail.com",
  "module": "Product QR",
  "name": "Product QR Serial",
+ "naming_rule": "UUID",
+ "owner": "Administrator",
  "permissions": [
-  {"create": 1, "read": 1, "role": "System Manager"},
-  {"create": 1, "read": 1, "role": "Stock Manager"},
-  {"create": 1, "read": 1, "role": "Stock User"}
+  {
+   "create": 1,
+   "read": 1,
+   "role": "System Manager"
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Stock Manager"
+  },
+  {
+   "create": 1,
+   "read": 1,
+   "role": "Stock User"
+  }
  ],
+ "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
+ "states": [],
  "track_changes": 1
 }

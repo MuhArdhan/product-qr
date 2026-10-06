@@ -10,8 +10,8 @@ MAX_LABELS = 500
 
 
 @frappe.whitelist(methods=["POST"])
-def create_labels(item_code, batch_no, quantity):
-	"""Create one globally unique product serial for each physical label."""
+def create_labels(item_code, batch_no=None, quantity=None):
+	"""Create one unique Item-Batch-Serial QR for each physical label."""
 	if not frappe.has_permission(DOCTYPE, "create"):
 		frappe.throw(_("Not permitted to create product labels"), frappe.PermissionError)
 
@@ -24,7 +24,7 @@ def create_labels(item_code, batch_no, quantity):
 	# Validate before allocating any serial numbers. The DocType validates again on insert.
 	if not frappe.db.exists("Item", item_code):
 		frappe.throw(_("Item {0} does not exist").format(item_code))
-	if frappe.db.get_value("Batch", batch_no, "item") != item_code:
+	if batch_no and frappe.db.get_value("Batch", batch_no, "item") != item_code:
 		frappe.throw(_("Batch {0} does not belong to Item {1}").format(batch_no, item_code))
 
 	serials = []
@@ -76,7 +76,7 @@ def get_label_html(names):
 			'<section class="label">'
 			f'<div class="qr">{svg}</div>'
 			f'<div class="details"><strong>{escape(doc.item_code)}</strong>'
-			f'<span>Batch: {escape(doc.batch_no)}</span>'
+			f'<span>Batch: {escape(doc.batch_no or "NOBATCH")}</span>'
 			f'<span>Serial: {escape(doc.serial_no)}</span></div>'
 			'</section>'
 		)
