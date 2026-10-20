@@ -1,13 +1,15 @@
 import qz from 'qz-tray';
 import { loadLayout, normalizeLayout, buildLayoutZpl, SAMPLE_LABEL_DATA } from './label-layout.js';
+import { browserLabelPrinter } from './browser-print.js';
 
 export async function findLabelPrinters() {
   await connectQz(null, { layoutTest: true });
   return qz.printers.find();
 }
 
-export async function inspectLabelPrinters() {
-  await connectQz(null, { layoutTest: true });
+export async function inspectLabelPrinters(raw) {
+  const layout = normalizeLayout(raw || loadLayout());
+  await connectQz(null, { layoutTest: true, timeoutSeconds: layout.qzTimeout });
   const [found, systemDefault] = await Promise.allSettled([qz.printers.find(), qz.printers.getDefault()]);
   if (found.status === 'rejected') throw found.reason;
   return {
@@ -19,7 +21,7 @@ export async function inspectLabelPrinters() {
 export async function printTestLabel(raw) {
   const layout = normalizeLayout(raw);
   const jobs = buildLayoutZpl(SAMPLE_LABEL_DATA, layout);
-  await connectQz(null, { layoutTest: true });
+  await connectQz(null, { layoutTest: true, timeoutSeconds: layout.qzTimeout });
   const printer = layout.printer || await qz.printers.getDefault();
   await qz.print(qz.configs.create(printer, { encoding: 'UTF-8' }), jobs);
   return printer;
@@ -80,10 +82,27 @@ function configureSigning(workOrder, { layoutTest = false } = {}) {
   });
 }
 
-export async function connectQz(workOrder, options) {
-  configureSigning(workOrder, options);
+export async function connectQz(workOrder, { layoutTest = false, timeoutSeconds = loadLayout()?.qzTimeout } = {}) {
+  const seconds = normalizeLayout({ qzTimeout: timeoutSeconds }).qzTimeout;
+  configureSigning(workOrder, { layoutTest });
   if (!qz.websocket.isActive()) {
-    await qz.websocket.connect({ retries: 2, delay: 1 });
+    let timer;
+    try {
+      await Promise.race([
+        qz.websocket.connect({ retries: 0 }),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => {
+            // Do not await disconnect: a stalled WebSocket may also stall close.
+            // The rejected race prevents this attempt from continuing to print,
+            // even if QZ eventually resolves its connection promise.
+            try { Promise.resolve(qz.websocket.disconnect()).catch(() => {}); } catch (_error) { /* best effort */ }
+            reject(new Error(`QZ Tray tidak merespons dalam ${seconds} detik.`));
+          }, seconds * 1000);
+        })
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
   }
 }
 
@@ -94,32 +113,40 @@ export async function printLabels(workOrder, printOptions = 0) {
   const request = { name: workOrder, extra: options.extra ?? 0 };
   if (options.appendCount !== undefined) request.append_count = options.appendCount;
   if (options.labelNumbers !== undefined) request.label_numbers = options.labelNumbers;
+  // Fetch exactly once: append is not idempotent. Browser print reuses this payload.
+  const res = await fetch('/api/method/product_qr.wo_labels.labels.get_label_data', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Frappe-CSRF-Token': window.csrf_token || ''
+    },
+    body: JSON.stringify(request)
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(serverError(data, 'Gagal mengambil data label'));
+  }
+  const { message: labelData } = data;
+
+  if (!labelData) {
+    throw new Error('Data label kosong');
+  }
+
+  const count = labelData.labels?.length || 0;
+  if (!count || count !== labelData.label_count) throw new Error('Jumlah label tidak sesuai');
+  const layout = loadLayout();
+  if (options.output === 'browser') {
+    try {
+      await browserLabelPrinter.print(labelData, layout);
+      return { browserPrint: true };
+    } catch (err) {
+      throw new Error(`Cetak browser gagal: ${err.message || err}. Gunakan cetak ulang nomor label yang sudah terbit; jangan tambah label lagi.`);
+    }
+  }
   try {
-    await connectQz(workOrder);
-    const res = await fetch('/api/method/product_qr.wo_labels.labels.get_label_data', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Frappe-CSRF-Token': window.csrf_token || ''
-      },
-      body: JSON.stringify(request)
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(serverError(data, 'Gagal mengambil data label'));
-    }
-    const { message: labelData } = data;
-
-    if (!labelData) {
-      throw new Error('Data label kosong');
-    }
-
-    const layout = loadLayout();
-    let printer = layout?.printer || await qz.printers.getDefault();
-
-    const count = labelData.labels?.length || 0;
-    if (!count || count !== labelData.label_count) throw new Error('Jumlah label tidak sesuai');
+    await connectQz(workOrder, { timeoutSeconds: layout?.qzTimeout });
+    const printer = layout?.printer || await qz.printers.getDefault();
 
     const config = qz.configs.create(printer, {
       encoding: 'UTF-8'
@@ -130,6 +157,11 @@ export async function printLabels(workOrder, printOptions = 0) {
     return true;
   } catch (err) {
     console.error('QZ Tray Error:', err);
-    throw err;
+    try {
+      await browserLabelPrinter.print(labelData, layout);
+      return { browserFallback: true };
+    } catch (browserError) {
+      throw new Error(`Cetak gagal: ${err.message || err}. Cetak browser juga gagal: ${browserError.message || browserError}. Gunakan cetak ulang nomor label yang sudah terbit; jangan tambah label lagi.`);
+    }
   }
 }

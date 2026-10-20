@@ -11,6 +11,24 @@ function storage() {
   return { getItem: k => values.get(k) ?? null, setItem: (k, v) => values.set(k, v), removeItem: k => values.delete(k) }
 }
 
+test('QZ timeout defaults, clamps, persists and resets without changing label output', () => {
+  for (const value of [undefined, null, '', 'abc', Infinity, NaN]) {
+    assert.equal(normalizeLayout({ qzTimeout: value }).qzTimeout, 8)
+  }
+  assert.equal(normalizeLayout({ qzTimeout: 0 }).qzTimeout, 1)
+  assert.equal(normalizeLayout({ qzTimeout: 100 }).qzTimeout, 60)
+  assert.equal(normalizeLayout({ qzTimeout: 3.6 }).qzTimeout, 4)
+  const s = storage()
+  s.setItem(LAYOUT_KEY, JSON.stringify({ width: 60 }))
+  assert.equal(loadLayout(s).qzTimeout, 8)
+  assert.equal(saveLayout({ qzTimeout: 12, width: 60 }, s).qzTimeout, 12)
+  assert.equal(loadLayout(s).qzTimeout, 12)
+  assert.equal(loadLayout(s).width, 60)
+  assert.deepEqual(buildLayoutZpl(originalData, { qzTimeout: 12 }), [originalZpl])
+  resetLayout(s)
+  assert.equal(normalizeLayout(loadLayout(s)).qzTimeout, 8)
+})
+
 test('preview and test-print sample is Dough Ropi Butter without a TEST name suffix', () => {
   assert.equal(SAMPLE_LABEL_DATA.item_name, 'Dough Ropi Butter')
   assert.equal(SAMPLE_LABEL_DATA.item_name_prefix, 'Dough')

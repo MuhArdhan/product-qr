@@ -5,6 +5,97 @@ import qz from 'qz-tray'
 import { connectQz, getExistingLabelNumbers, printLabels } from '../src/qz-tray.js'
 import { labelSource, labelCountForWorkOrder, offerLabelPrint, labelPrintPrompt } from '../src/label-print-prompt.js'
 import { workOrderLabelUrl } from '../src/work-order-label.js'
+import { buildLayoutHTML } from '../src/label-layout.js'
+import { browserLabelPrinter } from '../src/browser-print.js'
+
+test('browser print renderer preserves media, columns and selected ordinal text', async () => {
+  const html = await buildLayoutHTML({ sku: 'SKU', label_count: 3,
+    labels: [5, 8, 9].map(label_number => ({ label_number, qr_value: `QR-${label_number}` }))
+  }, { width: 60, height: 30, columns: 2, gap: 2 })
+  assert.equal((html.match(/<section>/g) || []).length, 2)
+  assert.match(html, /size:122mm 30mm/)
+  for (const ordinal of [5, 8, 9]) assert.ok(html.includes(`>${ordinal}</div>`))
+})
+
+for (const failure of ['connect', 'connect-timeout', 'printer', 'print', 'data', 'direct-browser']) {
+  test(`${failure}: browser print uses one request and respects failures`, async t => {
+    const savedWindow = globalThis.window
+    const savedStorage = globalThis.localStorage
+    let requests = 0
+    let browserPrints = 0
+    let resolveLateConnection
+    let connectionStarted
+    const started = new Promise(resolve => { connectionStarted = resolve })
+    const data = { sku: 'SKU', label_count: 1, labels: [{ label_number: 5, qr_value: 'ORIGINAL-QR-5' }] }
+    try {
+      globalThis.window = { csrf_token: 'test' }
+      t.mock.method(qz.security, 'setCertificatePromise', () => {})
+      t.mock.method(qz.security, 'setSignaturePromise', () => {})
+      t.mock.method(qz.security, 'setSignatureAlgorithm', () => {})
+      if (failure === 'connect-timeout') {
+        t.mock.timers.enable({ apis: ['setTimeout'] })
+        globalThis.localStorage = { getItem: () => JSON.stringify({ qzTimeout: 3 }) }
+      }
+      t.mock.method(qz.websocket, 'isActive', () => !['connect', 'connect-timeout'].includes(failure))
+      t.mock.method(qz.websocket, 'connect', options => {
+        assert.equal(options.retries, 0)
+        connectionStarted()
+        if (failure === 'connect-timeout') return new Promise(resolve => { resolveLateConnection = resolve })
+        return Promise.reject(new Error('offline'))
+      })
+      t.mock.method(qz.websocket, 'disconnect', async () => {})
+      t.mock.method(qz.printers, 'getDefault', async () => {
+        if (failure === 'printer') throw new Error('No printer')
+        return 'Printer'
+      })
+      t.mock.method(qz.configs, 'create', () => ({}))
+      t.mock.method(qz, 'print', async () => { throw new Error('Print failed') })
+      t.mock.method(console, 'error', () => {})
+      t.mock.method(browserLabelPrinter, 'print', async payload => {
+        assert.equal(payload, data)
+        assert.equal(payload.labels[0].qr_value, 'ORIGINAL-QR-5')
+        browserPrints++
+      })
+      t.mock.method(globalThis, 'fetch', async (_url, options) => {
+        requests++
+        assert.deepEqual(JSON.parse(options.body), { name: 'WO-5', extra: 0, label_numbers: [5] })
+        return { ok: failure !== 'data', json: async () => ({ message: data }) }
+      })
+      const options = { labelNumbers: [5], ...(failure === 'direct-browser' ? { output: 'browser' } : {}) }
+      const result = printLabels('WO-5', options)
+      if (failure === 'connect-timeout') {
+        await started
+        t.mock.timers.tick(2999)
+        await Promise.resolve()
+        assert.equal(browserPrints, 0)
+        t.mock.timers.tick(1)
+      }
+      if (failure === 'data') await assert.rejects(result, /Gagal mengambil/)
+      else assert.deepEqual(await result, {
+        [failure === 'direct-browser' ? 'browserPrint' : 'browserFallback']: true
+      })
+      if (failure === 'connect-timeout') {
+        assert.equal(qz.websocket.disconnect.mock.callCount(), 1)
+        resolveLateConnection()
+        await Promise.resolve()
+        assert.equal(qz.print.mock.callCount(), 0)
+        assert.equal(qz.printers.getDefault.mock.callCount(), 0)
+      }
+      if (failure === 'direct-browser') {
+        assert.equal(qz.security.setCertificatePromise.mock.callCount(), 0)
+        assert.equal(qz.websocket.isActive.mock.callCount(), 0)
+        assert.equal(qz.printers.getDefault.mock.callCount(), 0)
+        assert.equal(qz.print.mock.callCount(), 0)
+      }
+      assert.equal(requests, 1)
+      assert.equal(browserPrints, failure === 'data' ? 0 : 1)
+    } finally {
+      globalThis.window = savedWindow
+      if (savedStorage === undefined) delete globalThis.localStorage
+      else globalThis.localStorage = savedStorage
+    }
+  })
+}
 
 const base = { displayUom: 'Pcs', stockUom: 'Pcs', qtyInPack: 1 }
 
@@ -196,6 +287,7 @@ test('print dialog supports Good Qty, append-after-first-print and selected ordi
     'Tambah setelah cetak awal', 'Jumlah label lanjutan', 'Pilih nomor urut label untuk cetak ulang',
     'Label tambahan', 'Nanti saja', 'Ya, Cetak Label'
   ]) assert.ok(copy.includes(label))
+  assert.doesNotMatch(copy, />Cetak via Browser<\/button>/)
   assert.match(copy, /class="input"/)
   assert.equal((copy.match(/<select\b/g) || []).length, 2)
   assert.equal((copy.match(/class="input label-dialog-select"/g) || []).length, 2)

@@ -8,6 +8,8 @@ const labelPrintDialog = ref(null)
 const errorDialog = ref(null)
 const errorClose = ref(null)
 const actionError = ref(null)
+const printNotice = ref('')
+const printing = ref(false)
 const countMode = ref('automatic')
 const appendLabelCount = ref(1)
 const extraLabelCount = ref(0)
@@ -33,6 +35,7 @@ const labelCountValid = computed(() => {
 
 async function refreshExistingLabels(workOrder = labelPrintPrompt.workOrder) {
   if (!workOrder) return
+  printNotice.value = ''
   const request = ++labelRequest
   labelsLoading.value = true
   labelsError.value = ''
@@ -75,6 +78,7 @@ watch(actionError, error => {
 })
 
 function closeLabelPrint() {
+  if (printing.value) return
   if (labelPrintDialog.value?.open) labelPrintDialog.value.close()
   labelRequest++
   countMode.value = 'automatic'
@@ -89,26 +93,33 @@ function closeLabelPrint() {
   labelPrintPrompt.labelCount = 0
   labelPrintPrompt.afterSave = ''
 }
-async function confirmLabelPrint() {
+async function confirmLabelPrint(output = 'printer') {
   const workOrder = labelPrintPrompt.workOrder
-  if (!workOrder || !labelCountValid.value) return
+  if (!workOrder || !labelCountValid.value || printing.value) return
+  printing.value = true
   try {
     const options = countMode.value === 'automatic'
         ? { extra: Number(extraLabelCount.value) }
         : countMode.value === 'append'
           ? { appendCount: Number(appendLabelCount.value) }
-        : { labelNumbers: [Number(selectedLabelNumber.value)] }
-    await printLabels(workOrder, options)
+         : { labelNumbers: [Number(selectedLabelNumber.value)] }
+    if (output === 'browser') options.output = 'browser'
+    const result = await printLabels(workOrder, options)
+    if (result?.browserFallback) printNotice.value = 'Cetak QZ gagal. Dialog cetak browser dibuka; pilih printer atau Save as PDF. Periksa label yang mungkin sudah tercetak agar tidak rangkap.'
+    else if (result?.browserPrint) printNotice.value = 'Dialog cetak browser dibuka. Pilih printer atau Save as PDF; membatalkan dialog tidak menghapus label yang sudah terbit.'
+    printing.value = false
     closeLabelPrint()
   } catch (err) {
     actionError.value = {
-      title: 'Cetak Label Gagal',
+      title: output === 'browser' ? 'Cetak Browser Gagal' : 'Cetak Label Gagal',
       message: err.message || 'Gagal terhubung ke QZ Tray atau printer.',
       details: [],
       hint: /sign|sertifikat|certificate/i.test(err.message || '')
         ? 'Periksa sertifikat QZ Tray di komputer dan private key di server.'
         : 'Pastikan QZ Tray sedang berjalan di komputer Anda.'
     }
+  } finally {
+    printing.value = false
   }
 }
 function closeError() {
@@ -118,6 +129,7 @@ function closeError() {
 </script>
 
 <template>
+  <p v-if="printNotice" class="label-print-note" role="status">{{ printNotice }}</p>
   <dialog ref="labelPrintDialog" class="dialog" aria-labelledby="label-print-title" @cancel.prevent="closeLabelPrint" @click.self="closeLabelPrint">
     <h3 id="label-print-title">{{ labelPrintPrompt.afterSave ? `${labelPrintPrompt.afterSave} tersimpan` : 'Cetak label?' }}</h3>
     <p>Cetak label untuk Work Order <strong>{{ labelPrintPrompt.workOrder }}</strong>?</p>
@@ -157,8 +169,8 @@ function closeError() {
     <p v-else-if="labelCountValid && countMode === 'specific'">Total cetak ulang: <strong>{{ totalLabelCount }} label</strong></p>
     <p v-else class="label-print-note warning">{{ countMode === 'append' ? 'Masukkan jumlah label lanjutan 1–10.000.' : countMode === 'specific' ? 'Pilih satu nomor label untuk dicetak ulang.' : 'Masukkan jumlah ekstra bulat yang valid; batas 10.000 label per cetakan.' }}</p>
     <div class="dlg-actions">
-      <button class="btn" @click="closeLabelPrint">Nanti saja</button>
-      <button class="btn btn-primary" :disabled="!labelCountValid" @click="confirmLabelPrint">Ya, Cetak Label</button>
+      <button class="btn" :disabled="printing" @click="closeLabelPrint">Nanti saja</button>
+      <button class="btn btn-primary" :disabled="!labelCountValid || printing" @click="confirmLabelPrint()">{{ printing ? 'Memproses…' : 'Ya, Cetak Label' }}</button>
     </div>
   </dialog>
   <dialog ref="errorDialog" class="dialog error-dialog" aria-labelledby="wo-label-error-title" @cancel.prevent="closeError" @click.self="closeError">
@@ -175,6 +187,7 @@ function closeError() {
 </template>
 
 <style scoped>
+.dlg-actions { flex-wrap: wrap; }
 .label-count-field { margin-top: 12px; }
 .label-print-note { margin: 6px 0; font-size: 12px; }
 .label-print-note.warning { color: var(--danger, #b3261e); }

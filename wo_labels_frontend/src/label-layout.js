@@ -8,9 +8,10 @@ export const LAYOUT_DEFAULTS = Object.freeze({
   margin: 0, qrSize: 16, fontSize: 7.45, productFontSize: 9.22, lineHeight: 1,
   align: 'left', showSku: true, showMfg: true, showExp: true, showSequence: true, footer: '',
   leftX: 0, leftY: 0, rightX: 0, rightY: 0, textWidth: 0, prefixFontSize: 0,
-  nameLines: 1, showPrefix: true, bold: true
+  nameLines: 1, showPrefix: true, bold: true, qzTimeout: 8
 })
 export const LAYOUT_NUMBERS = [
+  { key: 'qzTimeout', label: 'Timeout koneksi QZ (detik)', min: 1, max: 60, step: 1 },
   { key: 'width', label: 'Lebar label (mm)', min: 30, max: 120, step: 0.5 },
   { key: 'height', label: 'Tinggi label (mm)', min: 20, max: 150, step: 0.5 },
   { key: 'columns', label: 'Jumlah kolom', min: 1, max: 3, step: 1 },
@@ -41,6 +42,7 @@ export function normalizeLayout(raw = {}) {
   }
   c.columns = Math.round(c.columns)
   c.nameLines = Math.round(c.nameLines)
+  c.qzTimeout = Math.round(c.qzTimeout)
   c.dpi = [203, 300, 600].includes(Number(raw.dpi)) ? Number(raw.dpi) : 203
   c.align = ['left', 'center', 'right'].includes(raw.align) ? raw.align : 'left'
   for (const key of ['showSku', 'showMfg', 'showExp', 'showSequence', 'showPrefix', 'bold']) {

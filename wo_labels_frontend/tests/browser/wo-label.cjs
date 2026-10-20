@@ -23,12 +23,32 @@ async function main() {
   const unknown = []
   const apiCalls = []
   const resources = []
+  let downloads = 0
   try {
+    page.on('download', () => downloads++)
     page.on('pageerror', error => errors.push(error.message))
     page.on('response', response => { if (response.status() >= 400) resources.push({ path: new URL(response.url()).pathname, status: response.status() }) })
-    await page.addInitScript(() => {
-      window.WebSocket = class { constructor() { throw new Error('QZ offline: browser smoke fixture') } }
-    })
+    await page.addInitScript(hang => {
+      window.browserPrintJobs = []
+      window.print = () => {
+        const target = window.parent === window ? window : window.parent
+        target.browserPrintJobs.push({ html: document.documentElement.outerHTML,
+          labels: document.querySelectorAll('article').length, qr: document.querySelectorAll('svg').length })
+        window.dispatchEvent(new Event('afterprint'))
+      }
+      window.qzConnectionAttempts = 0
+      if (hang) {
+        window.WebSocket = class {
+          static CONNECTING = 0; static OPEN = 1; static CLOSING = 2; static CLOSED = 3
+          constructor() { window.qzConnectionAttempts++; this.readyState = 0; this.listeners = {} }
+          addEventListener(event, callback) { (this.listeners[event] ||= []).push(callback) }
+          removeEventListener(event, callback) { this.listeners[event] = (this.listeners[event] || []).filter(fn => fn !== callback) }
+          close() { this.readyState = 3; for (const callback of this.listeners.close || []) callback({}) }
+        }
+        return
+      }
+      window.WebSocket = class { constructor() { window.qzConnectionAttempts++; throw new Error('QZ offline: browser smoke fixture') } }
+    }, process.env.WO_LABEL_QZ_HANG === '1')
     const wo = {
       name: 'WO-QR-BROWSER-TEST', production_item: 'SKU-TEST', production_item_name: 'Dough Browser Test',
       status: 'In Process', stage: 'post_packing', qty: 18, produced_qty: 0,
@@ -65,12 +85,22 @@ async function main() {
         work_order: wo.name, adonan_ke: 7,
         labels: [1, 2, 3].map(label_number => ({ label_number, adonan_ke: 7 }))
       }
+      else if (method.endsWith('.get_label_data')) {
+        const request = route.request().postDataJSON()
+        const numbers = request.label_numbers || (request.append_count ? [4, 5].slice(0, request.append_count) : [1, 2, 3])
+        message = { sku: 'SKU-TEST', item_name: 'Dough Browser Test', label_count: numbers.length,
+          labels: numbers.map(label_number => ({ label_number, qr_value: `SKU-TEST-BATCH-S${label_number}`, serial_no: `S${label_number}` })) }
+      }
       else { unknown.push(method); return route.fulfill({ status: 500, json: { message: 'Unexpected smoke API request' } }) }
       return route.fulfill({ json: { message } })
     })
     await page.goto(`${base}/production_workspace#/settings`, { waitUntil: 'networkidle' })
     const settings = page.locator('.pqr-layout')
     const printerStatus = settings.locator('[data-label-printer-destination]')
+    const timeoutInput = settings.getByLabel('Timeout koneksi QZ (detik)', { exact: true })
+    assert.equal(await timeoutInput.inputValue(), '8'); checks++
+    assert.equal(await timeoutInput.getAttribute('min'), '1')
+    assert.equal(await timeoutInput.getAttribute('max'), '60'); checks++
     assert.match(await printerStatus.innerText(), /Belum diketahui/); checks++
     assert.equal(await settings.getByLabel('Tinggi label (mm)', { exact: true }).inputValue(), '20')
     assert.equal(await settings.getByLabel('Ukuran teks (pt)', { exact: true }).inputValue(), '7.45')
@@ -99,8 +129,15 @@ async function main() {
     await page.reload({ waitUntil: 'networkidle' })
     assert.match(await printerStatus.innerText(), /Zebra Saved/)
     assert.match(await printerStatus.innerText(), /belum diverifikasi/); checks++
+    assert.equal(await timeoutInput.inputValue(), '8'); checks++
+    await timeoutInput.fill('3')
+    const discoveryStarted = Date.now()
     await settings.getByRole('button', { name: 'Hubungkan / muat printer', exact: true }).click()
-    await settings.getByRole('status').filter({ hasText: /QZ offline|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
+    await settings.getByRole('status').filter({ hasText: /QZ offline|tidak merespons|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
+    if (process.env.WO_LABEL_QZ_HANG === '1') {
+      assert.match(await settings.getByRole('status').innerText(), /dalam 3 detik/)
+      assert.ok(Date.now() - discoveryStarted >= 2900 && Date.now() - discoveryStarted < 10000); checks++
+    }
     assert.equal(await settings.getByLabel('Printer label', { exact: true }).inputValue(), 'Zebra Saved')
     assert.doesNotMatch(await printerStatus.innerText(), /Terdeteksi oleh QZ Tray/); checks++
     await settings.getByLabel('Lebar label (mm)', { exact: true }).fill('60')
@@ -118,6 +155,7 @@ async function main() {
     const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('product_qr:wo_label_layout:v1')))
     assert.equal(stored.width, 60)
     assert.equal(stored.columns, 1); checks++
+    assert.equal(stored.qzTimeout, 3); checks++
     assert.equal(stored.leftX, 1)
     assert.equal(stored.rightX, 1)
     assert.equal(stored.rightY, 1)
@@ -126,7 +164,7 @@ async function main() {
     assert.equal(stored.showSku, false); checks++
     assert.equal(await settings.getByLabel('Work Order untuk uji printer', { exact: true }).count(), 0); checks++
     await settings.getByRole('button', { name: 'Cetak label TEST', exact: true }).click()
-    await settings.getByRole('status').filter({ hasText: /QZ offline|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
+    await settings.getByRole('status').filter({ hasText: /QZ offline|tidak merespons|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
     assert.equal(apiCalls.some(method => method.endsWith('.get_label_data')), false); checks++
     assert.equal(apiCalls.some(method => method.endsWith('.wo_detail')), false); checks++
     await page.goto(`${base}/production_workspace#/wo/${wo.name}`, { waitUntil: 'networkidle' })
@@ -165,6 +203,7 @@ async function main() {
     await dialog.locator('#extra-label-count').fill('0')
     await countMode.selectOption('specific')
     assert.equal(await dialog.locator('#extra-label-count').count(), 0); checks++
+    assert.equal(await dialog.getByRole('button', { name: 'Cetak via Browser', exact: true }).count(), 0); checks++
     const reprintNumber = dialog.locator('#label-number-select')
     await reprintNumber.waitFor({ state: 'visible' })
     await countMode.evaluate(el => el.blur())
@@ -197,13 +236,47 @@ async function main() {
     assert.match(await dialog.innerText(), /Total cetak otomatis: 3 label/); checks++
     const box = await dialog.boundingBox()
     assert.ok(box.x >= 0 && box.x + box.width <= 391); checks++
+    assert.ok(await dialog.evaluate(el => el.scrollWidth <= el.clientWidth + 1)); checks++
+    const beforeIssue = apiCalls.filter(method => method.endsWith('.get_label_data')).length
+    const jobsBefore = await page.evaluate(() => window.browserPrintJobs.length)
+    const fallbackStarted = Date.now()
     await dialog.getByRole('button', { name: 'Ya, Cetak Label', exact: true }).click()
-    await page.locator('#wo-label-error-title').waitFor({ state: 'visible', timeout: 30000 }); checks++
-    assert.equal(await page.locator('#error-dialog-title').count(), 1)
-    assert.equal(await page.locator('#wo-label-error-title').count(), 1); checks++
-    await page.locator('#wo-label-error-title').evaluate(el => el.closest('dialog').querySelector('button').click())
-    assert.equal(await page.locator('#wo-label-error-title').evaluate(el => el.closest('dialog').open), false); checks++
-    await dialog.getByRole('button', { name: 'Nanti saja', exact: true }).click()
+    await page.getByRole('status').filter({ hasText: /Dialog cetak browser dibuka/ }).waitFor()
+    if (process.env.WO_LABEL_QZ_HANG === '1') {
+      assert.ok(await page.evaluate(() => window.qzConnectionAttempts > 0))
+      assert.ok(Date.now() - fallbackStarted >= 2900)
+      assert.ok(Date.now() - fallbackStarted < 20000); checks++
+    }
+    const printJobs = await page.evaluate(() => window.browserPrintJobs)
+    assert.equal(printJobs.length, jobsBefore + 1); checks++
+    assert.equal(printJobs.at(-1).labels, 3)
+    assert.equal(printJobs.at(-1).qr, 3); checks++
+    assert.match(printJobs.at(-1).html, /size:60mm 20mm/); checks++
+    assert.equal(apiCalls.filter(method => method.endsWith('.get_label_data')).length, beforeIssue + 1); checks++
+    assert.equal(await page.locator('#label-print-title').evaluate(el => el.closest('dialog').open), false); checks++
+    for (const mode of ['append', 'specific']) {
+      await print.click()
+      await dialog.waitFor({ state: 'visible' })
+      await dialog.locator('#label-count-mode option[value="append"]:not([disabled])').waitFor({ state: 'attached' })
+      await countMode.selectOption(mode)
+      if (mode === 'append') await dialog.locator('#append-label-count').fill('2')
+      else if (mode === 'specific') await dialog.locator('#label-number-select').selectOption('2')
+      const before = apiCalls.filter(method => method.endsWith('.get_label_data')).length
+      const requestPromise = page.waitForRequest(req => req.url().endsWith('.get_label_data'))
+      const beforePrint = await page.evaluate(() => window.browserPrintJobs.length)
+      await dialog.getByRole('button', { name: 'Ya, Cetak Label', exact: true }).click()
+      const request = (await requestPromise).postDataJSON()
+      assert.deepEqual(request, mode === 'append' ? { name: wo.name, extra: 0, append_count: 2 }
+        : mode === 'specific' ? { name: wo.name, extra: 0, label_numbers: [2] }
+          : { name: wo.name, extra: 0 }); checks++
+      await page.getByRole('status').filter({ hasText: /Dialog cetak browser dibuka/ }).waitFor()
+      const jobs = await page.evaluate(() => window.browserPrintJobs)
+      assert.equal(jobs.length, beforePrint + 1)
+      assert.equal(jobs.at(-1).labels, mode === 'append' ? 2 : mode === 'specific' ? 1 : 3); checks++
+      if (mode === 'specific') assert.match(jobs.at(-1).html, />2<\/div>/)
+      assert.equal(apiCalls.filter(method => method.endsWith('.get_label_data')).length, before + 1); checks++
+    }
+    assert.equal(downloads, 0); checks++
     Object.assign(wo, { skip_prepacking: true, stage: 'finish', custom_prepacking_confirmed: 0,
       custom_good_qty_prepacking: 0, custom_postpacking_confirmed: 1, custom_good_qty_postpacking: 12 })
     await page.reload({ waitUntil: 'networkidle' })
@@ -220,12 +293,14 @@ async function main() {
     assert.ok(await settings.evaluate(el => el.scrollWidth <= el.clientWidth + 1)); checks++
     assert.equal(await settings.locator('.settings-block').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.trim().split(/\s+/).length), 1); checks++
     assert.equal(await settings.getByLabel('Lebar label (mm)', { exact: true }).inputValue(), '60'); checks++
+    assert.equal(await timeoutInput.inputValue(), '3'); checks++
     assert.equal(await settings.getByLabel('Geser QR horizontal (mm)', { exact: true }).inputValue(), '1')
     assert.equal(await settings.getByLabel('Geser teks horizontal (mm)', { exact: true }).inputValue(), '1')
     assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('product_qr:wo_label_layout:v1')).bold), false); checks++
     await settings.getByRole('button', { name: 'Pulihkan default ZPL', exact: true }).click()
     await page.getByText('Kembali menggunakan default ZPL asli.', { exact: true }).waitFor()
     assert.equal(await page.evaluate(() => localStorage.getItem('product_qr:wo_label_layout:v1')), null); checks++
+    assert.equal(await timeoutInput.inputValue(), '8'); checks++
     assert.match(await printerStatus.innerText(), /Belum diketahui/); checks++
     assert.equal(await settings.getByLabel('Tinggi label (mm)', { exact: true }).inputValue(), '20'); checks++
     assert.equal(await settings.getByLabel('Geser QR horizontal (mm)', { exact: true }).inputValue(), '0')

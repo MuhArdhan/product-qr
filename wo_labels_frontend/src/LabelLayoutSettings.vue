@@ -19,7 +19,8 @@ const destination = computed(() => describeLabelPrinter({ selected: draft.value.
   printers: printers.value, defaultPrinter: defaultPrinter.value, loaded: printersLoaded.value, lastPrinted: lastPrinted.value }))
 const leftFields = LAYOUT_NUMBERS.filter(f => ['leftX', 'leftY', 'qrSize'].includes(f.key))
 const textFields = LAYOUT_NUMBERS.filter(f => ['rightX', 'rightY', 'textWidth', 'prefixFontSize', 'fontSize', 'productFontSize', 'lineHeight', 'nameLines'].includes(f.key))
-const mediaFields = LAYOUT_NUMBERS.filter(f => !leftFields.includes(f) && !textFields.includes(f))
+const timeoutField = LAYOUT_NUMBERS.find(f => f.key === 'qzTimeout')
+const mediaFields = LAYOUT_NUMBERS.filter(f => f !== timeoutField && !leftFields.includes(f) && !textFields.includes(f))
 async function run(action, success) {
   if (busy.value) return
   busy.value = true
@@ -38,7 +39,7 @@ function reset() {
 function refresh() {
   run(async () => {
     try {
-      const found = await inspectLabelPrinters()
+      const found = await inspectLabelPrinters(normalized.value)
       printers.value = found.printers
       defaultPrinter.value = found.defaultPrinter
       printersLoaded.value = true
@@ -83,7 +84,12 @@ function testPrint() {
                 <option v-for="printer in options" :key="printer" :value="printer">{{ printer }}{{ printersLoaded && !printers.includes(printer) ? ' — belum terdeteksi' : '' }}</option>
               </select>
             </div>
+            <div class="field">
+              <label for="pqr-qzTimeout">{{ timeoutField.label }}</label>
+              <input id="pqr-qzTimeout" v-model.number="draft.qzTimeout" class="input" type="number" :min="timeoutField.min" :max="timeoutField.max" :step="timeoutField.step" aria-describedby="pqr-timeout-note">
+            </div>
           </div>
+          <p id="pqr-timeout-note" class="hint">1–60 detik; default 8. Batas menunggu koneksi QZ, bukan durasi cetak fisik. Simpan agar dipakai saat cetak Work Order. Jika koneksi gagal atau timeout, cetak Work Order beralih ke dialog cetak browser.</p>
           <p class="settings-note" data-label-printer-destination aria-live="polite">Printer tujuan: <strong>{{ destination.name }}</strong><br>{{ destination.detail }}</p>
           <div class="pqr-layout-actions">
             <button type="button" class="btn" :disabled="busy" @click="refresh">Hubungkan / muat printer</button>

@@ -1,4 +1,4 @@
-import { l as d, d as l } from "./label-layout-DmzvIvUT.js";
+import { l as d, b as l } from "./label-layout-CO62hXZW.js";
 async function s() {
   const t = d(), e = JSON.parse(document.getElementById("pqr-layout-data").textContent), o = await l(e, t), n = new DOMParser().parseFromString(o, "text/html");
   document.querySelector("style").textContent = n.querySelector("style").textContent + `
