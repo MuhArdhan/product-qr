@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     outDir: '../product_qr/public/wo_labels',
     emptyOutDir: true,
-    lib: { entry: 'src/index.js', formats: ['es'], fileName: () => 'wo-labels.js' },
+    lib: { entry: { 'wo-labels': 'src/index.js', 'layout-browser': 'src/layout-browser.js' }, formats: ['es'], fileName: (_format, name) => `${name}.js` },
     rollupOptions: { external: ['vue', 'lucide-vue-next'] }
   }
 })

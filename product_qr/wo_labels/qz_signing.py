@@ -1,4 +1,4 @@
-"""Server-only QZ signing for confirmed Work Order labels."""
+"""Server-only QZ signing for WO labels and authorized standalone layout tests."""
 
 import base64
 import re
@@ -58,6 +58,29 @@ def download_certificate():
 @frappe.whitelist(methods=["POST"])
 def sign(work_order, request):
 	_check_work_order(work_order)
+	return _sign_request(request)
+
+
+def _check_layout_test_permission():
+	# Same capability that exposes the host's Settings menu. No WO/document,
+	# packing status or serial allocation is involved in a synthetic layout test.
+	if frappe.session.user == "Guest" or not frappe.has_permission("Manufacturing Settings", "write"):
+		frappe.throw(_("Tidak diizinkan menguji printer label. Buka dengan akun yang memiliki akses Pengaturan."), frappe.PermissionError)
+
+
+@frappe.whitelist()
+def layout_certificate():
+	_check_layout_test_permission()
+	return _read_certificate()
+
+
+@frappe.whitelist(methods=["POST"])
+def layout_sign(request):
+	_check_layout_test_permission()
+	return _sign_request(request)
+
+
+def _sign_request(request):
 	if not isinstance(request, str) or not re.fullmatch(r"[0-9a-fA-F]{64}", request):
 		frappe.throw(_("Permintaan tanda tangan QZ Tray tidak valid."))
 	_cert_path, key_path = _files()

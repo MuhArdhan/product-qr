@@ -162,6 +162,17 @@ class TestWoLabelData(TestCase):
 		self.assertTrue(all(row["qr_svg_base64"] for row in context.labels))
 		self.assertEqual(len(self.serials), 3)
 
+	def test_browser_layout_json_is_safe_and_preserves_identity(self):
+		from product_qr.www import product_qr_work_order_label
+
+		payload = "</script><script>alert(1)</script>"
+		data = {"work_order": self.wo.name, "item_name": payload, "labels": [{"qr_value": payload, "serial_no": "S001"}]}
+		with patch.object(product_qr_work_order_label, "label_data", return_value=data), patch.object(frappe.local, "form_dict", frappe._dict(name=self.wo.name)):
+			context = product_qr_work_order_label.get_context(frappe._dict())
+		self.assertNotIn("<", context.layout_data_json)
+		self.assertEqual(json.loads(context.layout_data_json), data)
+		self.assertFalse(self.serials)
+
 
 class TestWoLabelUom(TestCase):
 	def test_default_inventory_uom_and_variant_fallback(self):
@@ -182,6 +193,33 @@ class TestWoLabelUom(TestCase):
 
 
 class TestWoLabelSigning(TestCase):
+	def test_layout_test_signs_without_work_order_or_serial_writes(self):
+		with TemporaryDirectory() as directory, patch.object(frappe, "get_site_path", return_value=str(Path(directory) / "missing")), patch.object(frappe, "session", frappe._dict(user="settings@example.com")), patch.object(frappe, "has_permission", return_value=True) as permission, patch.object(frappe, "get_doc") as get_doc, patch.object(qz_signing, "_check_work_order") as check_wo:
+			cert_path, _key = qz_signing._files()
+			cert = x509.load_pem_x509_certificate(cert_path.read_bytes())
+			request = "b" * 64
+			signature = base64.b64decode(qz_signing.layout_sign(request))
+			cert.public_key().verify(signature, request.encode(), padding.PKCS1v15(), hashes.SHA512())
+			self.assertEqual(qz_signing.layout_certificate(), cert_path.read_text(encoding="ascii"))
+			permission.assert_called_with("Manufacturing Settings", "write")
+			get_doc.assert_not_called()
+			check_wo.assert_not_called()
+
+	def test_layout_test_rejects_guest_or_missing_settings_permission(self):
+		for user in ("Guest", "denied@example.com"):
+			with self.subTest(user=user), patch.object(frappe, "session", frappe._dict(user=user)), patch.object(frappe, "has_permission", return_value=False), patch.object(frappe, "throw", side_effect=_throw), patch.object(qz_signing, "_files") as files:
+				with self.assertRaises(ValueError):
+					qz_signing.layout_certificate()
+				with self.assertRaises(ValueError):
+					qz_signing.layout_sign("b" * 64)
+				files.assert_not_called()
+
+	def test_layout_test_rejects_invalid_hash_before_reading_key(self):
+		with patch.object(frappe, "session", frappe._dict(user="settings@example.com")), patch.object(frappe, "has_permission", return_value=True), patch.object(frappe, "throw", side_effect=_throw), patch.object(qz_signing, "_files") as files:
+			with self.assertRaises(ValueError):
+				qz_signing.layout_sign("invalid")
+			files.assert_not_called()
+
 	def test_site_override_fallback_and_partial_pair(self):
 		with TemporaryDirectory() as directory:
 			base = Path(directory)

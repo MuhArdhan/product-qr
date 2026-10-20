@@ -1,85 +1,59 @@
-import { reactive as B, unref as S, openBlock as P, createElementBlock as _, createElementVNode as g, createVNode as Q, createTextVNode as F, createCommentVNode as R, ref as L, computed as D, watch as U, nextTick as M, Fragment as $, withModifiers as N, toDisplayString as A, withDirectives as W, vModelText as G, renderList as Z } from "vue";
-import { Printer as K } from "lucide-vue-next";
-function X(a) {
-  return !!a?.displayUom && a.displayUom !== a.stockUom && Number.isFinite(a.qtyInPack) && a.qtyInPack > 0;
+import { reactive as te, unref as L, openBlock as v, createElementBlock as w, createElementVNode as a, createVNode as W, createTextVNode as H, createCommentVNode as M, ref as _, computed as q, watch as Q, nextTick as B, Fragment as U, withModifiers as D, toDisplayString as S, withDirectives as N, vModelText as I, renderList as F, vModelSelect as z, normalizeClass as re } from "vue";
+import { Printer as ne, QrCode as oe } from "lucide-vue-next";
+import { g as se, a as ae, l as Z, b as K, n as X, S as ie, L as G, c as R, s as le, r as ue } from "./label-layout-Bzm75nKq.js";
+function ce(f) {
+  return !!f?.displayUom && f.displayUom !== f.stockUom && Number.isFinite(f.qtyInPack) && f.qtyInPack > 0;
 }
-function V(a) {
-  return a.skipPrepacking ? a.postpacking : a.prepacking;
+function Y(f) {
+  return f.skipPrepacking ? f.postpacking : f.prepacking;
 }
-function Y(a) {
-  const u = Number(V(a)?.goodQty), c = X(a) ? a.qtyInPack : 1;
-  return Math.max(1, Math.ceil(u / c - 1e-8));
+function fe(f) {
+  const u = Number(Y(f)?.goodQty), p = ce(f) ? f.qtyInPack : 1;
+  return Math.max(1, Math.ceil(u / p - 1e-8));
 }
-const y = B({ workOrder: "", labelCount: 0, afterSave: "" });
-function ee(a, u, c = "") {
-  y.workOrder = a, y.labelCount = u, y.afterSave = c;
+const P = te({ workOrder: "", labelCount: 0, afterSave: "" });
+function de(f, u, p = "") {
+  P.workOrder = f, P.labelCount = u, P.afterSave = p;
 }
-const te = (a, u) => {
-  const c = a.__vccOpts || a;
-  for (const [t, f] of u)
-    c[t] = f;
-  return c;
-}, re = {
+const pe = (f, u) => {
+  const p = f.__vccOpts || f;
+  for (const [t, g] of u)
+    p[t] = g;
+  return p;
+}, be = {
   key: 0,
   class: "toolbar ws-label-actions"
-}, ne = {
+}, me = {
   __name: "WorkOrderLabelButton",
   props: { workOrder: { type: Object, required: !0 } },
-  setup(a) {
-    return (u, c) => S(V)(a.workOrder)?.confirmed ? (P(), _("div", re, [
-      g("button", {
+  setup(f) {
+    return (u, p) => L(Y)(f.workOrder)?.confirmed ? (v(), w("div", be, [
+      a("button", {
         class: "btn ws-label-print",
         type: "button",
-        onClick: c[0] || (c[0] = (t) => S(ee)(a.workOrder.id, S(Y)(a.workOrder)))
+        onClick: p[0] || (p[0] = (t) => L(de)(f.workOrder.id, L(fe)(f.workOrder)))
       }, [
-        Q(S(K), {
+        W(L(ne), {
           size: 14,
           "stroke-width": 2
         }),
-        c[1] || (c[1] = F(" Cetak Label ", -1))
+        p[1] || (p[1] = H(" Cetak Label ", -1))
       ])
-    ])) : R("", !0);
+    ])) : M("", !0);
   }
-}, Ee = /* @__PURE__ */ te(ne, [["__scopeId", "data-v-c9012b16"]]);
-function oe(a) {
-  return a && a.__esModule && Object.prototype.hasOwnProperty.call(a, "default") ? a.default : a;
+}, St = /* @__PURE__ */ pe(me, [["__scopeId", "data-v-c9012b16"]]);
+function ge(f) {
+  throw new Error('Could not dynamically require "' + f + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
 }
-function se(a) {
-  if (Object.prototype.hasOwnProperty.call(a, "__esModule")) return a;
-  var u = a.default;
-  if (typeof u == "function") {
-    var c = function t() {
-      var f = !1;
-      try {
-        f = this instanceof t;
-      } catch {
-      }
-      return f ? Reflect.construct(u, arguments, this.constructor) : u.apply(this, arguments);
-    };
-    c.prototype = u.prototype;
-  } else c = {};
-  return Object.defineProperty(c, "__esModule", { value: !0 }), Object.keys(a).forEach(function(t) {
-    var f = Object.getOwnPropertyDescriptor(a, t);
-    Object.defineProperty(c, t, f.get ? f : {
-      enumerable: !0,
-      get: function() {
-        return a[t];
-      }
-    });
-  }), c;
-}
-function ae(a) {
-  throw new Error('Could not dynamically require "' + a + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
-}
-var I = { exports: {} };
-const ie = {}, le = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+var V = { exports: {} };
+const ke = {}, ye = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: ie
-}, Symbol.toStringTag, { value: "Module" })), ce = /* @__PURE__ */ se(le);
-var j;
-function ue() {
-  return j || (j = 1, (function(a, u) {
-    var c = (function() {
+  default: ke
+}, Symbol.toStringTag, { value: "Module" })), he = /* @__PURE__ */ se(ye);
+var J;
+function ve() {
+  return J || (J = 1, (function(f, u) {
+    var p = (function() {
       Array.isArray || (Array.isArray = function(e) {
         return Object.prototype.toString.call(e) === "[object Array]";
       }), Number.isInteger || (Number.isInteger = function(e) {
@@ -554,7 +528,7 @@ function ue() {
             if (!(typeof self > "u")) {
               if (self.lna && self.lna.detectLna)
                 return self.lna;
-              if (typeof ae == "function")
+              if (typeof ge == "function")
                 try {
                   return require("lna");
                 } catch (e) {
@@ -582,7 +556,7 @@ function ue() {
               var r = document.createElement("a");
               return r.href = e, r.href;
             } else
-              return ce.resolve(e);
+              return he.resolve(e);
           },
           relative: function(e) {
             for (var r = 0; r < e.length; r++)
@@ -750,15 +724,15 @@ function ue() {
               t.websocket.dataPromise("websocket.getNetworkInfo", {
                 hostname: e,
                 port: r
-              }, n, o).then(function(d) {
-                i(typeof s < "u" ? s(d) : d);
+              }, n, o).then(function(m) {
+                i(typeof s < "u" ? s(m) : m);
               }, l);
             }) : t.tools.promise(function(i, l) {
               t.websocket.dataPromise("networking.device", {
                 hostname: e,
                 port: r
-              }, n, o).then(function(d) {
-                i({ ipAddress: d.ip, macAddress: d.mac });
+              }, n, o).then(function(m) {
+                i({ ipAddress: m.ip, macAddress: m.mac });
               }, l);
             });
           },
@@ -842,21 +816,21 @@ function ue() {
               3329325298
             ], n = [1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225], o = e.length / 4 + 2, s = Math.ceil(o / 16), i = new Array(s), l = 0; l < s; l++) {
               i[l] = new Array(16);
-              for (var d = 0; d < 16; d++)
-                i[l][d] = e.charCodeAt(l * 64 + d * 4) << 24 | e.charCodeAt(l * 64 + d * 4 + 1) << 16 | e.charCodeAt(l * 64 + d * 4 + 2) << 8 | e.charCodeAt(l * 64 + d * 4 + 3);
+              for (var m = 0; m < 16; m++)
+                i[l][m] = e.charCodeAt(l * 64 + m * 4) << 24 | e.charCodeAt(l * 64 + m * 4 + 1) << 16 | e.charCodeAt(l * 64 + m * 4 + 2) << 8 | e.charCodeAt(l * 64 + m * 4 + 3);
             }
             i[s - 1][14] = (e.length - 1) * 8 / Math.pow(2, 32), i[s - 1][14] = Math.floor(i[s - 1][14]), i[s - 1][15] = (e.length - 1) * 8 & 4294967295;
-            for (var m = new Array(64), h, v, C, p, w, E, O, T, l = 0; l < s; l++) {
-              for (var k = 0; k < 16; k++)
-                m[k] = i[l][k];
-              for (var k = 16; k < 64; k++)
-                m[k] = t.SHA._dev1(m[k - 2]) + m[k - 7] + t.SHA._dev0(m[k - 15]) + m[k - 16] & 4294967295;
-              h = n[0], v = n[1], C = n[2], p = n[3], w = n[4], E = n[5], O = n[6], T = n[7];
-              for (var k = 0; k < 64; k++) {
-                var H = T + t.SHA._sig1(w) + t.SHA._ch(w, E, O) + r[k] + m[k], J = t.SHA._sig0(h) + t.SHA._maj(h, v, C);
-                T = O, O = E, E = w, w = p + H & 4294967295, p = C, C = v, v = h, h = H + J & 4294967295;
+            for (var C = new Array(64), x, E, O, k, A, h, c, d, l = 0; l < s; l++) {
+              for (var y = 0; y < 16; y++)
+                C[y] = i[l][y];
+              for (var y = 16; y < 64; y++)
+                C[y] = t.SHA._dev1(C[y - 2]) + C[y - 7] + t.SHA._dev0(C[y - 15]) + C[y - 16] & 4294967295;
+              x = n[0], E = n[1], O = n[2], k = n[3], A = n[4], h = n[5], c = n[6], d = n[7];
+              for (var y = 0; y < 64; y++) {
+                var $ = d + t.SHA._sig1(A) + t.SHA._ch(A, h, c) + r[y] + C[y], ee = t.SHA._sig0(x) + t.SHA._maj(x, E, O);
+                d = c, c = h, h = A, A = k + $ & 4294967295, k = O, O = E, E = x, x = $ + ee & 4294967295;
               }
-              n[0] = n[0] + h & 4294967295, n[1] = n[1] + v & 4294967295, n[2] = n[2] + C & 4294967295, n[3] = n[3] + p & 4294967295, n[4] = n[4] + w & 4294967295, n[5] = n[5] + E & 4294967295, n[6] = n[6] + O & 4294967295, n[7] = n[7] + T & 4294967295;
+              n[0] = n[0] + x & 4294967295, n[1] = n[1] + E & 4294967295, n[2] = n[2] + O & 4294967295, n[3] = n[3] + k & 4294967295, n[4] = n[4] + A & 4294967295, n[5] = n[5] + h & 4294967295, n[6] = n[6] + c & 4294967295, n[7] = n[7] + d & 4294967295;
             }
             return t.SHA._hexStr(n[0]) + t.SHA._hexStr(n[1]) + t.SHA._hexStr(n[2]) + t.SHA._hexStr(n[3]) + t.SHA._hexStr(n[4]) + t.SHA._hexStr(n[5]) + t.SHA._hexStr(n[6]) + t.SHA._hexStr(n[7]);
           },
@@ -904,7 +878,7 @@ function ue() {
           //@formatter:on
         }
       };
-      function f(e, r) {
+      function g(e, r) {
         this.config = t.tools.extend({}, t.printing.defaultConfig), this._dirtyOpts = {}, this.setPrinter = function(n) {
           typeof n == "string" && (n = { name: n }), this.printer = n;
         }, this.getPrinter = function() {
@@ -917,7 +891,7 @@ function ue() {
           return t.compatible.config(this.config, this._dirtyOpts);
         }, this.setPrinter(e), this.reconfigure(r);
       }
-      f.prototype.print = function(e, r, n) {
+      g.prototype.print = function(e, r, n) {
         b.print(this, e, r, n);
       };
       var b = {
@@ -984,13 +958,13 @@ function ue() {
                   e.host[o] = t.tools.appendSurf(e.host[o]);
               t.websocket.shutdown = !1;
               var s = function(i) {
-                var l = !1, d = function() {
+                var l = !1, m = function() {
                   l || (l = !0, e && i < e.retries ? s(i + 1) : (t.websocket.connection = null, n.apply(null, arguments)));
-                }, m = function() {
-                  var h = t.tools.extend({}, t.websocket.connectConfig, e);
-                  t.websocket.setup.findConnection(h, r, d);
+                }, C = function() {
+                  var x = t.tools.extend({}, t.websocket.connectConfig, e);
+                  t.websocket.setup.findConnection(x, r, m);
                 };
-                i == 0 ? m() : setTimeout(m, e.delay * 1e3);
+                i == 0 ? C() : setTimeout(C, e.delay * 1e3);
               };
               s(0);
             });
@@ -1279,7 +1253,7 @@ function ue() {
            * @memberof qz.configs
            */
           create: function(e, r) {
-            return new f(e, r);
+            return new g(e, r);
           }
         },
         /**
@@ -1343,42 +1317,42 @@ function ue() {
           arguments.length >= 3 && (typeof arguments[2] == "boolean" ? (n = arguments[2], arguments.length >= 5 && (o = arguments[3], s = arguments[4])) : arguments.length >= 4 && (o = arguments[2], s = arguments[3]), o && !Array.isArray(o) && (o = [o]), s && !Array.isArray(s) && (s = [s])), Array.isArray(e) || (e = [e]), Array.isArray(r[0]) || (r = [r]);
           for (var i = 0; i < r.length; i++)
             t.tools.relative(r[i]), t.compatible.data(r[i]);
-          for (var l = function(p) {
-            var w = {
-              printer: p.config.getPrinter(),
-              options: p.config.getOptions(),
-              data: p.data
+          for (var l = function(k) {
+            var A = {
+              printer: k.config.getPrinter(),
+              options: k.config.getOptions(),
+              data: k.data
             };
-            return t.websocket.dataPromise("print", w, p.signature, p.timestamp);
-          }, d = [], m = 0; m < e.length || m < r.length; m++)
-            (function(p) {
-              var w = {
-                config: e[Math.min(p, e.length - 1)],
-                data: r[Math.min(p, r.length - 1)],
-                signature: o[p],
-                timestamp: s[p]
+            return t.websocket.dataPromise("print", A, k.signature, k.timestamp);
+          }, m = [], C = 0; C < e.length || C < r.length; C++)
+            (function(k) {
+              var A = {
+                config: e[Math.min(k, e.length - 1)],
+                data: r[Math.min(k, r.length - 1)],
+                signature: o[k],
+                timestamp: s[k]
               };
-              d.push(function() {
-                return l(w);
+              m.push(function() {
+                return l(A);
               });
-            })(m);
-          var h = null;
+            })(C);
+          var x = null;
           if (n) {
-            var v = [];
-            h = function(p) {
-              v.push(p);
-            }, d.push(function() {
-              return t.tools.promise(function(p, w) {
-                v.length ? w(v) : p();
+            var E = [];
+            x = function(k) {
+              E.push(k);
+            }, m.push(function() {
+              return t.tools.promise(function(k, A) {
+                E.length ? A(E) : k();
               });
             });
           }
-          var C = null;
-          return d.reduce(function(p, w) {
-            return C = p.catch(h).then(w), C;
-          }, t.tools.promise(function(p) {
-            p();
-          })), C;
+          var O = null;
+          return m.reduce(function(k, A) {
+            return O = k.catch(x).then(A), O;
+          }, t.tools.promise(function(k) {
+            k();
+          })), O;
         },
         /**
          * Calls related to interaction with serial ports.
@@ -2372,21 +2346,36 @@ function ue() {
       return b;
     })();
     (function() {
-      a.exports = c;
+      f.exports = p;
     })();
-  })(I)), I.exports;
+  })(V)), V.exports;
 }
-var fe = ue();
-const x = /* @__PURE__ */ oe(fe);
-function de(a) {
-  x.security.setCertificatePromise(async () => {
-    const u = await fetch(`/api/method/product_qr.wo_labels.qz_signing.certificate?work_order=${encodeURIComponent(a)}`, {
+var we = ve();
+const T = /* @__PURE__ */ ae(we);
+async function Ce() {
+  await j(null, { layoutTest: !0 });
+  const [f, u] = await Promise.allSettled([T.printers.find(), T.printers.getDefault()]);
+  if (f.status === "rejected") throw f.reason;
+  return {
+    printers: Array.isArray(f.value) ? f.value : f.value ? [f.value] : [],
+    defaultPrinter: u.status === "fulfilled" && u.value || ""
+  };
+}
+async function Se(f) {
+  const u = X(f), p = K(ie, u);
+  await j(null, { layoutTest: !0 });
+  const t = u.printer || await T.printers.getDefault();
+  return await T.print(T.configs.create(t, { encoding: "UTF-8" }), p), t;
+}
+function xe(f, { layoutTest: u = !1 } = {}) {
+  T.security.setCertificatePromise(async () => {
+    const p = u ? "/api/method/product_qr.wo_labels.qz_signing.layout_certificate" : `/api/method/product_qr.wo_labels.qz_signing.certificate?work_order=${encodeURIComponent(f)}`, t = await fetch(p, {
       cache: "no-store"
     });
-    if (!u.ok) throw new Error("Sertifikat QZ Tray belum tersedia atau akses ditolak");
-    return (await u.json()).message;
-  }, { rejectOnFailure: !0 }), x.security.setSignatureAlgorithm("SHA512"), x.security.setSignaturePromise(async (u) => {
-    const c = await fetch("/api/method/product_qr.wo_labels.qz_signing.sign", {
+    if (!t.ok) throw new Error("Sertifikat QZ Tray belum tersedia atau akses ditolak");
+    return (await t.json()).message;
+  }, { rejectOnFailure: !0 }), T.security.setSignatureAlgorithm("SHA512"), T.security.setSignaturePromise(async (p) => {
+    const t = await fetch(u ? "/api/method/product_qr.wo_labels.qz_signing.layout_sign" : "/api/method/product_qr.wo_labels.qz_signing.sign", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -2394,28 +2383,28 @@ function de(a) {
       },
       credentials: "same-origin",
       cache: "no-store",
-      body: JSON.stringify({ work_order: a, request: u })
+      body: JSON.stringify(u ? { request: p } : { work_order: f, request: p })
     });
-    if (!c.ok) throw new Error("Gagal menandatangani permintaan QZ Tray");
-    return (await c.json()).message;
+    if (!t.ok) throw new Error("Gagal menandatangani permintaan QZ Tray");
+    return (await t.json()).message;
   });
 }
-async function pe(a) {
-  de(a), x.websocket.isActive() || await x.websocket.connect({ retries: 2, delay: 1 });
+async function j(f, u) {
+  xe(f, u), T.websocket.isActive() || await T.websocket.connect({ retries: 2, delay: 1 });
 }
-async function be(a, u = 0) {
+async function Ae(f, u = 0) {
   try {
-    await pe(a);
-    const c = await fetch("/api/method/product_qr.wo_labels.labels.get_label_data", {
+    await j(f);
+    const p = await fetch("/api/method/product_qr.wo_labels.labels.get_label_data", {
       method: "POST",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
         "X-Frappe-CSRF-Token": window.csrf_token || ""
       },
-      body: JSON.stringify({ name: a, extra: u })
-    }), t = await c.json();
-    if (!c.ok) {
+      body: JSON.stringify({ name: f, extra: u })
+    }), t = await p.json();
+    if (!p.ok) {
       let o = "";
       try {
         o = JSON.parse(t._server_messages || "[]").map((i) => JSON.parse(i).message).filter(Boolean).join(" ");
@@ -2423,83 +2412,52 @@ async function be(a, u = 0) {
       }
       throw new Error(o || "Gagal mengambil data label");
     }
-    const { message: f } = t;
-    if (!f)
+    const { message: g } = t;
+    if (!g)
       throw new Error("Data label kosong");
-    let b = await x.printers.getDefault();
-    const e = [], r = f.labels?.length || 0;
-    if (!r || r !== f.label_count) throw new Error("Jumlah serial label tidak sesuai");
-    for (let o = 0; o < r; o += 2) {
-      let s = `^XA
-^PW800
-^LL160
-`;
-      s += q(f, f.labels[o], 0, o + 1), o + 1 < r && (s += q(f, f.labels[o + 1], 400, o + 2)), s += `^XZ
-`, e.push(s);
-    }
-    const n = x.configs.create(b, {
+    const b = Z();
+    let e = b?.printer || await T.printers.getDefault();
+    const r = g.labels?.length || 0;
+    if (!r || r !== g.label_count) throw new Error("Jumlah serial label tidak sesuai");
+    const n = T.configs.create(e, {
       encoding: "UTF-8"
     });
-    return await x.print(n, e), !0;
-  } catch (c) {
-    throw console.error("QZ Tray Error:", c), c;
+    return await T.print(n, K(g, b)), !0;
+  } catch (p) {
+    throw console.error("QZ Tray Error:", p), p;
   }
 }
-function me(a) {
-  return String(a ?? "").replace(/[_^~\\]/g, (u) => ({
-    _: "_5F",
-    "^": "_5E",
-    "~": "_7E",
-    "\\": "_5C"
-  })[u]);
-}
-function q(a, u, c, t) {
-  const f = a.manufacturing_date ? z(a.manufacturing_date) : "-", b = a.expiry_date ? z(a.expiry_date) : "-";
-  let e = "";
-  const r = (o, s, i, l, d, m = "") => `^FO${o},${s}^A0N,${i},${l}${m}^FD${d}^FS
-^FO${o + 1},${s}^A0N,${i},${l}${m}^FD${d}^FS
-`;
-  e += r(c + 355, 28, 18, 18, `${t}`, "^FB40,1,0,R"), e += `^FO${c + 68},32^BQN,2,4^FDQA,${me(u.qr_value)}^FS
-`;
-  let n = 32;
-  return a.item_name_prefix ? (e += r(c + 192, n, 18, 18, a.item_name_prefix), n += 20, e += r(c + 192, n, 26, 26, a.item_name_main || ""), n += 28) : (e += r(c + 192, n, 26, 26, a.item_name_main || a.item_name || ""), n += 30), e += r(c + 192, n, 21, 21, `SKU : ${a.sku}`), n += 24, e += r(c + 192, n, 21, 21, `MFG : ${f}`), n += 24, e += r(c + 192, n, 21, 21, `EXP : ${b}`), e;
-}
-function z(a) {
-  if (!a) return "-";
-  const [u, c, t] = a.split("-"), f = u.slice(-2);
-  return `${t}-${c}-${f}`;
-}
-const ge = { id: "label-print-title" }, ke = ["max"], ye = { key: 0 }, we = {
+const Pe = { id: "label-print-title" }, _e = ["max"], Le = { key: 0 }, Te = {
   key: 1,
   style: { color: "#b3261e" }
-}, he = { class: "dlg-actions" }, ve = ["disabled"], Ce = { id: "wo-label-error-title" }, Se = { class: "error-dialog-message" }, xe = {
+}, Ee = { class: "dlg-actions" }, Oe = ["disabled"], Ne = { id: "wo-label-error-title" }, Ue = { class: "error-dialog-message" }, He = {
   key: 0,
   class: "error-dialog-details"
-}, Ae = { class: "dlg-actions" }, Oe = {
+}, Ie = { class: "dlg-actions" }, xt = {
   __name: "WorkOrderLabelDialogs",
-  setup(a) {
-    const u = L(null), c = L(null), t = L(null), f = L(null), b = L(0), e = D(
-      () => b.value !== "" && Number.isInteger(Number(b.value)) && Number(b.value) >= 0 && y.labelCount + Number(b.value) <= 1e4
-    ), r = D(() => y.labelCount + Number(b.value || 0));
-    U(() => y.workOrder, (i) => {
-      i && (b.value = 0, M(() => {
+  setup(f) {
+    const u = _(null), p = _(null), t = _(null), g = _(null), b = _(0), e = q(
+      () => b.value !== "" && Number.isInteger(Number(b.value)) && Number(b.value) >= 0 && P.labelCount + Number(b.value) <= 1e4
+    ), r = q(() => P.labelCount + Number(b.value || 0));
+    Q(() => P.workOrder, (i) => {
+      i && (b.value = 0, B(() => {
         u.value?.open || u.value?.showModal();
       }));
-    }), U(f, (i) => {
-      i && M(() => {
-        c.value?.open || c.value?.showModal(), t.value?.focus();
+    }), Q(g, (i) => {
+      i && B(() => {
+        p.value?.open || p.value?.showModal(), t.value?.focus();
       });
     });
     function n() {
-      u.value?.open && u.value.close(), b.value = 0, y.workOrder = "", y.labelCount = 0, y.afterSave = "";
+      u.value?.open && u.value.close(), b.value = 0, P.workOrder = "", P.labelCount = 0, P.afterSave = "";
     }
     async function o() {
-      const i = y.workOrder;
+      const i = P.workOrder;
       if (!(!i || !e.value))
         try {
-          await be(i, Number(b.value)), n();
+          await Ae(i, Number(b.value)), n();
         } catch (l) {
-          f.value = {
+          g.value = {
             title: "Cetak Label Gagal",
             message: l.message || "Gagal terhubung ke QZ Tray atau printer.",
             details: [],
@@ -2508,78 +2466,78 @@ const ge = { id: "label-print-title" }, ke = ["max"], ye = { key: 0 }, we = {
         }
     }
     function s() {
-      c.value?.open && c.value.close(), f.value = null;
+      p.value?.open && p.value.close(), g.value = null;
     }
-    return (i, l) => (P(), _($, null, [
-      g("dialog", {
+    return (i, l) => (v(), w(U, null, [
+      a("dialog", {
         ref_key: "labelPrintDialog",
         ref: u,
         class: "dialog",
         "aria-labelledby": "label-print-title",
-        onCancel: N(n, ["prevent"]),
-        onClick: N(n, ["self"])
+        onCancel: D(n, ["prevent"]),
+        onClick: D(n, ["self"])
       }, [
-        g("h3", ge, A(S(y).afterSave ? `${S(y).afterSave} tersimpan` : "Cetak label?"), 1),
-        g("p", null, [
-          l[1] || (l[1] = F("Cetak label untuk Work Order ", -1)),
-          g("strong", null, A(S(y).workOrder), 1),
-          l[2] || (l[2] = F("?", -1))
+        a("h3", Pe, S(L(P).afterSave ? `${L(P).afterSave} tersimpan` : "Cetak label?"), 1),
+        a("p", null, [
+          l[1] || (l[1] = H("Cetak label untuk Work Order ", -1)),
+          a("strong", null, S(L(P).workOrder), 1),
+          l[2] || (l[2] = H("?", -1))
         ]),
-        g("p", null, "Label sesuai Good Qty: " + A(S(y).labelCount), 1),
-        l[4] || (l[4] = g("label", { for: "extra-label-count" }, "Label tambahan", -1)),
-        W(g("input", {
+        a("p", null, "Label sesuai Good Qty: " + S(L(P).labelCount), 1),
+        l[4] || (l[4] = a("label", { for: "extra-label-count" }, "Label tambahan", -1)),
+        N(a("input", {
           id: "extra-label-count",
-          "onUpdate:modelValue": l[0] || (l[0] = (d) => b.value = d),
+          "onUpdate:modelValue": l[0] || (l[0] = (m) => b.value = m),
           type: "number",
           min: "0",
-          max: Math.max(0, 1e4 - S(y).labelCount),
+          max: Math.max(0, 1e4 - L(P).labelCount),
           step: "1",
           inputmode: "numeric",
           class: "input",
           style: { display: "block", width: "100%", "margin-top": "6px" }
-        }, null, 8, ke), [
+        }, null, 8, _e), [
           [
-            G,
+            I,
             b.value,
             void 0,
             { number: !0 }
           ]
         ]),
-        e.value ? (P(), _("p", ye, [
-          l[3] || (l[3] = F("Total cetak: ", -1)),
-          g("strong", null, A(r.value) + " label", 1)
-        ])) : (P(), _("p", we, "Masukkan bilangan bulat 0 atau lebih; maksimal 10.000 label per cetakan.")),
-        g("div", he, [
-          g("button", {
+        e.value ? (v(), w("p", Le, [
+          l[3] || (l[3] = H("Total cetak: ", -1)),
+          a("strong", null, S(r.value) + " label", 1)
+        ])) : (v(), w("p", Te, "Masukkan bilangan bulat 0 atau lebih; maksimal 10.000 label per cetakan.")),
+        a("div", Ee, [
+          a("button", {
             class: "btn",
             onClick: n
           }, "Nanti saja"),
-          g("button", {
+          a("button", {
             class: "btn btn-primary",
             disabled: !e.value,
             onClick: o
-          }, "Ya, Cetak Label", 8, ve)
+          }, "Ya, Cetak Label", 8, Oe)
         ])
       ], 544),
-      g("dialog", {
+      a("dialog", {
         ref_key: "errorDialog",
-        ref: c,
+        ref: p,
         class: "dialog error-dialog",
         "aria-labelledby": "wo-label-error-title",
-        onCancel: N(s, ["prevent"]),
-        onClick: N(s, ["self"])
+        onCancel: D(s, ["prevent"]),
+        onClick: D(s, ["self"])
       }, [
-        l[5] || (l[5] = g("div", {
+        l[5] || (l[5] = a("div", {
           class: "error-dialog-icon",
           "aria-hidden": "true"
         }, "!", -1)),
-        g("h2", Ce, A(f.value?.title), 1),
-        g("p", Se, A(f.value?.message), 1),
-        f.value?.details?.length ? (P(), _("ul", xe, [
-          (P(!0), _($, null, Z(f.value.details, (d) => (P(), _("li", { key: d }, A(d), 1))), 128))
-        ])) : R("", !0),
-        g("div", Ae, [
-          g("button", {
+        a("h2", Ne, S(g.value?.title), 1),
+        a("p", Ue, S(g.value?.message), 1),
+        g.value?.details?.length ? (v(), w("ul", He, [
+          (v(!0), w(U, null, F(g.value.details, (m) => (v(), w("li", { key: m }, S(m), 1))), 128))
+        ])) : M("", !0),
+        a("div", Ie, [
+          a("button", {
             ref_key: "errorClose",
             ref: t,
             class: "btn btn-primary",
@@ -2590,18 +2548,314 @@ const ge = { id: "label-print-title" }, ke = ["max"], ye = { key: 0 }, we = {
     ], 64));
   }
 };
-function Le(a, u = 0) {
-  const c = `/product_qr_work_order_label?name=${encodeURIComponent(a)}`;
-  return u > 0 ? `${c}&extra=${u}` : c;
+function Fe({ selected: f = "", printers: u = [], defaultPrinter: p = "", loaded: t = !1, lastPrinted: g = "" } = {}) {
+  const b = f || p;
+  return b ? t && u.includes(b) ? { name: b, detail: "Terdeteksi oleh QZ Tray. Status fisik online/offline belum diperiksa." } : g === b ? { name: b, detail: "Tujuan cetak TEST terakhir. Pengiriman job bukan konfirmasi hasil cetak fisik." } : { name: b, detail: t ? "Belum terdeteksi dalam daftar QZ Tray. Periksa printer atau muat ulang daftar." : "Nama tersimpan; belum diverifikasi oleh QZ Tray." } : {
+    name: "Belum diketahui",
+    detail: t ? "Printer default sistem belum tersedia. Pilih printer dari daftar." : "Klik Hubungkan / muat printer untuk melihat nama printer."
+  };
+}
+const qe = {
+  class: "panel settings-panel pqr-layout",
+  "aria-labelledby": "pqr-layout-title"
+}, De = { class: "panel-head" }, ze = { class: "p-ico" }, Re = { class: "panel-body" }, Ve = { class: "settings-block" }, Me = { class: "settings-control" }, je = { class: "form-grid cols2" }, $e = { class: "field" }, Qe = { value: "" }, Be = ["value"], Ge = {
+  class: "settings-note",
+  "data-label-printer-destination": "",
+  "aria-live": "polite"
+}, Je = { class: "pqr-layout-actions" }, We = ["disabled"], Ze = ["disabled"], Ke = { class: "settings-block" }, Xe = { class: "settings-control" }, Ye = { class: "form-grid cols2" }, et = ["for"], tt = ["id"], rt = ["id", "onUpdate:modelValue", "min", "max", "step"], nt = { class: "hint" }, ot = { class: "settings-block" }, st = { class: "settings-control" }, at = { class: "form-grid cols2" }, it = ["for"], lt = ["id", "onUpdate:modelValue", "min", "max", "step"], ut = { class: "settings-block" }, ct = { class: "settings-control" }, ft = { class: "form-grid cols2" }, dt = ["for"], pt = ["id", "onUpdate:modelValue", "min", "max", "step"], bt = { class: "field" }, mt = { class: "field wide" }, gt = {
+  key: 0,
+  class: "settings-alerts"
+}, kt = { class: "panel-foot" }, yt = ["disabled"], ht = ["disabled"], At = {
+  __name: "LabelLayoutSettings",
+  setup(f) {
+    const u = _(Z() || { ...G }), p = q(() => X(u.value)), t = _([]), g = _(""), b = _(!1), e = _(""), r = _(!1), n = _(""), o = _(!1), s = q(() => [...new Set([u.value.printer, ...t.value].filter(Boolean))]), i = q(() => Fe({
+      selected: u.value.printer,
+      printers: t.value,
+      defaultPrinter: g.value,
+      loaded: b.value,
+      lastPrinted: e.value
+    })), l = R.filter((h) => ["leftX", "leftY", "qrSize"].includes(h.key)), m = R.filter((h) => ["rightX", "rightY", "textWidth", "prefixFontSize", "fontSize", "productFontSize", "lineHeight", "nameLines"].includes(h.key)), C = R.filter((h) => !l.includes(h) && !m.includes(h));
+    async function x(h, c) {
+      if (!r.value) {
+        r.value = !0, n.value = "", o.value = !1;
+        try {
+          await h(), n.value = c;
+        } catch (d) {
+          o.value = !0, n.value = d.message || "Pengaturan label gagal.";
+        } finally {
+          r.value = !1;
+        }
+      }
+    }
+    function E() {
+      x(() => {
+        u.value = le(u.value);
+      }, "Pengaturan label disimpan di perangkat ini.");
+    }
+    function O() {
+      x(() => {
+        ue(), u.value = { ...G };
+      }, "Kembali menggunakan default ZPL asli.");
+    }
+    function k() {
+      x(async () => {
+        try {
+          const h = await Ce();
+          t.value = h.printers, g.value = h.defaultPrinter, b.value = !0;
+        } catch (h) {
+          throw t.value = [], g.value = "", b.value = !1, e.value = "", h;
+        }
+      }, "Daftar printer diperbarui.");
+    }
+    function A() {
+      x(async () => {
+        const h = p.value, c = await Se(h);
+        e.value = c, h.printer || (g.value = c);
+      }, "Label TEST dikirim. Tidak ada serial produksi yang dibuat.");
+    }
+    return (h, c) => (v(), w("section", qe, [
+      a("div", De, [
+        a("span", ze, [
+          W(L(oe), {
+            size: 15,
+            "stroke-width": 1.9
+          })
+        ]),
+        c[4] || (c[4] = a("h2", { id: "pqr-layout-title" }, "Pengaturan layout label", -1)),
+        c[5] || (c[5] = a("span", { class: "lead" }, "Khusus browser dan perangkat ini.", -1))
+      ]),
+      a("div", Re, [
+        a("div", Ve, [
+          c[9] || (c[9] = a("div", { class: "settings-block-head" }, [
+            a("h3", null, "Printer label"),
+            a("p", { class: "hint" }, "Gunakan printer ZPL. Cetak TEST hanya untuk memeriksa layout dengan data contoh, tanpa Work Order.")
+          ], -1)),
+          a("div", Me, [
+            a("div", je, [
+              a("div", $e, [
+                c[6] || (c[6] = a("label", { for: "pqr-printer" }, "Printer label", -1)),
+                N(a("select", {
+                  id: "pqr-printer",
+                  "onUpdate:modelValue": c[0] || (c[0] = (d) => u.value.printer = d),
+                  class: "input"
+                }, [
+                  a("option", Qe, S(g.value ? `Default sistem — ${g.value}` : "Printer default sistem (nama belum dimuat)"), 1),
+                  (v(!0), w(U, null, F(s.value, (d) => (v(), w("option", {
+                    key: d,
+                    value: d
+                  }, S(d) + S(b.value && !t.value.includes(d) ? " — belum terdeteksi" : ""), 9, Be))), 128))
+                ], 512), [
+                  [z, u.value.printer]
+                ])
+              ])
+            ]),
+            a("p", Ge, [
+              c[7] || (c[7] = H("Printer tujuan: ", -1)),
+              a("strong", null, S(i.value.name), 1),
+              c[8] || (c[8] = a("br", null, null, -1)),
+              H(S(i.value.detail), 1)
+            ]),
+            a("div", Je, [
+              a("button", {
+                type: "button",
+                class: "btn",
+                disabled: r.value,
+                onClick: k
+              }, "Hubungkan / muat printer", 8, We),
+              a("button", {
+                type: "button",
+                class: "btn",
+                disabled: r.value,
+                onClick: A
+              }, "Cetak label TEST", 8, Ze)
+            ])
+          ])
+        ]),
+        a("div", Ke, [
+          c[12] || (c[12] = a("div", { class: "settings-block-head" }, [
+            a("h3", null, "Ukuran dan media"),
+            a("p", { class: "hint" }, "Dasar ZPL asli: 2 kolom, ^PW800, ^LL160, 203 DPI. Pengaturan ini hanya untuk penyesuaian.")
+          ], -1)),
+          a("div", Xe, [
+            a("div", Ye, [
+              (v(!0), w(U, null, F(L(C), (d) => (v(), w("div", {
+                key: d.key,
+                class: "field"
+              }, [
+                a("label", {
+                  for: `pqr-${d.key}`
+                }, S(d.label), 9, et),
+                d.key === "dpi" ? N((v(), w("select", {
+                  key: 0,
+                  id: `pqr-${d.key}`,
+                  "onUpdate:modelValue": c[1] || (c[1] = (y) => u.value.dpi = y),
+                  class: "input"
+                }, [...c[10] || (c[10] = [
+                  a("option", { value: 203 }, "203", -1),
+                  a("option", { value: 300 }, "300", -1),
+                  a("option", { value: 600 }, "600", -1)
+                ])], 8, tt)), [
+                  [
+                    z,
+                    u.value.dpi,
+                    void 0,
+                    { number: !0 }
+                  ]
+                ]) : N((v(), w("input", {
+                  key: 1,
+                  id: `pqr-${d.key}`,
+                  "onUpdate:modelValue": (y) => u.value[d.key] = y,
+                  class: "input",
+                  type: "number",
+                  min: d.min,
+                  max: d.max,
+                  step: d.step
+                }, null, 8, rt)), [
+                  [
+                    I,
+                    u.value[d.key],
+                    void 0,
+                    { number: !0 }
+                  ]
+                ])
+              ]))), 128))
+            ]),
+            a("p", nt, "Lebar media: " + S(p.value.width * p.value.columns + p.value.gap * (p.value.columns - 1)) + " mm.", 1),
+            c[11] || (c[11] = a("p", { class: "settings-note" }, "Margin tambahan 0 mempertahankan posisi asli. Pengaturan konten kiri/kanan di bawah berlaku di dalam setiap label, bukan untuk membedakan dua kolom cetak. Samakan ukuran media dan sensor gap di printer.", -1))
+          ])
+        ]),
+        a("div", ot, [
+          c[14] || (c[14] = a("div", { class: "settings-block-head" }, [
+            a("h3", null, "Konten kiri — QR"),
+            a("p", { class: "hint" }, "Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama.")
+          ], -1)),
+          a("div", st, [
+            a("div", at, [
+              (v(!0), w(U, null, F(L(l), (d) => (v(), w("div", {
+                key: d.key,
+                class: "field"
+              }, [
+                a("label", {
+                  for: `pqr-${d.key}`
+                }, S(d.label), 9, it),
+                N(a("input", {
+                  id: `pqr-${d.key}`,
+                  "onUpdate:modelValue": (y) => u.value[d.key] = y,
+                  class: "input",
+                  type: "number",
+                  min: d.min,
+                  max: d.max,
+                  step: d.step
+                }, null, 8, lt), [
+                  [
+                    I,
+                    u.value[d.key],
+                    void 0,
+                    { number: !0 }
+                  ]
+                ])
+              ]))), 128))
+            ]),
+            c[13] || (c[13] = a("p", { class: "settings-note" }, "Geser 0 memakai posisi ZPL asli. Nilai negatif menggeser ke kiri/atas, positif ke kanan/bawah; posisi tidak melewati titik nol media. QR acuan 16 memakai magnifikasi 4 pada 203 DPI. Perbesar area label bila konten terpotong.", -1))
+          ])
+        ]),
+        a("div", ut, [
+          c[19] || (c[19] = a("div", { class: "settings-block-head" }, [
+            a("h3", null, "Konten kanan — Teks"),
+            a("p", { class: "hint" }, "Atur blok prefix, nama produk, SKU, MFG, EXP, footer dan nomor urut secara terpisah dari QR. Nama produk tetap dicetak.")
+          ], -1)),
+          a("div", ct, [
+            a("div", ft, [
+              (v(!0), w(U, null, F(L(m), (d) => (v(), w("div", {
+                key: d.key,
+                class: "field"
+              }, [
+                a("label", {
+                  for: `pqr-${d.key}`
+                }, S(d.label), 9, dt),
+                N(a("input", {
+                  id: `pqr-${d.key}`,
+                  "onUpdate:modelValue": (y) => u.value[d.key] = y,
+                  class: "input",
+                  type: "number",
+                  min: d.min,
+                  max: d.max,
+                  step: d.step
+                }, null, 8, pt), [
+                  [
+                    I,
+                    u.value[d.key],
+                    void 0,
+                    { number: !0 }
+                  ]
+                ])
+              ]))), 128)),
+              a("div", bt, [
+                c[16] || (c[16] = a("label", { for: "pqr-align" }, "Perataan teks", -1)),
+                N(a("select", {
+                  id: "pqr-align",
+                  "onUpdate:modelValue": c[2] || (c[2] = (d) => u.value.align = d),
+                  class: "input"
+                }, [...c[15] || (c[15] = [
+                  a("option", { value: "left" }, "Kiri", -1),
+                  a("option", { value: "center" }, "Tengah", -1),
+                  a("option", { value: "right" }, "Kanan", -1)
+                ])], 512), [
+                  [z, u.value.align]
+                ])
+              ]),
+              a("div", mt, [
+                c[17] || (c[17] = a("label", { for: "pqr-footer" }, "Footer", -1)),
+                N(a("input", {
+                  id: "pqr-footer",
+                  "onUpdate:modelValue": c[3] || (c[3] = (d) => u.value.footer = d),
+                  maxlength: "100",
+                  class: "input"
+                }, null, 512), [
+                  [I, u.value.footer]
+                ])
+              ])
+            ]),
+            c[18] || (c[18] = a("p", { class: "settings-note" }, "Lebar 0 mengikuti sisa area label; ukuran prefix 0 mengikuti font asli. Jumlah baris nama menambah ruang sebelum SKU/MFG/EXP. Geser teks juga memindahkan nomor urut, tanpa menggeser QR. Periksa hasil penyesuaian dengan cetak TEST.", -1))
+          ])
+        ])
+      ]),
+      n.value ? (v(), w("div", gt, [
+        a("p", {
+          role: "status",
+          class: re(o.value ? "err" : "hint")
+        }, S(n.value), 3)
+      ])) : M("", !0),
+      a("div", kt, [
+        a("button", {
+          type: "button",
+          class: "btn btn-primary",
+          disabled: r.value,
+          onClick: E
+        }, "Simpan layout label", 8, yt),
+        a("button", {
+          type: "button",
+          class: "btn",
+          disabled: r.value,
+          onClick: O
+        }, "Pulihkan default ZPL", 8, ht)
+      ])
+    ]));
+  }
+};
+function Pt(f, u = 0) {
+  const p = `/product_qr_work_order_label?name=${encodeURIComponent(f)}`;
+  return u > 0 ? `${p}&extra=${u}` : p;
 }
 export {
-  Ee as WorkOrderLabelButton,
-  Oe as WorkOrderLabelDialogs,
-  pe as connectQz,
-  Y as labelCountForWorkOrder,
-  y as labelPrintPrompt,
-  V as labelSource,
-  ee as offerLabelPrint,
-  be as printLabels,
-  Le as workOrderLabelUrl
+  At as LabelLayoutSettings,
+  St as WorkOrderLabelButton,
+  xt as WorkOrderLabelDialogs,
+  j as connectQz,
+  fe as labelCountForWorkOrder,
+  P as labelPrintPrompt,
+  Y as labelSource,
+  de as offerLabelPrint,
+  Ae as printLabels,
+  Pt as workOrderLabelUrl
 };

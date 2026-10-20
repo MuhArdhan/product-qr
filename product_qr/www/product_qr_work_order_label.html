@@ -63,8 +63,9 @@
 <body>
   <div class="print-controls">
     <strong>{{ label_count }} label</strong> untuk {{ work_order | e }}
-    <button type="button" onclick="window.print()">Cetak ulang</button>
+    <button id="pqr-print-again" type="button" disabled onclick="window.print()">Cetak ulang</button>
   </div>
+  <div id="pqr-labels">
   {% for label in labels %}
   <div class="batch-label{% if loop.last %} last{% endif %}">
     <div class="label-sequence">{{ loop.index }}</div>
@@ -87,11 +88,8 @@
     </div>
   </div>
   {% endfor %}
-  <script>
-    window.addEventListener('load', function () {
-      window.workOrderLabelReady = true;
-      if (new URLSearchParams(window.location.search).get('embedded') !== '1') window.print();
-    });
-  </script>
+  </div>
+  <script type="application/json" id="pqr-layout-data">{{ layout_data_json | safe }}</script>
+  <script type="module" src="/assets/product_qr/wo_labels/layout-browser.js"></script>
 </body>
 </html>

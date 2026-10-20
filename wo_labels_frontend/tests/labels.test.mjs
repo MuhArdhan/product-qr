@@ -120,4 +120,14 @@ test('print confirmation markup retains its labels and avoids host error-title I
   assert.match(copy, /max="Math\.max\(0, 10000 - labelPrintPrompt\.labelCount\)"/)
   assert.match(copy, /aria-labelledby="wo-label-error-title"/)
   assert.doesNotMatch(copy, /id="error-dialog-title"/)
+  assert.doesNotMatch(copy, /LabelLayoutSettings|Pengaturan layout label/)
+})
+
+test('label settings reuse host panels and fields without preview or toggles', () => {
+  const source = readFileSync(new URL('../src/LabelLayoutSettings.vue', import.meta.url), 'utf8')
+  for (const style of ['panel settings-panel pqr-layout', 'panel-head', 'panel-body', 'panel-foot', 'settings-block', 'settings-control', 'form-grid cols2', 'field']) {
+    assert.ok(source.includes(`class="${style}"`), style)
+  }
+  assert.doesNotMatch(source, /<details|<summary|#cbd5e1|#b3261e|pqr-layout-grid/)
+  assert.doesNotMatch(source, /<iframe|preview|role="switch"|type="checkbox"|buildLayoutHTML|onBeforeUnmount|watch\(/i)
 })

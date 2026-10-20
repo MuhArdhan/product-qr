@@ -1,5 +1,6 @@
 """Namespaced copy of the existing read-only label print page (not navigation)."""
 
+import json
 from base64 import b64encode
 from io import BytesIO
 
@@ -28,4 +29,6 @@ def get_context(context):
 	for key, value in data.items():
 		context[key] = value
 	context.labels = labels
+	# Escape '<' so Item names/payloads cannot terminate the JSON script element.
+	context.layout_data_json = json.dumps(data, default=str).replace("<", "\\u003c")
 	return context

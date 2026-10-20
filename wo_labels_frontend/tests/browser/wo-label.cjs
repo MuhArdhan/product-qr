@@ -58,10 +58,73 @@ async function main() {
       else if (method.endsWith('.list_preferences')) message = {}
       else if (method.endsWith('.ui_preferences')) message = { font_scale: 100 }
       else if (method.endsWith('.suggestion_preferences')) message = { enabled: false }
+      else if (method.endsWith('.warehouse_defaults')) message = {}
+      else if (method.endsWith('.skip_prepacking_items')) message = []
       else if (method.endsWith('.handover_board')) message = { roles: { is_produksi: true, can_settings: true }, lots: [], requests: [] }
       else { unknown.push(method); return route.fulfill({ status: 500, json: { message: 'Unexpected smoke API request' } }) }
       return route.fulfill({ json: { message } })
     })
+    await page.goto(`${base}/production_workspace#/settings`, { waitUntil: 'networkidle' })
+    const settings = page.locator('.pqr-layout')
+    const printerStatus = settings.locator('[data-label-printer-destination]')
+    assert.match(await printerStatus.innerText(), /Belum diketahui/); checks++
+    assert.equal(await settings.getByLabel('Tinggi label (mm)', { exact: true }).inputValue(), '20')
+    assert.equal(await settings.getByLabel('Ukuran teks (pt)', { exact: true }).inputValue(), '7.45')
+    assert.equal(await settings.getByLabel('Ukuran nama produk (pt)', { exact: true }).inputValue(), '9.22'); checks++
+    const panelStyles = await page.evaluate(() => {
+      const sample = selector => {
+        const s = getComputedStyle(document.querySelector(selector))
+        return [s.backgroundColor, s.borderRadius, s.borderTopColor]
+      }
+      return { host: sample('.settings-panel:not(.pqr-layout)'), label: sample('.pqr-layout') }
+    })
+    assert.deepEqual(panelStyles.label, panelStyles.host); checks++
+    assert.equal(await settings.locator('.settings-block').count(), 4); checks++
+    assert.equal(await settings.getByRole('switch').count(), 0); checks++
+    assert.equal(await settings.locator('iframe,input[type="checkbox"]').count(), 0); checks++
+    if (process.env.WO_LABEL_SCREENSHOTS) {
+      const directory = fs.mkdtempSync(path.join(temp, 'wo-label-style-'))
+      await settings.screenshot({ path: path.join(directory, 'desktop.png') })
+      await page.setViewportSize({ width: 390, height: 844 })
+      await settings.screenshot({ path: path.join(directory, 'mobile.png') })
+      console.log('Style screenshots:', directory)
+      await page.setViewportSize({ width: 1440, height: 1000 })
+    }
+    // Removing the UI must not silently discard pre-existing saved choices.
+    await page.evaluate(() => localStorage.setItem('product_qr:wo_label_layout:v1', JSON.stringify({ printer: 'Zebra Saved', bold: false, showSku: false })))
+    await page.reload({ waitUntil: 'networkidle' })
+    assert.match(await printerStatus.innerText(), /Zebra Saved/)
+    assert.match(await printerStatus.innerText(), /belum diverifikasi/); checks++
+    await settings.getByRole('button', { name: 'Hubungkan / muat printer', exact: true }).click()
+    await settings.getByRole('status').filter({ hasText: /QZ offline|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
+    assert.equal(await settings.getByLabel('Printer label', { exact: true }).inputValue(), 'Zebra Saved')
+    assert.doesNotMatch(await printerStatus.innerText(), /Terdeteksi oleh QZ Tray/); checks++
+    await settings.getByLabel('Lebar label (mm)', { exact: true }).fill('60')
+    await settings.getByLabel('Jumlah kolom', { exact: true }).fill('1')
+    await settings.getByRole('heading', { name: 'Konten kiri — QR', exact: true }).waitFor()
+    await settings.getByRole('heading', { name: 'Konten kanan — Teks', exact: true }).waitFor(); checks++
+    await settings.getByLabel('Geser QR horizontal (mm)', { exact: true }).fill('1')
+    await settings.getByLabel('Geser teks horizontal (mm)', { exact: true }).fill('1')
+    await settings.getByLabel('Geser teks vertikal (mm)', { exact: true }).fill('1')
+    await settings.getByLabel('Lebar area teks (mm; 0 = otomatis)', { exact: true }).fill('20')
+    await settings.getByLabel('Maksimal baris nama produk', { exact: true }).fill('2')
+    await settings.getByLabel('Footer', { exact: true }).fill('<script>TEST</script>')
+    await settings.getByRole('button', { name: 'Simpan layout label', exact: true }).click()
+    await page.getByText('Pengaturan label disimpan di perangkat ini.', { exact: true }).waitFor()
+    const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('product_qr:wo_label_layout:v1')))
+    assert.equal(stored.width, 60)
+    assert.equal(stored.columns, 1); checks++
+    assert.equal(stored.leftX, 1)
+    assert.equal(stored.rightX, 1)
+    assert.equal(stored.rightY, 1)
+    assert.equal(stored.nameLines, 2)
+    assert.equal(stored.bold, false)
+    assert.equal(stored.showSku, false); checks++
+    assert.equal(await settings.getByLabel('Work Order untuk uji printer', { exact: true }).count(), 0); checks++
+    await settings.getByRole('button', { name: 'Cetak label TEST', exact: true }).click()
+    await settings.getByRole('status').filter({ hasText: /QZ offline|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
+    assert.equal(apiCalls.some(method => method.endsWith('.get_label_data')), false); checks++
+    assert.equal(apiCalls.some(method => method.endsWith('.wo_detail')), false); checks++
     await page.goto(`${base}/production_workspace#/wo/${wo.name}`, { waitUntil: 'networkidle' })
     const print = page.getByRole('button', { name: 'Cetak Label', exact: true })
     await print.waitFor({ state: 'visible' }); checks++
@@ -69,6 +132,7 @@ async function main() {
     const dialog = page.locator('dialog[open]').filter({ has: page.locator('#label-print-title') })
     await dialog.waitFor({ state: 'visible' }); checks++
     assert.match(await dialog.innerText(), /Label sesuai Good Qty: 3/); checks++
+    assert.equal(await page.locator('.pqr-layout').count(), 0); checks++
     await dialog.locator('#extra-label-count').fill('2')
     assert.match(await dialog.innerText(), /Total cetak: 5 label/); checks++
     await dialog.locator('#extra-label-count').fill('-1')
@@ -100,6 +164,45 @@ async function main() {
     await page.reload({ waitUntil: 'networkidle' })
     await page.getByRole('heading', { name: 'Post-Packing', exact: true }).waitFor({ state: 'visible' })
     assert.equal(await print.count(), 0); checks++
+    await page.goto(`${base}/production_workspace#/settings`, { waitUntil: 'networkidle' })
+    assert.ok(await settings.evaluate(el => el.scrollWidth <= el.clientWidth + 1)); checks++
+    assert.equal(await settings.locator('.settings-block').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.trim().split(/\s+/).length), 1); checks++
+    assert.equal(await settings.getByLabel('Lebar label (mm)', { exact: true }).inputValue(), '60'); checks++
+    assert.equal(await settings.getByLabel('Geser QR horizontal (mm)', { exact: true }).inputValue(), '1')
+    assert.equal(await settings.getByLabel('Geser teks horizontal (mm)', { exact: true }).inputValue(), '1')
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('product_qr:wo_label_layout:v1')).bold), false); checks++
+    await settings.getByRole('button', { name: 'Pulihkan default ZPL', exact: true }).click()
+    await page.getByText('Kembali menggunakan default ZPL asli.', { exact: true }).waitFor()
+    assert.equal(await page.evaluate(() => localStorage.getItem('product_qr:wo_label_layout:v1')), null); checks++
+    assert.match(await printerStatus.innerText(), /Belum diketahui/); checks++
+    assert.equal(await settings.getByLabel('Tinggi label (mm)', { exact: true }).inputValue(), '20'); checks++
+    assert.equal(await settings.getByLabel('Geser QR horizontal (mm)', { exact: true }).inputValue(), '0')
+    assert.equal(await settings.getByLabel('Geser teks horizontal (mm)', { exact: true }).inputValue(), '0')
+    assert.equal(await settings.locator('iframe,input[type="checkbox"]').count(), 0); checks++
+    // Exercise the standalone browser-print entry with read-only issued-label
+    // fixtures, not a live operator session or an issuance endpoint.
+    await page.route('**/assets/product_qr/wo_labels/*', route => {
+      const name = path.basename(new URL(route.request().url()).pathname)
+      return route.fulfill({ contentType: 'text/javascript', body: fs.readFileSync(path.join(apps, 'product_qr/product_qr/public/wo_labels', name)) })
+    })
+    const printData = { sku: 'SKU-TEST', item_name: 'Browser Print TEST', manufacturing_date: '2026-10-20',
+      expiry_date: '2026-11-20', labels: [1, 2, 3].map(n => ({ qr_value: `TEST-NOT-PRODUCTION-${n}` })) }
+    await page.route('**/product_qr_work_order_label?*', route => route.fulfill({ contentType: 'text/html', body:
+      `<!doctype html><html><head><style></style></head><body><div class="print-controls">Cetak</div><div id="pqr-labels"><div class="batch-label">Legacy fixture</div></div><script type="application/json" id="pqr-layout-data">${JSON.stringify(printData)}</script><script type="module" src="/assets/product_qr/wo_labels/layout-browser.js"></script></body></html>`
+    }))
+    await page.goto(`${base}/product_qr_work_order_label?name=WO-TEST&embedded=1`, { waitUntil: 'networkidle' })
+    await page.waitForFunction(() => window.workOrderLabelReady === true)
+    assert.equal(await page.locator('#pqr-labels article').count(), 3)
+    assert.match(await page.locator('style').textContent(), /size:100mm 20mm/); checks++
+    await page.evaluate(() => localStorage.setItem('product_qr:wo_label_layout:v1', JSON.stringify({ width: 60, height: 40, columns: 2, gap: 2 })))
+    await page.reload({ waitUntil: 'networkidle' })
+    await page.waitForFunction(() => window.workOrderLabelReady === true)
+    assert.equal(await page.locator('#pqr-labels section').count(), 2)
+    assert.equal(await page.locator('#pqr-labels article').count(), 3)
+    assert.equal(await page.locator('#pqr-labels svg').count(), 3); checks++
+    assert.match(await page.locator('style').textContent(), /size:122mm 40mm/); checks++
+    assert.equal(await page.locator('#pqr-labels .batch-label').count(), 0); checks++
+    await page.evaluate(() => localStorage.removeItem('product_qr:wo_label_layout:v1'))
     assert.equal(unknown.length, 0, unknown.join(', '))
     assert.equal(errors.length, 0, errors.join('\n'))
     assert.ok(apiCalls.some(method => method.endsWith('.wo_detail'))); checks++

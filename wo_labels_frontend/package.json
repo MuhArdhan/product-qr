@@ -1,6 +1,6 @@
 {
   "name": "@product-qr/wo-labels",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "exports": { ".": "./src/index.js" },
@@ -14,7 +14,7 @@
     "vue": "^3.5.13",
     "lucide-vue-next": "^1.0.0"
   },
-  "dependencies": { "qz-tray": "^2.3.0" },
+  "dependencies": { "qz-tray": "^2.3.0", "qrcode": "^1.5.4" },
   "devDependencies": {
     "playwright": "^1.63.0",
     "@vitejs/plugin-vue": "^6.0.0",
