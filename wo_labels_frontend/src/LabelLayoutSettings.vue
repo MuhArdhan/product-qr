@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { QrCode } from 'lucide-vue-next'
 import { LAYOUT_DEFAULTS, LAYOUT_NUMBERS, loadLayout, normalizeLayout, saveLayout, resetLayout } from './label-layout.js'
 import { inspectLabelPrinters, printTestLabel } from './qz-tray.js'
@@ -60,6 +60,7 @@ function testPrint() {
     if (!layout.printer) defaultPrinter.value = printer
   }, 'Label TEST dikirim. Tidak ada serial produksi yang dibuat.')
 }
+onMounted(refresh)
 </script>
 
 <template>
@@ -73,7 +74,7 @@ function testPrint() {
       <div class="settings-block">
         <div class="settings-block-head">
           <h3>Printer label</h3>
-          <p class="hint">Gunakan printer ZPL. Cetak TEST hanya untuk memeriksa layout dengan data contoh, tanpa Work Order.</p>
+          <p class="hint">Daftar printer dimuat otomatis saat pengaturan dibuka. Gunakan printer ZPL. Cetak TEST hanya untuk memeriksa layout dengan data contoh, tanpa Work Order.</p>
         </div>
         <div class="settings-control">
           <div class="form-grid cols2">
@@ -92,7 +93,7 @@ function testPrint() {
           <p id="pqr-timeout-note" class="hint">1–60 detik; default 8. Batas menunggu koneksi QZ, bukan durasi cetak fisik. Simpan agar dipakai saat cetak Work Order. Jika koneksi gagal atau timeout, cetak Work Order beralih ke dialog cetak browser.</p>
           <p class="settings-note" data-label-printer-destination aria-live="polite">Printer tujuan: <strong>{{ destination.name }}</strong><br>{{ destination.detail }}</p>
           <div class="pqr-layout-actions">
-            <button type="button" class="btn" :disabled="busy" @click="refresh">Hubungkan / muat printer</button>
+            <button type="button" class="btn" :disabled="busy" @click="refresh">Muat ulang printer</button>
             <button type="button" class="btn" :disabled="busy" @click="testPrint">Cetak label TEST</button>
           </div>
         </div>

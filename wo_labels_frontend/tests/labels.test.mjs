@@ -310,6 +310,8 @@ test('print dialog supports Good Qty, append-after-first-print and selected ordi
 
 test('label settings reuse host panels and fields without preview or toggles', () => {
   const source = readFileSync(new URL('../src/LabelLayoutSettings.vue', import.meta.url), 'utf8')
+  assert.match(source, /onMounted\(refresh\)/)
+  assert.match(source, /Muat ulang printer/)
   for (const style of ['panel settings-panel pqr-layout', 'panel-head', 'panel-body', 'panel-foot', 'settings-block', 'settings-control', 'form-grid cols2', 'field']) {
     assert.ok(source.includes(`class="${style}"`), style)
   }

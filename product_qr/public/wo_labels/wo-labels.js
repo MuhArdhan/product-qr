@@ -1,18 +1,18 @@
-import { reactive as le, unref as T, openBlock as m, createElementBlock as k, createElementVNode as s, createVNode as ne, createTextVNode as H, createCommentVNode as D, ref as P, computed as $, watch as K, nextTick as X, Fragment as j, toDisplayString as v, withModifiers as R, withDirectives as I, vModelSelect as V, vModelText as z, renderList as M, normalizeClass as ue } from "vue";
-import { Printer as ce, QrCode as de } from "lucide-vue-next";
-import { g as fe, a as pe, b as be, n as G, l as W, c as ae, S as me, L as Y, d as Q, s as ke, r as ge } from "./label-layout-CO62hXZW.js";
-function ve(p) {
+import { reactive as le, unref as T, openBlock as m, createElementBlock as k, createElementVNode as s, createVNode as ne, createTextVNode as I, createCommentVNode as D, ref as P, computed as $, watch as K, nextTick as X, Fragment as M, toDisplayString as v, withModifiers as R, withDirectives as H, vModelSelect as V, vModelText as z, renderList as j, onMounted as ue, normalizeClass as ce } from "vue";
+import { Printer as de, QrCode as fe } from "lucide-vue-next";
+import { g as pe, a as be, b as me, n as G, l as W, c as ae, S as ke, L as Y, d as Q, s as ge, r as ve } from "./label-layout-CO62hXZW.js";
+function ye(p) {
   return !!p?.displayUom && p.displayUom !== p.stockUom && Number.isFinite(p.qtyInPack) && p.qtyInPack > 0;
 }
 function oe(p) {
   return p.skipPrepacking ? p.postpacking : p.prepacking;
 }
-function ye(p) {
-  const l = Number(oe(p)?.goodQty), c = ve(p) ? p.qtyInPack : 1;
+function he(p) {
+  const l = Number(oe(p)?.goodQty), c = ye(p) ? p.qtyInPack : 1;
   return Math.max(1, Math.ceil(l / c - 1e-8));
 }
 const N = le({ workOrder: "", labelCount: 0, afterSave: "" });
-function he(p, l, c = "") {
+function we(p, l, c = "") {
   N.workOrder = p, N.labelCount = l, N.afterSave = c;
 }
 const se = (p, l) => {
@@ -20,38 +20,38 @@ const se = (p, l) => {
   for (const [t, g] of l)
     c[t] = g;
   return c;
-}, we = {
+}, Ce = {
   key: 0,
   class: "toolbar ws-label-actions"
-}, Ce = {
+}, Se = {
   __name: "WorkOrderLabelButton",
   props: { workOrder: { type: Object, required: !0 } },
   setup(p) {
-    return (l, c) => T(oe)(p.workOrder)?.confirmed ? (m(), k("div", we, [
+    return (l, c) => T(oe)(p.workOrder)?.confirmed ? (m(), k("div", Ce, [
       s("button", {
         class: "btn ws-label-print",
         type: "button",
-        onClick: c[0] || (c[0] = (t) => T(he)(p.workOrder.id, T(ye)(p.workOrder)))
+        onClick: c[0] || (c[0] = (t) => T(we)(p.workOrder.id, T(he)(p.workOrder)))
       }, [
-        ne(T(ce), {
+        ne(T(de), {
           size: 14,
           "stroke-width": 2
         }),
-        c[1] || (c[1] = H(" Cetak Label ", -1))
+        c[1] || (c[1] = I(" Cetak Label ", -1))
       ])
     ])) : D("", !0);
   }
-}, Kt = /* @__PURE__ */ se(Ce, [["__scopeId", "data-v-c9012b16"]]);
-function Se(p) {
+}, Xt = /* @__PURE__ */ se(Se, [["__scopeId", "data-v-c9012b16"]]);
+function xe(p) {
   throw new Error('Could not dynamically require "' + p + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
 }
 var J = { exports: {} };
-const xe = {}, Ae = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const Ae = {}, Pe = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: xe
-}, Symbol.toStringTag, { value: "Module" })), Pe = /* @__PURE__ */ fe(Ae);
+  default: Ae
+}, Symbol.toStringTag, { value: "Module" })), _e = /* @__PURE__ */ pe(Pe);
 var ee;
-function _e() {
+function Le() {
   return ee || (ee = 1, (function(p, l) {
     var c = (function() {
       Array.isArray || (Array.isArray = function(e) {
@@ -528,7 +528,7 @@ function _e() {
             if (!(typeof self > "u")) {
               if (self.lna && self.lna.detectLna)
                 return self.lna;
-              if (typeof Se == "function")
+              if (typeof xe == "function")
                 try {
                   return require("lna");
                 } catch (e) {
@@ -556,7 +556,7 @@ function _e() {
               var r = document.createElement("a");
               return r.href = e, r.href;
             } else
-              return Pe.resolve(e);
+              return _e.resolve(e);
           },
           relative: function(e) {
             for (var r = 0; r < e.length; r++)
@@ -2350,12 +2350,12 @@ function _e() {
     })();
   })(J)), J.exports;
 }
-var Le = _e();
-const U = /* @__PURE__ */ pe(Le);
+var Te = Le();
+const U = /* @__PURE__ */ be(Te);
 let te;
 const re = {
   async print(p, l) {
-    const c = await be(p, l);
+    const c = await me(p, l);
     te?.remove();
     const t = document.createElement("iframe");
     te = t, t.title = "Cetak label Work Order", t.setAttribute("aria-hidden", "true"), t.style.cssText = "position:fixed;left:-10000px;top:0;width:1px;height:1px;border:0";
@@ -2373,7 +2373,7 @@ const re = {
     }
   }
 };
-async function Te(p) {
+async function Ee(p) {
   const l = G(p || W());
   await B(null, { layoutTest: !0, timeoutSeconds: l.qzTimeout });
   const [c, t] = await Promise.allSettled([U.printers.find(), U.printers.getDefault()]);
@@ -2383,8 +2383,8 @@ async function Te(p) {
     defaultPrinter: t.status === "fulfilled" && t.value || ""
   };
 }
-async function Ee(p) {
-  const l = G(p), c = ae(me, l);
+async function Ne(p) {
+  const l = G(p), c = ae(ke, l);
   await B(null, { layoutTest: !0, timeoutSeconds: l.qzTimeout });
   const t = l.printer || await U.printers.getDefault();
   return await U.print(U.configs.create(t, { encoding: "UTF-8" }), c), t;
@@ -2397,7 +2397,7 @@ function ie(p, l) {
   }
   return l;
 }
-async function Ne(p) {
+async function Oe(p) {
   const l = await fetch("/api/method/product_qr.wo_labels.labels.get_existing_label_numbers", {
     method: "POST",
     credentials: "same-origin",
@@ -2411,7 +2411,7 @@ async function Ne(p) {
   if (!l.ok) throw new Error(ie(c, "Gagal memuat nomor urut label yang sudah terbit"));
   return c.message || [];
 }
-function Oe(p, { layoutTest: l = !1 } = {}) {
+function qe(p, { layoutTest: l = !1 } = {}) {
   U.security.setCertificatePromise(async () => {
     const c = l ? "/api/method/product_qr.wo_labels.qz_signing.layout_certificate" : `/api/method/product_qr.wo_labels.qz_signing.certificate?work_order=${encodeURIComponent(p)}`, t = await fetch(c, {
       cache: "no-store"
@@ -2435,7 +2435,7 @@ function Oe(p, { layoutTest: l = !1 } = {}) {
 }
 async function B(p, { layoutTest: l = !1, timeoutSeconds: c = W()?.qzTimeout } = {}) {
   const t = G({ qzTimeout: c }).qzTimeout;
-  if (Oe(p, { layoutTest: l }), !U.websocket.isActive()) {
+  if (qe(p, { layoutTest: l }), !U.websocket.isActive()) {
     let g;
     try {
       await Promise.race([
@@ -2456,7 +2456,7 @@ async function B(p, { layoutTest: l = !1, timeoutSeconds: c = W()?.qzTimeout } =
     }
   }
 }
-async function qe(p, l = 0) {
+async function Ue(p, l = 0) {
   const c = l && typeof l == "object" ? l : { extra: l }, t = { name: p, extra: c.extra ?? 0 };
   c.appendCount !== void 0 && (t.append_count = c.appendCount), c.labelNumbers !== void 0 && (t.label_numbers = c.labelNumbers);
   const g = await fetch("/api/method/product_qr.wo_labels.labels.get_label_data", {
@@ -2497,41 +2497,41 @@ async function qe(p, l = 0) {
     }
   }
 }
-const Ue = {
+const Fe = {
   key: 0,
   class: "label-print-note",
   role: "status"
-}, Fe = { id: "label-print-title" }, He = ["disabled"], Ie = {
+}, Ie = { id: "label-print-title" }, He = ["disabled"], De = {
   key: 0,
   class: "label-count-field"
-}, De = ["max"], $e = {
+}, $e = ["max"], ze = {
   key: 1,
   class: "label-count-field"
-}, ze = {
+}, Me = {
   key: 0,
   class: "label-print-note"
 }, je = {
   key: 2,
   class: "label-count-field"
-}, Me = { class: "label-print-note" }, Ve = { key: 0 }, Re = {
+}, Ve = { class: "label-print-note" }, Re = { key: 0 }, Qe = {
   key: 0,
   class: "label-print-note"
-}, Qe = {
+}, Ge = {
   key: 1,
   class: "label-print-note warning"
-}, Ge = {
+}, We = {
   key: 2,
   class: "label-print-note"
-}, We = ["value"], Je = {
+}, Je = ["value"], Be = {
   key: 4,
   class: "label-print-note"
-}, Be = { key: 3 }, Ze = { key: 4 }, Ke = { key: 5 }, Xe = {
+}, Ze = { key: 3 }, Ke = { key: 4 }, Xe = { key: 5 }, Ye = {
   key: 6,
   class: "label-print-note warning"
-}, Ye = { class: "dlg-actions" }, et = ["disabled"], tt = ["disabled"], rt = { id: "wo-label-error-title" }, nt = { class: "error-dialog-message" }, at = {
+}, et = { class: "dlg-actions" }, tt = ["disabled"], rt = ["disabled"], nt = { id: "wo-label-error-title" }, at = { class: "error-dialog-message" }, ot = {
   key: 0,
   class: "error-dialog-details"
-}, ot = { class: "dlg-actions" }, st = {
+}, st = { class: "dlg-actions" }, it = {
   __name: "WorkOrderLabelDialogs",
   setup(p) {
     const l = P(null), c = P(null), t = P(null), g = P(null), y = P(""), e = P(!1), r = P("automatic"), n = P(1), a = P(0), o = P([]), u = P(""), b = P(null), h = P(!1), S = P("");
@@ -2543,7 +2543,7 @@ const Ue = {
       const f = ++_;
       h.value = !0, S.value = "";
       try {
-        const x = await Ne(L);
+        const x = await Oe(L);
         f === _ && L === N.workOrder && (o.value = x?.labels || [], b.value = x?.adonan_ke ?? null);
       } catch (x) {
         f === _ && (o.value = [], b.value = null, S.value = x.message || "Gagal memuat nomor urut label.");
@@ -2570,7 +2570,7 @@ const Ue = {
         try {
           const x = r.value === "automatic" ? { extra: Number(a.value) } : r.value === "append" ? { appendCount: Number(n.value) } : { labelNumbers: [Number(u.value)] };
           L === "browser" && (x.output = "browser");
-          const Z = await qe(f, x);
+          const Z = await Ue(f, x);
           Z?.browserFallback ? y.value = "Cetak QZ gagal. Dialog cetak browser dibuka; pilih printer atau Save as PDF. Periksa label yang mungkin sudah tercetak agar tidak rangkap." : Z?.browserPrint && (y.value = "Dialog cetak browser dibuka. Pilih printer atau Save as PDF; membatalkan dialog tidak menghapus label yang sudah terbit."), e.value = !1, d();
         } catch (x) {
           g.value = {
@@ -2587,8 +2587,8 @@ const Ue = {
     function q() {
       c.value?.open && c.value.close(), g.value = null;
     }
-    return (L, f) => (m(), k(j, null, [
-      y.value ? (m(), k("p", Ue, v(y.value), 1)) : D("", !0),
+    return (L, f) => (m(), k(M, null, [
+      y.value ? (m(), k("p", Fe, v(y.value), 1)) : D("", !0),
       s("dialog", {
         ref_key: "labelPrintDialog",
         ref: l,
@@ -2597,18 +2597,18 @@ const Ue = {
         onCancel: R(d, ["prevent"]),
         onClick: R(d, ["self"])
       }, [
-        s("h3", Fe, v(T(N).afterSave ? `${T(N).afterSave} tersimpan` : "Cetak label?"), 1),
+        s("h3", Ie, v(T(N).afterSave ? `${T(N).afterSave} tersimpan` : "Cetak label?"), 1),
         s("p", null, [
-          f[5] || (f[5] = H("Cetak label untuk Work Order ", -1)),
+          f[5] || (f[5] = I("Cetak label untuk Work Order ", -1)),
           s("strong", null, v(T(N).workOrder), 1),
-          f[6] || (f[6] = H("?", -1))
+          f[6] || (f[6] = I("?", -1))
         ]),
         s("p", null, [
-          f[7] || (f[7] = H("Usulan otomatis dari Good Qty dan UOM: ", -1)),
+          f[7] || (f[7] = I("Usulan otomatis dari Good Qty dan UOM: ", -1)),
           s("strong", null, v(T(N).labelCount) + " label", 1)
         ]),
         f[22] || (f[22] = s("label", { for: "label-count-mode" }, "Cara menentukan jumlah", -1)),
-        I(s("select", {
+        H(s("select", {
           id: "label-count-mode",
           "onUpdate:modelValue": f[0] || (f[0] = (x) => r.value = x),
           class: "input label-dialog-select",
@@ -2623,9 +2623,9 @@ const Ue = {
         ], 512), [
           [V, r.value]
         ]),
-        r.value === "automatic" ? (m(), k("div", Ie, [
+        r.value === "automatic" ? (m(), k("div", De, [
           f[10] || (f[10] = s("label", { for: "extra-label-count" }, "Label tambahan", -1)),
-          I(s("input", {
+          H(s("input", {
             id: "extra-label-count",
             "onUpdate:modelValue": f[1] || (f[1] = (x) => a.value = x),
             type: "number",
@@ -2635,7 +2635,7 @@ const Ue = {
             inputmode: "numeric",
             class: "input",
             style: { display: "block", width: "100%", "margin-top": "6px" }
-          }, null, 8, De), [
+          }, null, 8, $e), [
             [
               z,
               a.value,
@@ -2645,9 +2645,9 @@ const Ue = {
           ]),
           f[11] || (f[11] = s("p", { class: "label-print-note" }, "Jumlah awal mengikuti Good Qty.", -1))
         ])) : D("", !0),
-        r.value === "append" ? (m(), k("div", $e, [
+        r.value === "append" ? (m(), k("div", ze, [
           f[12] || (f[12] = s("label", { for: "append-label-count" }, "Jumlah label lanjutan", -1)),
-          I(s("input", {
+          H(s("input", {
             id: "append-label-count",
             "onUpdate:modelValue": f[2] || (f[2] = (x) => n.value = x),
             type: "number",
@@ -2665,16 +2665,16 @@ const Ue = {
               { number: !0 }
             ]
           ]),
-          O.value ? (m(), k("p", ze, "Nomor baru: #" + v(w.value + 1) + "–#" + v(w.value + Number(n.value)) + " · setelah label awal yang sudah terbit.", 1)) : D("", !0)
+          O.value ? (m(), k("p", Me, "Nomor baru: #" + v(w.value + 1) + "–#" + v(w.value + Number(n.value)) + " · setelah label awal yang sudah terbit.", 1)) : D("", !0)
         ])) : D("", !0),
         r.value === "specific" ? (m(), k("div", je, [
           f[18] || (f[18] = s("label", { for: "label-number-select" }, "Nomor urut label yang dicetak ulang", -1)),
-          s("p", Me, [
-            f[13] || (f[13] = H("Nomor urut terikat ke Work Order ini", -1)),
-            b.value !== null ? (m(), k("span", Ve, " · Adonan ke " + v(b.value), 1)) : D("", !0),
-            f[14] || (f[14] = H(".", -1))
+          s("p", Ve, [
+            f[13] || (f[13] = I("Nomor urut terikat ke Work Order ini", -1)),
+            b.value !== null ? (m(), k("span", Re, " · Adonan ke " + v(b.value), 1)) : D("", !0),
+            f[14] || (f[14] = I(".", -1))
           ]),
-          h.value ? (m(), k("p", Re, "Memuat nomor urut label…")) : S.value ? (m(), k("p", Qe, v(S.value), 1)) : o.value.length ? I((m(), k("select", {
+          h.value ? (m(), k("p", Qe, "Memuat nomor urut label…")) : S.value ? (m(), k("p", Ge, v(S.value), 1)) : o.value.length ? H((m(), k("select", {
             key: 3,
             id: "label-number-select",
             "onUpdate:modelValue": f[3] || (f[3] = (x) => u.value = x),
@@ -2682,10 +2682,10 @@ const Ue = {
             style: { display: "block", width: "100%", "margin-top": "6px" }
           }, [
             f[15] || (f[15] = s("option", { value: "" }, "Pilih nomor label", -1)),
-            (m(!0), k(j, null, M(o.value, (x) => (m(), k("option", {
+            (m(!0), k(M, null, j(o.value, (x) => (m(), k("option", {
               key: x.label_number,
               value: x.label_number
-            }, " Label #" + v(x.label_number) + " · Adonan ke " + v(x.adonan_ke ?? "—"), 9, We))), 128))
+            }, " Label #" + v(x.label_number) + " · Adonan ke " + v(x.adonan_ke ?? "—"), 9, Je))), 128))
           ], 512)), [
             [
               V,
@@ -2693,34 +2693,34 @@ const Ue = {
               void 0,
               { number: !0 }
             ]
-          ]) : (m(), k("p", Ge, "Belum ada label terbit untuk Work Order ini. Cetak otomatis dari Good Qty dahulu.")),
-          u.value ? (m(), k("p", Je, [
-            f[16] || (f[16] = H("Dipilih: ", -1)),
+          ]) : (m(), k("p", We, "Belum ada label terbit untuk Work Order ini. Cetak otomatis dari Good Qty dahulu.")),
+          u.value ? (m(), k("p", Be, [
+            f[16] || (f[16] = I("Dipilih: ", -1)),
             s("strong", null, "Label #" + v(u.value), 1),
-            f[17] || (f[17] = H(". QR akan memakai mapping label yang sama.", -1))
+            f[17] || (f[17] = I(". QR akan memakai mapping label yang sama.", -1))
           ])) : D("", !0)
         ])) : D("", !0),
-        F.value && r.value === "automatic" ? (m(), k("p", Be, [
-          f[19] || (f[19] = H("Total cetak otomatis: ", -1)),
+        F.value && r.value === "automatic" ? (m(), k("p", Ze, [
+          f[19] || (f[19] = I("Total cetak otomatis: ", -1)),
           s("strong", null, v(A.value) + " label", 1)
-        ])) : F.value && r.value === "append" ? (m(), k("p", Ze, [
-          f[20] || (f[20] = H("Label lanjutan: ", -1)),
+        ])) : F.value && r.value === "append" ? (m(), k("p", Ke, [
+          f[20] || (f[20] = I("Label lanjutan: ", -1)),
           s("strong", null, v(A.value) + " label", 1)
-        ])) : F.value && r.value === "specific" ? (m(), k("p", Ke, [
-          f[21] || (f[21] = H("Total cetak ulang: ", -1)),
+        ])) : F.value && r.value === "specific" ? (m(), k("p", Xe, [
+          f[21] || (f[21] = I("Total cetak ulang: ", -1)),
           s("strong", null, v(A.value) + " label", 1)
-        ])) : (m(), k("p", Xe, v(r.value === "append" ? "Masukkan jumlah label lanjutan 1–10.000." : r.value === "specific" ? "Pilih satu nomor label untuk dicetak ulang." : "Masukkan jumlah ekstra bulat yang valid; batas 10.000 label per cetakan."), 1)),
-        s("div", Ye, [
+        ])) : (m(), k("p", Ye, v(r.value === "append" ? "Masukkan jumlah label lanjutan 1–10.000." : r.value === "specific" ? "Pilih satu nomor label untuk dicetak ulang." : "Masukkan jumlah ekstra bulat yang valid; batas 10.000 label per cetakan."), 1)),
+        s("div", et, [
           s("button", {
             class: "btn",
             disabled: e.value,
             onClick: d
-          }, "Nanti saja", 8, et),
+          }, "Nanti saja", 8, tt),
           s("button", {
             class: "btn btn-primary",
             disabled: !F.value || e.value,
             onClick: f[4] || (f[4] = (x) => i())
-          }, v(e.value ? "Memproses…" : "Ya, Cetak Label"), 9, tt)
+          }, v(e.value ? "Memproses…" : "Ya, Cetak Label"), 9, rt)
         ])
       ], 544),
       s("dialog", {
@@ -2735,12 +2735,12 @@ const Ue = {
           class: "error-dialog-icon",
           "aria-hidden": "true"
         }, "!", -1)),
-        s("h2", rt, v(g.value?.title), 1),
-        s("p", nt, v(g.value?.message), 1),
-        g.value?.details?.length ? (m(), k("ul", at, [
-          (m(!0), k(j, null, M(g.value.details, (x) => (m(), k("li", { key: x }, v(x), 1))), 128))
+        s("h2", nt, v(g.value?.title), 1),
+        s("p", at, v(g.value?.message), 1),
+        g.value?.details?.length ? (m(), k("ul", ot, [
+          (m(!0), k(M, null, j(g.value.details, (x) => (m(), k("li", { key: x }, v(x), 1))), 128))
         ])) : D("", !0),
-        s("div", ot, [
+        s("div", st, [
           s("button", {
             ref_key: "errorClose",
             ref: t,
@@ -2751,28 +2751,28 @@ const Ue = {
       ], 544)
     ], 64));
   }
-}, Xt = /* @__PURE__ */ se(st, [["__scopeId", "data-v-d0ed5b96"]]);
-function it({ selected: p = "", printers: l = [], defaultPrinter: c = "", loaded: t = !1, lastPrinted: g = "" } = {}) {
+}, Yt = /* @__PURE__ */ se(it, [["__scopeId", "data-v-d0ed5b96"]]);
+function lt({ selected: p = "", printers: l = [], defaultPrinter: c = "", loaded: t = !1, lastPrinted: g = "" } = {}) {
   const y = p || c;
   return y ? t && l.includes(y) ? { name: y, detail: "Terdeteksi oleh QZ Tray. Status fisik online/offline belum diperiksa." } : g === y ? { name: y, detail: "Tujuan cetak TEST terakhir. Pengiriman job bukan konfirmasi hasil cetak fisik." } : { name: y, detail: t ? "Belum terdeteksi dalam daftar QZ Tray. Periksa printer atau muat ulang daftar." : "Nama tersimpan; belum diverifikasi oleh QZ Tray." } : {
     name: "Belum diketahui",
     detail: t ? "Printer default sistem belum tersedia. Pilih printer dari daftar." : "Klik Hubungkan / muat printer untuk melihat nama printer."
   };
 }
-const lt = {
+const ut = {
   class: "panel settings-panel pqr-layout",
   "aria-labelledby": "pqr-layout-title"
-}, ut = { class: "panel-head" }, ct = { class: "p-ico" }, dt = { class: "panel-body" }, ft = { class: "settings-block" }, pt = { class: "settings-control" }, bt = { class: "form-grid cols2" }, mt = { class: "field" }, kt = { value: "" }, gt = ["value"], vt = { class: "field" }, yt = { for: "pqr-qzTimeout" }, ht = ["min", "max", "step"], wt = {
+}, ct = { class: "panel-head" }, dt = { class: "p-ico" }, ft = { class: "panel-body" }, pt = { class: "settings-block" }, bt = { class: "settings-control" }, mt = { class: "form-grid cols2" }, kt = { class: "field" }, gt = { value: "" }, vt = ["value"], yt = { class: "field" }, ht = { for: "pqr-qzTimeout" }, wt = ["min", "max", "step"], Ct = {
   class: "settings-note",
   "data-label-printer-destination": "",
   "aria-live": "polite"
-}, Ct = { class: "pqr-layout-actions" }, St = ["disabled"], xt = ["disabled"], At = { class: "settings-block" }, Pt = { class: "settings-control" }, _t = { class: "form-grid cols2" }, Lt = ["for"], Tt = ["id"], Et = ["id", "onUpdate:modelValue", "min", "max", "step"], Nt = { class: "hint" }, Ot = { class: "settings-block" }, qt = { class: "settings-control" }, Ut = { class: "form-grid cols2" }, Ft = ["for"], Ht = ["id", "onUpdate:modelValue", "min", "max", "step"], It = { class: "settings-block" }, Dt = { class: "settings-control" }, $t = { class: "form-grid cols2" }, zt = ["for"], jt = ["id", "onUpdate:modelValue", "min", "max", "step"], Mt = { class: "field" }, Vt = { class: "field wide" }, Rt = {
+}, St = { class: "pqr-layout-actions" }, xt = ["disabled"], At = ["disabled"], Pt = { class: "settings-block" }, _t = { class: "settings-control" }, Lt = { class: "form-grid cols2" }, Tt = ["for"], Et = ["id"], Nt = ["id", "onUpdate:modelValue", "min", "max", "step"], Ot = { class: "hint" }, qt = { class: "settings-block" }, Ut = { class: "settings-control" }, Ft = { class: "form-grid cols2" }, It = ["for"], Ht = ["id", "onUpdate:modelValue", "min", "max", "step"], Dt = { class: "settings-block" }, $t = { class: "settings-control" }, zt = { class: "form-grid cols2" }, Mt = ["for"], jt = ["id", "onUpdate:modelValue", "min", "max", "step"], Vt = { class: "field" }, Rt = { class: "field wide" }, Qt = {
   key: 0,
   class: "settings-alerts"
-}, Qt = { class: "panel-foot" }, Gt = ["disabled"], Wt = ["disabled"], Yt = {
+}, Gt = { class: "panel-foot" }, Wt = ["disabled"], Jt = ["disabled"], er = {
   __name: "LabelLayoutSettings",
   setup(p) {
-    const l = P(W() || { ...Y }), c = $(() => G(l.value)), t = P([]), g = P(""), y = P(!1), e = P(""), r = P(!1), n = P(""), a = P(!1), o = $(() => [...new Set([l.value.printer, ...t.value].filter(Boolean))]), u = $(() => it({
+    const l = P(W() || { ...Y }), c = $(() => G(l.value)), t = P([]), g = P(""), y = P(!1), e = P(""), r = P(!1), n = P(""), a = P(!1), o = $(() => [...new Set([l.value.printer, ...t.value].filter(Boolean))]), u = $(() => lt({
       selected: l.value.printer,
       printers: t.value,
       defaultPrinter: g.value,
@@ -2793,18 +2793,18 @@ const lt = {
     }
     function O() {
       E(() => {
-        l.value = ke(l.value);
+        l.value = ge(l.value);
       }, "Pengaturan label disimpan di perangkat ini.");
     }
     function w() {
       E(() => {
-        ge(), l.value = { ...Y };
+        ve(), l.value = { ...Y };
       }, "Kembali menggunakan default ZPL asli.");
     }
     function A() {
       E(async () => {
         try {
-          const C = await Te(c.value);
+          const C = await Ee(c.value);
           t.value = C.printers, g.value = C.defaultPrinter, y.value = !0;
         } catch (C) {
           throw t.value = [], g.value = "", y.value = !1, e.value = "", C;
@@ -2813,14 +2813,14 @@ const lt = {
     }
     function F() {
       E(async () => {
-        const C = c.value, d = await Ee(C);
+        const C = c.value, d = await Ne(C);
         e.value = d, C.printer || (g.value = d);
       }, "Label TEST dikirim. Tidak ada serial produksi yang dibuat.");
     }
-    return (C, d) => (m(), k("section", lt, [
-      s("div", ut, [
-        s("span", ct, [
-          ne(T(de), {
+    return ue(A), (C, d) => (m(), k("section", ut, [
+      s("div", ct, [
+        s("span", dt, [
+          ne(T(fe), {
             size: 15,
             "stroke-width": 1.9
           })
@@ -2828,33 +2828,33 @@ const lt = {
         d[5] || (d[5] = s("h2", { id: "pqr-layout-title" }, "Pengaturan layout label", -1)),
         d[6] || (d[6] = s("span", { class: "lead" }, "Khusus browser dan perangkat ini.", -1))
       ]),
-      s("div", dt, [
-        s("div", ft, [
+      s("div", ft, [
+        s("div", pt, [
           d[11] || (d[11] = s("div", { class: "settings-block-head" }, [
             s("h3", null, "Printer label"),
-            s("p", { class: "hint" }, "Gunakan printer ZPL. Cetak TEST hanya untuk memeriksa layout dengan data contoh, tanpa Work Order.")
+            s("p", { class: "hint" }, "Daftar printer dimuat otomatis saat pengaturan dibuka. Gunakan printer ZPL. Cetak TEST hanya untuk memeriksa layout dengan data contoh, tanpa Work Order.")
           ], -1)),
-          s("div", pt, [
-            s("div", bt, [
-              s("div", mt, [
+          s("div", bt, [
+            s("div", mt, [
+              s("div", kt, [
                 d[7] || (d[7] = s("label", { for: "pqr-printer" }, "Printer label", -1)),
-                I(s("select", {
+                H(s("select", {
                   id: "pqr-printer",
                   "onUpdate:modelValue": d[0] || (d[0] = (i) => l.value.printer = i),
                   class: "input"
                 }, [
-                  s("option", kt, v(g.value ? `Default sistem — ${g.value}` : "Printer default sistem (nama belum dimuat)"), 1),
-                  (m(!0), k(j, null, M(o.value, (i) => (m(), k("option", {
+                  s("option", gt, v(g.value ? `Default sistem — ${g.value}` : "Printer default sistem (nama belum dimuat)"), 1),
+                  (m(!0), k(M, null, j(o.value, (i) => (m(), k("option", {
                     key: i,
                     value: i
-                  }, v(i) + v(y.value && !t.value.includes(i) ? " — belum terdeteksi" : ""), 9, gt))), 128))
+                  }, v(i) + v(y.value && !t.value.includes(i) ? " — belum terdeteksi" : ""), 9, vt))), 128))
                 ], 512), [
                   [V, l.value.printer]
                 ])
               ]),
-              s("div", vt, [
-                s("label", yt, v(T(S).label), 1),
-                I(s("input", {
+              s("div", yt, [
+                s("label", ht, v(T(S).label), 1),
+                H(s("input", {
                   id: "pqr-qzTimeout",
                   "onUpdate:modelValue": d[1] || (d[1] = (i) => l.value.qzTimeout = i),
                   class: "input",
@@ -2863,7 +2863,7 @@ const lt = {
                   max: T(S).max,
                   step: T(S).step,
                   "aria-describedby": "pqr-timeout-note"
-                }, null, 8, ht), [
+                }, null, 8, wt), [
                   [
                     z,
                     l.value.qzTimeout,
@@ -2877,43 +2877,43 @@ const lt = {
               id: "pqr-timeout-note",
               class: "hint"
             }, "1–60 detik; default 8. Batas menunggu koneksi QZ, bukan durasi cetak fisik. Simpan agar dipakai saat cetak Work Order. Jika koneksi gagal atau timeout, cetak Work Order beralih ke dialog cetak browser.", -1)),
-            s("p", wt, [
-              d[8] || (d[8] = H("Printer tujuan: ", -1)),
+            s("p", Ct, [
+              d[8] || (d[8] = I("Printer tujuan: ", -1)),
               s("strong", null, v(u.value.name), 1),
               d[9] || (d[9] = s("br", null, null, -1)),
-              H(v(u.value.detail), 1)
+              I(v(u.value.detail), 1)
             ]),
-            s("div", Ct, [
+            s("div", St, [
               s("button", {
                 type: "button",
                 class: "btn",
                 disabled: r.value,
                 onClick: A
-              }, "Hubungkan / muat printer", 8, St),
+              }, "Muat ulang printer", 8, xt),
               s("button", {
                 type: "button",
                 class: "btn",
                 disabled: r.value,
                 onClick: F
-              }, "Cetak label TEST", 8, xt)
+              }, "Cetak label TEST", 8, At)
             ])
           ])
         ]),
-        s("div", At, [
+        s("div", Pt, [
           d[14] || (d[14] = s("div", { class: "settings-block-head" }, [
             s("h3", null, "Ukuran dan media"),
             s("p", { class: "hint" }, "Dasar ZPL asli: 2 kolom, ^PW800, ^LL160, 203 DPI. Pengaturan ini hanya untuk penyesuaian.")
           ], -1)),
-          s("div", Pt, [
-            s("div", _t, [
-              (m(!0), k(j, null, M(T(_), (i) => (m(), k("div", {
+          s("div", _t, [
+            s("div", Lt, [
+              (m(!0), k(M, null, j(T(_), (i) => (m(), k("div", {
                 key: i.key,
                 class: "field"
               }, [
                 s("label", {
                   for: `pqr-${i.key}`
-                }, v(i.label), 9, Lt),
-                i.key === "dpi" ? I((m(), k("select", {
+                }, v(i.label), 9, Tt),
+                i.key === "dpi" ? H((m(), k("select", {
                   key: 0,
                   id: `pqr-${i.key}`,
                   "onUpdate:modelValue": d[2] || (d[2] = (q) => l.value.dpi = q),
@@ -2922,14 +2922,14 @@ const lt = {
                   s("option", { value: 203 }, "203", -1),
                   s("option", { value: 300 }, "300", -1),
                   s("option", { value: 600 }, "600", -1)
-                ])], 8, Tt)), [
+                ])], 8, Et)), [
                   [
                     V,
                     l.value.dpi,
                     void 0,
                     { number: !0 }
                   ]
-                ]) : I((m(), k("input", {
+                ]) : H((m(), k("input", {
                   key: 1,
                   id: `pqr-${i.key}`,
                   "onUpdate:modelValue": (q) => l.value[i.key] = q,
@@ -2938,7 +2938,7 @@ const lt = {
                   min: i.min,
                   max: i.max,
                   step: i.step
-                }, null, 8, Et)), [
+                }, null, 8, Nt)), [
                   [
                     z,
                     l.value[i.key],
@@ -2948,25 +2948,25 @@ const lt = {
                 ])
               ]))), 128))
             ]),
-            s("p", Nt, "Lebar media: " + v(c.value.width * c.value.columns + c.value.gap * (c.value.columns - 1)) + " mm.", 1),
+            s("p", Ot, "Lebar media: " + v(c.value.width * c.value.columns + c.value.gap * (c.value.columns - 1)) + " mm.", 1),
             d[13] || (d[13] = s("p", { class: "settings-note" }, "Margin tambahan 0 mempertahankan posisi asli. Pengaturan konten kiri/kanan di bawah berlaku di dalam setiap label, bukan untuk membedakan dua kolom cetak. Samakan ukuran media dan sensor gap di printer.", -1))
           ])
         ]),
-        s("div", Ot, [
+        s("div", qt, [
           d[16] || (d[16] = s("div", { class: "settings-block-head" }, [
             s("h3", null, "Konten kiri — QR"),
             s("p", { class: "hint" }, "Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama.")
           ], -1)),
-          s("div", qt, [
-            s("div", Ut, [
-              (m(!0), k(j, null, M(T(b), (i) => (m(), k("div", {
+          s("div", Ut, [
+            s("div", Ft, [
+              (m(!0), k(M, null, j(T(b), (i) => (m(), k("div", {
                 key: i.key,
                 class: "field"
               }, [
                 s("label", {
                   for: `pqr-${i.key}`
-                }, v(i.label), 9, Ft),
-                I(s("input", {
+                }, v(i.label), 9, It),
+                H(s("input", {
                   id: `pqr-${i.key}`,
                   "onUpdate:modelValue": (q) => l.value[i.key] = q,
                   class: "input",
@@ -2987,21 +2987,21 @@ const lt = {
             d[15] || (d[15] = s("p", { class: "settings-note" }, "Geser 0 memakai posisi ZPL asli. Nilai negatif menggeser ke kiri/atas, positif ke kanan/bawah; posisi tidak melewati titik nol media. QR acuan 16 memakai magnifikasi 4 pada 203 DPI. Perbesar area label bila konten terpotong.", -1))
           ])
         ]),
-        s("div", It, [
+        s("div", Dt, [
           d[21] || (d[21] = s("div", { class: "settings-block-head" }, [
             s("h3", null, "Konten kanan — Teks"),
             s("p", { class: "hint" }, "Atur blok prefix, nama produk, SKU, MFG, EXP, footer dan nomor urut secara terpisah dari QR. Nama produk tetap dicetak.")
           ], -1)),
-          s("div", Dt, [
-            s("div", $t, [
-              (m(!0), k(j, null, M(T(h), (i) => (m(), k("div", {
+          s("div", $t, [
+            s("div", zt, [
+              (m(!0), k(M, null, j(T(h), (i) => (m(), k("div", {
                 key: i.key,
                 class: "field"
               }, [
                 s("label", {
                   for: `pqr-${i.key}`
-                }, v(i.label), 9, zt),
-                I(s("input", {
+                }, v(i.label), 9, Mt),
+                H(s("input", {
                   id: `pqr-${i.key}`,
                   "onUpdate:modelValue": (q) => l.value[i.key] = q,
                   class: "input",
@@ -3018,9 +3018,9 @@ const lt = {
                   ]
                 ])
               ]))), 128)),
-              s("div", Mt, [
+              s("div", Vt, [
                 d[18] || (d[18] = s("label", { for: "pqr-align" }, "Perataan teks", -1)),
-                I(s("select", {
+                H(s("select", {
                   id: "pqr-align",
                   "onUpdate:modelValue": d[3] || (d[3] = (i) => l.value.align = i),
                   class: "input"
@@ -3032,9 +3032,9 @@ const lt = {
                   [V, l.value.align]
                 ])
               ]),
-              s("div", Vt, [
+              s("div", Rt, [
                 d[19] || (d[19] = s("label", { for: "pqr-footer" }, "Footer", -1)),
-                I(s("input", {
+                H(s("input", {
                   id: "pqr-footer",
                   "onUpdate:modelValue": d[4] || (d[4] = (i) => l.value.footer = i),
                   maxlength: "100",
@@ -3048,42 +3048,42 @@ const lt = {
           ])
         ])
       ]),
-      n.value ? (m(), k("div", Rt, [
+      n.value ? (m(), k("div", Qt, [
         s("p", {
           role: "status",
-          class: ue(a.value ? "err" : "hint")
+          class: ce(a.value ? "err" : "hint")
         }, v(n.value), 3)
       ])) : D("", !0),
-      s("div", Qt, [
+      s("div", Gt, [
         s("button", {
           type: "button",
           class: "btn btn-primary",
           disabled: r.value,
           onClick: O
-        }, "Simpan layout label", 8, Gt),
+        }, "Simpan layout label", 8, Wt),
         s("button", {
           type: "button",
           class: "btn",
           disabled: r.value,
           onClick: w
-        }, "Pulihkan default ZPL", 8, Wt)
+        }, "Pulihkan default ZPL", 8, Jt)
       ])
     ]));
   }
 };
-function er(p, l = 0) {
+function tr(p, l = 0) {
   const c = `/product_qr_work_order_label?name=${encodeURIComponent(p)}`;
   return l > 0 ? `${c}&extra=${l}` : c;
 }
 export {
-  Yt as LabelLayoutSettings,
-  Kt as WorkOrderLabelButton,
-  Xt as WorkOrderLabelDialogs,
+  er as LabelLayoutSettings,
+  Xt as WorkOrderLabelButton,
+  Yt as WorkOrderLabelDialogs,
   B as connectQz,
-  ye as labelCountForWorkOrder,
+  he as labelCountForWorkOrder,
   N as labelPrintPrompt,
   oe as labelSource,
-  he as offerLabelPrint,
-  qe as printLabels,
-  er as workOrderLabelUrl
+  we as offerLabelPrint,
+  Ue as printLabels,
+  tr as workOrderLabelUrl
 };

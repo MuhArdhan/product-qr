@@ -96,6 +96,9 @@ async function main() {
     })
     await page.goto(`${base}/production_workspace#/settings`, { waitUntil: 'networkidle' })
     const settings = page.locator('.pqr-layout')
+    const reloadPrinters = settings.getByRole('button', { name: 'Muat ulang printer', exact: true })
+    // Auto-discovery must finish (including an honest offline error) before retry.
+    await settings.getByRole('status').filter({ hasText: /QZ offline|tidak merespons|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 }); checks++
     const printerStatus = settings.locator('[data-label-printer-destination]')
     const timeoutInput = settings.getByLabel('Timeout koneksi QZ (detik)', { exact: true })
     assert.equal(await timeoutInput.inputValue(), '8'); checks++
@@ -127,12 +130,13 @@ async function main() {
     // Removing the UI must not silently discard pre-existing saved choices.
     await page.evaluate(() => localStorage.setItem('product_qr:wo_label_layout:v1', JSON.stringify({ printer: 'Zebra Saved', bold: false, showSku: false })))
     await page.reload({ waitUntil: 'networkidle' })
+    await settings.getByRole('status').filter({ hasText: /QZ offline|tidak merespons|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 }); checks++
     assert.match(await printerStatus.innerText(), /Zebra Saved/)
     assert.match(await printerStatus.innerText(), /belum diverifikasi/); checks++
     assert.equal(await timeoutInput.inputValue(), '8'); checks++
     await timeoutInput.fill('3')
     const discoveryStarted = Date.now()
-    await settings.getByRole('button', { name: 'Hubungkan / muat printer', exact: true }).click()
+    await reloadPrinters.click()
     await settings.getByRole('status').filter({ hasText: /QZ offline|tidak merespons|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 })
     if (process.env.WO_LABEL_QZ_HANG === '1') {
       assert.match(await settings.getByRole('status').innerText(), /dalam 3 detik/)
@@ -290,6 +294,7 @@ async function main() {
     await page.getByRole('heading', { name: 'Post-Packing', exact: true }).waitFor({ state: 'visible' })
     assert.equal(await print.count(), 0); checks++
     await page.goto(`${base}/production_workspace#/settings`, { waitUntil: 'networkidle' })
+    await settings.getByRole('status').filter({ hasText: /QZ offline|tidak merespons|Unable to establish|connection|connect|WebSocket/i }).waitFor({ timeout: 30000 }); checks++
     assert.ok(await settings.evaluate(el => el.scrollWidth <= el.clientWidth + 1)); checks++
     assert.equal(await settings.locator('.settings-block').first().evaluate(el => getComputedStyle(el).gridTemplateColumns.trim().split(/\s+/).length), 1); checks++
     assert.equal(await settings.getByLabel('Lebar label (mm)', { exact: true }).inputValue(), '60'); checks++
