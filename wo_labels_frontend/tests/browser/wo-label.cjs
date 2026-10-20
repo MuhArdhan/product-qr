@@ -61,6 +61,10 @@ async function main() {
       else if (method.endsWith('.warehouse_defaults')) message = {}
       else if (method.endsWith('.skip_prepacking_items')) message = []
       else if (method.endsWith('.handover_board')) message = { roles: { is_produksi: true, can_settings: true }, lots: [], requests: [] }
+      else if (method.endsWith('.get_existing_label_numbers')) message = {
+        work_order: wo.name, adonan_ke: 7,
+        labels: [1, 2, 3].map(label_number => ({ label_number, adonan_ke: 7 }))
+      }
       else { unknown.push(method); return route.fulfill({ status: 500, json: { message: 'Unexpected smoke API request' } }) }
       return route.fulfill({ json: { message } })
     })
@@ -131,18 +135,66 @@ async function main() {
     await print.click()
     const dialog = page.locator('dialog[open]').filter({ has: page.locator('#label-print-title') })
     await dialog.waitFor({ state: 'visible' }); checks++
-    assert.match(await dialog.innerText(), /Label sesuai Good Qty: 3/); checks++
+    assert.match(await dialog.innerText(), /Usulan otomatis dari Good Qty dan UOM: 3 label/); checks++
+    const countMode = dialog.locator('#label-count-mode')
+    await countMode.evaluate(el => el.blur())
+    const countModeTheme = await countMode.evaluate(el => {
+      const style = getComputedStyle(el)
+      return { appearance: style.appearance, height: style.height, radius: style.borderRadius,
+        border: style.borderColor, color: style.color, arrow: style.backgroundImage, paddingRight: style.paddingRight }
+    })
+    assert.deepEqual(countModeTheme, { appearance: 'none', height: '34px', radius: '8px',
+      border: 'rgb(212, 221, 228)', color: 'rgb(36, 48, 58)',
+      arrow: countModeTheme.arrow, paddingRight: '36px' })
+    assert.notEqual(countModeTheme.arrow, 'none'); checks++
+    await countMode.focus()
+    assert.equal(await countMode.evaluate(el => getComputedStyle(el).borderColor), 'rgb(51, 104, 160)'); checks++
     assert.equal(await page.locator('.pqr-layout').count(), 0); checks++
+    await countMode.selectOption('append')
+    assert.equal(await dialog.locator('#extra-label-count').count(), 0); checks++
+    await dialog.locator('#append-label-count').fill('2')
+    assert.match(await dialog.innerText(), /Nomor baru: #4–#5/); checks++
+    assert.match(await dialog.innerText(), /Label lanjutan: 2 label/); checks++
+    await countMode.selectOption('automatic')
+    assert.equal(await dialog.locator('#append-label-count').count(), 0); checks++
+    assert.equal(await dialog.locator('#extra-label-count').count(), 1); checks++
     await dialog.locator('#extra-label-count').fill('2')
-    assert.match(await dialog.innerText(), /Total cetak: 5 label/); checks++
+    assert.match(await dialog.innerText(), /Total cetak otomatis: 5 label/); checks++
     await dialog.locator('#extra-label-count').fill('-1')
     assert.equal(await dialog.getByRole('button', { name: 'Ya, Cetak Label', exact: true }).isDisabled(), true); checks++
+    await dialog.locator('#extra-label-count').fill('0')
+    await countMode.selectOption('specific')
+    assert.equal(await dialog.locator('#extra-label-count').count(), 0); checks++
+    const reprintNumber = dialog.locator('#label-number-select')
+    await reprintNumber.waitFor({ state: 'visible' })
+    await countMode.evaluate(el => el.blur())
+    const reprintTheme = await reprintNumber.evaluate(el => {
+      const style = getComputedStyle(el)
+      return { appearance: style.appearance, height: style.height, radius: style.borderRadius,
+        border: style.borderColor, color: style.color, arrow: style.backgroundImage, paddingRight: style.paddingRight }
+    })
+    assert.equal(reprintTheme.appearance, countModeTheme.appearance)
+    assert.equal(reprintTheme.height, countModeTheme.height)
+    assert.equal(reprintTheme.radius, countModeTheme.radius)
+    assert.equal(reprintTheme.border, countModeTheme.border)
+    assert.equal(reprintTheme.color, countModeTheme.color)
+    assert.equal(reprintTheme.arrow, countModeTheme.arrow)
+    assert.equal(reprintTheme.paddingRight, countModeTheme.paddingRight); checks++
+    await reprintNumber.focus()
+    assert.equal(await reprintNumber.evaluate(el => getComputedStyle(el).borderColor), 'rgb(51, 104, 160)'); checks++
+    assert.equal(await reprintNumber.locator('option').count(), 4); checks++
+    await reprintNumber.selectOption('2')
+    assert.match(await dialog.innerText(), /Label #2/)
+    assert.match(await dialog.innerText(), /Adonan ke 7/)
+    assert.match(await dialog.innerText(), /Dipilih: Label #2/); checks++
+    assert.equal(await dialog.locator('input[type="checkbox"], input[type="search"]').count(), 0); checks++
+    assert.match(await dialog.innerText(), /Total cetak ulang: 1 label/); checks++
     await dialog.getByRole('button', { name: 'Nanti saja', exact: true }).click()
     assert.equal(await page.locator('#label-print-title').evaluate(el => el.closest('dialog').open), false); checks++
     await page.setViewportSize({ width: 390, height: 844 })
     await print.click()
     await dialog.waitFor({ state: 'visible' })
-    assert.match(await dialog.innerText(), /Total cetak: 3 label/); checks++
+    assert.match(await dialog.innerText(), /Total cetak otomatis: 3 label/); checks++
     const box = await dialog.boundingBox()
     assert.ok(box.x >= 0 && box.x + box.width <= 391); checks++
     await dialog.getByRole('button', { name: 'Ya, Cetak Label', exact: true }).click()
@@ -158,7 +210,7 @@ async function main() {
     await print.waitFor({ state: 'visible' }); checks++
     await print.click()
     await dialog.waitFor({ state: 'visible' })
-    assert.match(await dialog.innerText(), /Label sesuai Good Qty: 2/); checks++
+    assert.match(await dialog.innerText(), /Usulan otomatis dari Good Qty dan UOM: 2 label/); checks++
     await dialog.getByRole('button', { name: 'Nanti saja', exact: true }).click()
     Object.assign(wo, { stage: 'post_packing', custom_postpacking_confirmed: 0 })
     await page.reload({ waitUntil: 'networkidle' })

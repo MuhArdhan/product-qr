@@ -4,4 +4,5 @@
 
 [post_model_sync]
 # Patches added in this section will be executed after doctypes are migrated
+product_qr.patches.backfill_work_order_label_ordinals
 product_qr.patches.rename_product_qr_documents

@@ -15,7 +15,26 @@ class WorkOrderQRLabel(Document):
 			batch = frappe.db.get_value("Batch", serial.batch_no, ["item", "reference_doctype", "reference_name"], as_dict=True)
 			if not batch or (batch.item, batch.reference_doctype, batch.reference_name) != (wo_item, "Work Order", self.work_order):
 				frappe.throw(_("Product QR Serial Batch must belong to the Work Order"))
-		if not self.is_new():
-			old = frappe.db.get_value(self.doctype, self.name, ["work_order", "product_qr_serial"], as_dict=True)
+		if self.is_new():
+			try:
+				label_number = int(self.label_number or 0)
+			except (TypeError, ValueError):
+				label_number = 0
+			if label_number < 1:
+				frappe.throw(_("Work Order QR Label needs a positive label number"))
+			if frappe.db.get_value(
+				self.doctype,
+				{"work_order": self.work_order, "label_number": label_number},
+				"name",
+			):
+				frappe.throw(_("Work Order QR Label number must be unique within its Work Order"))
+		else:
+			old = frappe.db.get_value(
+				self.doctype, self.name,
+				["work_order", "product_qr_serial", "label_number", "adonan_ke"],
+				as_dict=True,
+			)
 			if old and (old.work_order, old.product_qr_serial) != (self.work_order, self.product_qr_serial):
 				frappe.throw(_("Work Order QR Label cannot be reassigned"))
+			if old and (old.label_number, old.adonan_ke) != (self.label_number, self.adonan_ke):
+				frappe.throw(_("Work Order QR Label number and Adonan snapshot cannot be changed"))

@@ -3,7 +3,7 @@
  "autoname": "field:product_qr_serial",
  "doctype": "DocType",
  "engine": "InnoDB",
- "field_order": ["work_order", "product_qr_serial"],
+ "field_order": ["work_order", "label_number", "adonan_ke", "product_qr_serial"],
  "fields": [
   {
    "fieldname": "work_order",
@@ -13,6 +13,20 @@
    "label": "Work Order",
    "options": "Work Order",
    "reqd": 1
+  },
+  {
+   "fieldname": "label_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Label Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "adonan_ke",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Adonan ke",
+   "read_only": 1
   },
   {
    "fieldname": "product_qr_serial",

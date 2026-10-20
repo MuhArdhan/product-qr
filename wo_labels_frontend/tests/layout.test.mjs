@@ -112,6 +112,22 @@ test('adjusting QR changes only its scale, never text position or payload', () =
   assert.match(adjusted, /\^FO192,32\^A0N/)
 })
 
+test('specific reprints retain their original label ordinal in ZPL and browser output', async () => {
+  const data = {
+    ...SAMPLE_LABEL_DATA,
+    labels: [
+      { label_number: 5, qr_value: 'SKU-BATCH-S005' },
+      { label_number: 2, qr_value: 'SKU-BATCH-S002' }
+    ]
+  }
+  const zpl = buildLayoutZpl(data, { columns: 2 })[0]
+  assert.match(zpl, /\^FO355,28\^A0N,18,18\^FB40,1,0,R\^FD5\^FS/)
+  assert.match(zpl, /\^FO755,28\^A0N,18,18\^FB40,1,0,R\^FD2\^FS/)
+  const html = await buildLayoutHTML(data, { columns: 2 })
+  assert.match(html, />5<\/div>/)
+  assert.match(html, />2<\/div>/)
+})
+
 test('left QR and right text offsets are independent and preserve the default golden', () => {
   const left = buildLayoutZpl(originalData, { leftX: 1, leftY: -1 })[0]
   assert.equal(left, originalZpl.replace('^FO68,32^BQN', '^FO76,24^BQN'))

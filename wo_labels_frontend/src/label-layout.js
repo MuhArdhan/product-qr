@@ -80,7 +80,7 @@ const dots = (mm, c) => Math.round(mm * c.dpi / 25.4)
 export const SAMPLE_LABEL_DATA = Object.freeze({
   sku: 'SKU-TEST', item_name: 'Dough Ropi Butter', item_name_prefix: 'Dough', item_name_main: 'Ropi Butter', manufacturing_date: '2026-10-20',
   expiry_date: '2026-11-20', label_count: 1,
-  labels: [{ qr_value: 'TEST-NOT-A-PRODUCTION-SERIAL', serial_no: 'TEST' }]
+  labels: [{ label_number: 1, qr_value: 'TEST-NOT-A-PRODUCTION-SERIAL', serial_no: 'TEST' }]
 })
 
 function geometry(c) {
@@ -157,7 +157,7 @@ export function buildLayoutZpl(data, raw) {
     for (let col = 0; col < c.columns && start + col < data.labels.length; col++) {
       const label = data.labels[start + col]
       const offset = col * (g.column + g.gap)
-      const parts = labelText(data, start + col + 1, c, g)
+      const parts = labelText(data, label.label_number ?? start + col + 1, c, g)
       if (parts[0]?.sequence) job += text(parts.shift(), offset)
       job += `^FO${offset + g.qrX},${g.qrY}^BQN,2,${g.qrScale}${field(`QA,${label.qr_value}`)}`
       for (const part of parts) job += text(part, offset)
@@ -177,7 +177,7 @@ export async function buildLayoutHTML(data, raw) {
       const qrOptions = { errorCorrectionLevel: 'Q', margin: 0 }
       const qr = await QRCode.toString(label.qr_value, { ...qrOptions, type: 'svg' })
       const qrWidth = QRCode.create(label.qr_value, qrOptions).modules.size * g.qrScale
-      const text = labelText(data, start + col + 1, c, g).map(part => {
+      const text = labelText(data, label.label_number ?? start + col + 1, c, g).map(part => {
         const width = part.sequence ? g.unit(40) : textWidth(c, g)
         const wraps = part.lines > 1
         const bounded = wraps || (!part.sequence && c.textWidth > 0)

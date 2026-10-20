@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import qz from 'qz-tray'
-import { connectQz, printLabels } from '../src/qz-tray.js'
+import { connectQz, getExistingLabelNumbers, printLabels } from '../src/qz-tray.js'
 import { labelSource, labelCountForWorkOrder, offerLabelPrint, labelPrintPrompt } from '../src/label-print-prompt.js'
 import { workOrderLabelUrl } from '../src/work-order-label.js'
 
@@ -113,11 +113,104 @@ test('printing retains unique QR, two-column ZPL and odd last row', async () => 
   }
 })
 
-test('print confirmation markup retains its labels and avoids host error-title ID collisions', () => {
+test('automatic extras, append counts and selected ordinals use separate Product QR requests', async () => {
+  const saved = {
+    certificate: qz.security.setCertificatePromise, signature: qz.security.setSignaturePromise,
+    algorithm: qz.security.setSignatureAlgorithm, active: qz.websocket.isActive,
+    printer: qz.printers.getDefault, config: qz.configs.create, print: qz.print,
+    fetch: globalThis.fetch, window: globalThis.window
+  }
+  const data = {
+    sku: 'SKU-A', batch_no: 'B-01', item_name: 'Dough Chocolate',
+    manufacturing_date: '2026-10-19', expiry_date: '2026-11-18', label_count: 2,
+    labels: [
+      { label_number: 2, adonan_ke: 7, serial_no: 'S002', qr_value: 'SKU-A-B-01-S002' },
+      { label_number: 4, adonan_ke: 7, serial_no: 'S004', qr_value: 'SKU-A-B-01-S004' }
+    ]
+  }
+  const submitted = []
+  try {
+    qz.security.setCertificatePromise = () => {}
+    qz.security.setSignaturePromise = () => {}
+    qz.security.setSignatureAlgorithm = () => {}
+    qz.websocket.isActive = () => true
+    qz.printers.getDefault = async () => 'printer'
+    qz.configs.create = () => ({})
+    qz.print = async () => {}
+    globalThis.window = { csrf_token: 'csrf-test' }
+    globalThis.fetch = async (url, options) => {
+      assert.equal(url, '/api/method/product_qr.wo_labels.labels.get_label_data')
+      submitted.push(JSON.parse(options.body))
+      return { ok: true, json: async () => ({ message: data }) }
+    }
+    await printLabels('WO-42', { extra: 2 })
+    await printLabels('WO-42', { appendCount: 3 })
+    await printLabels('WO-42', { labelNumbers: [2] })
+    assert.deepEqual(submitted, [
+      { name: 'WO-42', extra: 2 },
+      { name: 'WO-42', extra: 0, append_count: 3 },
+      { name: 'WO-42', extra: 0, label_numbers: [2] }
+    ])
+  } finally {
+    qz.security.setCertificatePromise = saved.certificate
+    qz.security.setSignaturePromise = saved.signature
+    qz.security.setSignatureAlgorithm = saved.algorithm
+    qz.websocket.isActive = saved.active
+    qz.printers.getDefault = saved.printer
+    qz.configs.create = saved.config
+    qz.print = saved.print
+    globalThis.fetch = saved.fetch
+    globalThis.window = saved.window
+  }
+})
+
+test('existing label-number lookup is an authenticated Product QR request tied to Adonan', async () => {
+  const saved = { fetch: globalThis.fetch, window: globalThis.window }
+  let request
+  try {
+    globalThis.window = { csrf_token: 'csrf-test' }
+    globalThis.fetch = async (url, options) => {
+      request = { url, options }
+      return { ok: true, json: async () => ({ message: {
+        work_order: 'WO-1', adonan_ke: 7, labels: [{ label_number: 5, adonan_ke: 7 }]
+      } }) }
+    }
+    assert.deepEqual(await getExistingLabelNumbers('WO-1'), {
+      work_order: 'WO-1', adonan_ke: 7, labels: [{ label_number: 5, adonan_ke: 7 }]
+    })
+    assert.equal(request.url, '/api/method/product_qr.wo_labels.labels.get_existing_label_numbers')
+    assert.equal(request.options.method, 'POST')
+    assert.equal(request.options.credentials, 'same-origin')
+    assert.equal(request.options.headers['X-Frappe-CSRF-Token'], 'csrf-test')
+    assert.deepEqual(JSON.parse(request.options.body), { name: 'WO-1' })
+  } finally {
+    globalThis.fetch = saved.fetch
+    globalThis.window = saved.window
+  }
+})
+
+test('print dialog supports Good Qty, append-after-first-print and selected ordinals', () => {
   const copy = readFileSync(new URL('../src/WorkOrderLabelDialogs.vue', import.meta.url), 'utf8')
-  for (const label of ['Cetak label?', 'Label sesuai Good Qty:', 'Label tambahan', 'Nanti saja', 'Ya, Cetak Label']) assert.ok(copy.includes(label))
+  for (const label of [
+    'Cetak label?', 'Usulan otomatis dari Good Qty dan UOM:', 'Otomatis dari Good Qty',
+    'Tambah setelah cetak awal', 'Jumlah label lanjutan', 'Pilih nomor urut label untuk cetak ulang',
+    'Label tambahan', 'Nanti saja', 'Ya, Cetak Label'
+  ]) assert.ok(copy.includes(label))
   assert.match(copy, /class="input"/)
-  assert.match(copy, /max="Math\.max\(0, 10000 - labelPrintPrompt\.labelCount\)"/)
+  assert.equal((copy.match(/<select\b/g) || []).length, 2)
+  assert.equal((copy.match(/class="input label-dialog-select"/g) || []).length, 2)
+  assert.match(copy, /appearance: none/)
+  assert.match(copy, /border-color: var\(--accent/)
+  assert.match(copy, /background-image: url\("data:image\/svg\+xml/)
+  assert.match(copy, /:max="Math\.max\(0, 10000 - labelPrintPrompt\.labelCount\)"/)
+  assert.match(copy, /appendCount: Number\(appendLabelCount\.value\)/)
+  assert.match(copy, /id="label-number-select" v-model\.number="selectedLabelNumber"/)
+  assert.match(copy, /labelNumbers: \[Number\(selectedLabelNumber\.value\)\]/)
+  assert.doesNotMatch(copy, /label-number-search|selectedLabelNumbers|type="checkbox"/)
+  assert.doesNotMatch(copy, /Masukkan jumlah manual|manual-label-count|totalCount/)
+  assert.match(copy, /getExistingLabelNumbers/)
+  assert.match(copy, /:disabled="labelsLoading \|\| !existingLabels\.length"/)
+  assert.match(copy, /Adonan ke/)
   assert.match(copy, /aria-labelledby="wo-label-error-title"/)
   assert.doesNotMatch(copy, /id="error-dialog-title"/)
   assert.doesNotMatch(copy, /LabelLayoutSettings|Pengaturan layout label/)

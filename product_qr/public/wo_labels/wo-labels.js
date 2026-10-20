@@ -1,58 +1,58 @@
-import { reactive as te, unref as L, openBlock as v, createElementBlock as w, createElementVNode as a, createVNode as W, createTextVNode as H, createCommentVNode as M, ref as _, computed as q, watch as Q, nextTick as B, Fragment as U, withModifiers as D, toDisplayString as S, withDirectives as N, vModelText as I, renderList as F, vModelSelect as z, normalizeClass as re } from "vue";
-import { Printer as ne, QrCode as oe } from "lucide-vue-next";
-import { g as se, a as ae, l as Z, b as K, n as X, S as ie, L as G, c as R, s as le, r as ue } from "./label-layout-Bzm75nKq.js";
-function ce(f) {
-  return !!f?.displayUom && f.displayUom !== f.stockUom && Number.isFinite(f.qtyInPack) && f.qtyInPack > 0;
+import { reactive as re, unref as U, openBlock as g, createElementBlock as v, createElementVNode as a, createVNode as Z, createTextVNode as O, createCommentVNode as F, ref as A, computed as q, watch as G, nextTick as J, Fragment as D, withModifiers as R, toDisplayString as S, withDirectives as H, vModelSelect as M, vModelText as $, renderList as j, normalizeClass as oe } from "vue";
+import { Printer as ae, QrCode as se } from "lucide-vue-next";
+import { g as ie, a as le, l as K, b as X, n as Y, S as ue, L as B, c as V, s as ce, r as de } from "./label-layout-DmzvIvUT.js";
+function fe(c) {
+  return !!c?.displayUom && c.displayUom !== c.stockUom && Number.isFinite(c.qtyInPack) && c.qtyInPack > 0;
 }
-function Y(f) {
-  return f.skipPrepacking ? f.postpacking : f.prepacking;
+function ee(c) {
+  return c.skipPrepacking ? c.postpacking : c.prepacking;
 }
-function fe(f) {
-  const u = Number(Y(f)?.goodQty), p = ce(f) ? f.qtyInPack : 1;
-  return Math.max(1, Math.ceil(u / p - 1e-8));
+function pe(c) {
+  const i = Number(ee(c)?.goodQty), p = fe(c) ? c.qtyInPack : 1;
+  return Math.max(1, Math.ceil(i / p - 1e-8));
 }
-const P = te({ workOrder: "", labelCount: 0, afterSave: "" });
-function de(f, u, p = "") {
-  P.workOrder = f, P.labelCount = u, P.afterSave = p;
+const T = re({ workOrder: "", labelCount: 0, afterSave: "" });
+function be(c, i, p = "") {
+  T.workOrder = c, T.labelCount = i, T.afterSave = p;
 }
-const pe = (f, u) => {
-  const p = f.__vccOpts || f;
-  for (const [t, g] of u)
-    p[t] = g;
+const te = (c, i) => {
+  const p = c.__vccOpts || c;
+  for (const [t, h] of i)
+    p[t] = h;
   return p;
-}, be = {
+}, me = {
   key: 0,
   class: "toolbar ws-label-actions"
-}, me = {
+}, ke = {
   __name: "WorkOrderLabelButton",
   props: { workOrder: { type: Object, required: !0 } },
-  setup(f) {
-    return (u, p) => L(Y)(f.workOrder)?.confirmed ? (v(), w("div", be, [
+  setup(c) {
+    return (i, p) => U(ee)(c.workOrder)?.confirmed ? (g(), v("div", me, [
       a("button", {
         class: "btn ws-label-print",
         type: "button",
-        onClick: p[0] || (p[0] = (t) => L(de)(f.workOrder.id, L(fe)(f.workOrder)))
+        onClick: p[0] || (p[0] = (t) => U(be)(c.workOrder.id, U(pe)(c.workOrder)))
       }, [
-        W(L(ne), {
+        Z(U(ae), {
           size: 14,
           "stroke-width": 2
         }),
-        p[1] || (p[1] = H(" Cetak Label ", -1))
+        p[1] || (p[1] = O(" Cetak Label ", -1))
       ])
-    ])) : M("", !0);
+    ])) : F("", !0);
   }
-}, St = /* @__PURE__ */ pe(me, [["__scopeId", "data-v-c9012b16"]]);
-function ge(f) {
-  throw new Error('Could not dynamically require "' + f + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+}, jt = /* @__PURE__ */ te(ke, [["__scopeId", "data-v-c9012b16"]]);
+function ge(c) {
+  throw new Error('Could not dynamically require "' + c + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
 }
-var V = { exports: {} };
-const ke = {}, ye = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+var z = { exports: {} };
+const ve = {}, ye = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: ke
-}, Symbol.toStringTag, { value: "Module" })), he = /* @__PURE__ */ se(ye);
-var J;
-function ve() {
-  return J || (J = 1, (function(f, u) {
+  default: ve
+}, Symbol.toStringTag, { value: "Module" })), he = /* @__PURE__ */ ie(ye);
+var W;
+function we() {
+  return W || (W = 1, (function(c, i) {
     var p = (function() {
       Array.isArray || (Array.isArray = function(e) {
         return Object.prototype.toString.call(e) === "[object Array]";
@@ -60,11 +60,11 @@ function ve() {
         return typeof e == "number" && isFinite(e) && Math.floor(e) === e;
       }), Array.from || (Array.from = function(e) {
         return [].slice.call(e);
-      }), String.prototype.padStart || (String.prototype.padStart = function(r, n) {
-        if (r = r >> 0, n = String(typeof n < "u" ? n : " "), this.length >= r)
+      }), String.prototype.padStart || (String.prototype.padStart = function(n, r) {
+        if (n = n >> 0, r = String(typeof r < "u" ? r : " "), this.length >= n)
           return String(this);
-        for (var o = r - this.length, s = ""; s.length < o; )
-          s += n;
+        for (var o = n - this.length, s = ""; s.length < o; )
+          s += r;
         return s.slice(0, o) + String(this);
       });
       var t = {
@@ -143,33 +143,33 @@ function ve() {
           },
           setup: {
             webSocketPromise: function(e) {
-              var r, n, o;
-              return t.tools.promise(function(s, i) {
-                r = new t.tools.ws(e), t.websocket.connection = r, o = function() {
-                  s(r);
-                }, n = function(l) {
-                  t.websocket.connection = null, i(l);
-                }, r.addEventListener("open", o), r.addEventListener("error", n), r.addEventListener("close", n);
+              var n, r, o;
+              return t.tools.promise(function(s, l) {
+                n = new t.tools.ws(e), t.websocket.connection = n, o = function() {
+                  s(n);
+                }, r = function(b) {
+                  t.websocket.connection = null, l(b);
+                }, n.addEventListener("open", o), n.addEventListener("error", r), n.addEventListener("close", r);
               }).finally(function() {
-                r.removeEventListener("open", o), r.removeEventListener("error", n), r.removeEventListener("close", n);
+                n.removeEventListener("open", o), n.removeEventListener("error", r), n.removeEventListener("close", r);
               });
             },
             connectToAddress: function(e) {
-              var r = t.tools.getLna();
+              var n = t.tools.getLna();
               t.log.trace("Attempting connection", e);
-              var n;
-              return r ? (t.log.trace("Connecting with lna.js"), n = r.detectLna(e, t.websocket.setup.webSocketPromise, {
+              var r;
+              return n ? (t.log.trace("Connecting with lna.js"), r = n.detectLna(e, t.websocket.setup.webSocketPromise, {
                 isWebSocket: !0,
                 defaultAddressSpace: "public"
-              })) : (t.log.trace("Connecting without lna.js"), n = t.websocket.setup.webSocketPromise(e)), n.catch(function(o) {
-                var s = o.denied ? "Connection attempt denied by Local Network Access restrictions" : "Unable to establish connection with " + t.TITLE, i = new Error(s);
-                throw r && o instanceof r.LnaError && (i.denied = o.denied, i.permission = o.permission), i;
+              })) : (t.log.trace("Connecting without lna.js"), r = t.websocket.setup.webSocketPromise(e)), r.catch(function(o) {
+                var s = o.denied ? "Connection attempt denied by Local Network Access restrictions" : "Unable to establish connection with " + t.TITLE, l = new Error(s);
+                throw n && o instanceof n.LnaError && (l.denied = o.denied, l.permission = o.permission), l;
               });
             },
             /** Loop through possible ports to open connection, sets web socket calls that will settle the promise. */
-            findConnection: function(e, r, n) {
+            findConnection: function(e, n, r) {
               if (t.websocket.shutdown) {
-                n(new Error("Connection attempt cancelled by user"));
+                r(new Error("Connection attempt cancelled by user"));
                 return;
               }
               if (e.port.secure.length)
@@ -177,85 +177,85 @@ function ve() {
               else if (e.port.insecure.length)
                 e.usingSecure && (t.log.error("No secure ports specified - forcing insecure connection"), e.usingSecure = !1);
               else {
-                n(new Error("No ports have been specified to connect over"));
+                r(new Error("No ports have been specified to connect over"));
                 return;
               }
-              var o = function(l) {
+              var o = function(b) {
                 if (t.websocket.shutdown) {
-                  n(new Error("Connection attempt cancelled by user"));
+                  r(new Error("Connection attempt cancelled by user"));
                   return;
                 }
-                if (l.denied) {
-                  n(l);
+                if (b.denied) {
+                  r(b);
                   return;
                 }
                 if (e.port.portIndex++, e.usingSecure && e.port.portIndex >= e.port.secure.length || !e.usingSecure && e.port.portIndex >= e.port.insecure.length)
                   if (e.hostIndex >= e.host.length - 1) {
-                    n(l);
+                    r(b);
                     return;
                   } else
                     e.hostIndex++, e.port.portIndex = 0;
-                t.websocket.setup.findConnection(e, r, n);
+                t.websocket.setup.findConnection(e, n, r);
               }, s;
               e.usingSecure ? s = e.protocol.secure + e.host[e.hostIndex] + ":" + e.port.secure[e.port.portIndex] : s = e.protocol.insecure + e.host[e.hostIndex] + ":" + e.port.insecure[e.port.portIndex];
-              var i = t.websocket.setup.connectToAddress(s);
-              i.then(
+              var l = t.websocket.setup.connectToAddress(s);
+              l.then(
                 //called on successful connection to qz, begins setup of websocket calls and resolves connect promise after certificate is sent
                 function() {
-                  if (t.log.info("Established connection with " + t.TITLE + " on " + s), t.websocket.setup.openConnection({ resolve: r, reject: n }), e.keepAlive > 0) {
-                    var l = setInterval(function() {
-                      if (!t.tools.isActive() || t.websocket.connection.interval !== l) {
-                        clearInterval(l);
+                  if (t.log.info("Established connection with " + t.TITLE + " on " + s), t.websocket.setup.openConnection({ resolve: n, reject: r }), e.keepAlive > 0) {
+                    var b = setInterval(function() {
+                      if (!t.tools.isActive() || t.websocket.connection.interval !== b) {
+                        clearInterval(b);
                         return;
                       }
                       t.websocket.connection.send("ping");
                     }, e.keepAlive * 1e3);
-                    t.websocket.connection.interval = l;
+                    t.websocket.connection.interval = b;
                   }
                 },
                 //called for errors during setup (such as invalid ports), reject connect promise only if all ports have been tried
-                function(l) {
-                  t.log.trace(l), o(l);
+                function(b) {
+                  t.log.trace(b), o(b);
                 }
               );
             },
             /** Finish setting calls on successful connection, sets web socket calls that won't settle the promise. */
             openConnection: function(e) {
-              t.websocket.connection.onclose = function(n) {
-                t.log.trace(n), t.websocket.connection = null, t.websocket.callClose(n), t.log.info("Closed connection with " + t.TITLE);
+              t.websocket.connection.onclose = function(r) {
+                t.log.trace(r), t.websocket.connection = null, t.websocket.callClose(r), t.log.info("Closed connection with " + t.TITLE);
                 for (var o in t.websocket.pendingCalls)
                   t.websocket.pendingCalls.hasOwnProperty(o) && t.websocket.pendingCalls[o].reject(new Error("Connection closed before response received"));
                 this.promise != null && this.promise.resolve();
-              }, t.websocket.connection.onerror = function(n) {
-                t.websocket.callError(n);
-              }, t.websocket.connection.sendData = function(n) {
-                t.log.trace("Preparing object for websocket", n), n.timestamp == null && (n.timestamp = Date.now(), typeof n.timestamp != "number" && (n.timestamp = (/* @__PURE__ */ new Date()).getTime())), n.promise != null && (n.uid = t.websocket.setup.newUID(), t.websocket.pendingCalls[n.uid] = n.promise), n.position = {
+              }, t.websocket.connection.onerror = function(r) {
+                t.websocket.callError(r);
+              }, t.websocket.connection.sendData = function(r) {
+                t.log.trace("Preparing object for websocket", r), r.timestamp == null && (r.timestamp = Date.now(), typeof r.timestamp != "number" && (r.timestamp = (/* @__PURE__ */ new Date()).getTime())), r.promise != null && (r.uid = t.websocket.setup.newUID(), t.websocket.pendingCalls[r.uid] = r.promise), r.position = {
                   x: typeof screen < "u" ? (screen.availWidth || screen.width) / 2 + (screen.left || screen.availLeft || 0) : 0,
                   y: typeof screen < "u" ? (screen.availHeight || screen.height) / 2 + (screen.top || screen.availTop || 0) : 0
                 };
                 try {
-                  if (n.call != null && n.signature == null && t.security.needsSigned(n.call)) {
+                  if (r.call != null && r.signature == null && t.security.needsSigned(r.call)) {
                     var o = {
-                      call: n.call,
-                      params: n.params,
-                      timestamp: n.timestamp
+                      call: r.call,
+                      params: r.params,
+                      timestamp: r.timestamp
                     }, s = t.tools.hash(t.tools.stringify(o));
-                    s.then || (s = t.tools.promise(function(i) {
-                      i(s);
-                    })), s.then(function(i) {
-                      return t.security.callSign(i);
-                    }).then(function(i) {
-                      t.log.trace("Signature for call", i), n.signature = i || "", n.signAlgorithm = t.security.signAlgorithm, t.signContent = void 0, t.websocket.connection.send(t.tools.stringify(n));
-                    }).catch(function(i) {
-                      t.log.error("Signing failed", i), n.promise != null && (n.promise.reject(new Error("Failed to sign request")), delete t.websocket.pendingCalls[n.uid]);
+                    s.then || (s = t.tools.promise(function(l) {
+                      l(s);
+                    })), s.then(function(l) {
+                      return t.security.callSign(l);
+                    }).then(function(l) {
+                      t.log.trace("Signature for call", l), r.signature = l || "", r.signAlgorithm = t.security.signAlgorithm, t.signContent = void 0, t.websocket.connection.send(t.tools.stringify(r));
+                    }).catch(function(l) {
+                      t.log.error("Signing failed", l), r.promise != null && (r.promise.reject(new Error("Failed to sign request")), delete t.websocket.pendingCalls[r.uid]);
                     });
                   } else
-                    t.log.trace("Signature for call", n.signature), t.websocket.connection.send(t.tools.stringify(n));
-                } catch (i) {
-                  t.log.error(i), n.promise != null && (n.promise.reject(i), delete t.websocket.pendingCalls[n.uid]);
+                    t.log.trace("Signature for call", r.signature), t.websocket.connection.send(t.tools.stringify(r));
+                } catch (l) {
+                  t.log.error(l), r.promise != null && (r.promise.reject(l), delete t.websocket.pendingCalls[r.uid]);
                 }
-              }, t.websocket.connection.onmessage = function(n) {
-                var o = JSON.parse(n.data);
+              }, t.websocket.connection.onmessage = function(r) {
+                var o = JSON.parse(r.data);
                 if (o.uid == null) {
                   if (o.type == null)
                     t.websocket.connection.close(4003, "Connected to incompatible " + t.TITLE + " version");
@@ -289,8 +289,8 @@ function ve() {
                 var s = t.websocket.pendingCalls[o.uid];
                 s == null ? t.log.allay("No promise found for returned response") : o.error != null ? s.reject(new Error(o.error)) : s.resolve(o.result), delete t.websocket.pendingCalls[o.uid];
               };
-              function r(n) {
-                n === void 0 && (n = null), b.api.getVersion().then(function(o) {
+              function n(r) {
+                r === void 0 && (r = null), k.api.getVersion().then(function(o) {
                   t.websocket.connection.version = o, t.websocket.connection.semver = o.toLowerCase().replace(/-rc\./g, "-rc").split(/[\\+\\.-]/g);
                   for (var s = 0; s < t.websocket.connection.semver.length; s++) {
                     try {
@@ -305,11 +305,11 @@ function ve() {
                   }
                   t.compatible.algorithm(!0);
                 }).then(function() {
-                  t.websocket.connection.sendData({ certificate: n, promise: e });
+                  t.websocket.connection.sendData({ certificate: r, promise: e });
                 });
               }
-              t.security.callCert().then(r).catch(function(n) {
-                t.log.warn("Failed to get certificate:", n), t.security.rejectOnCertFailure ? e.reject(n) : r(null);
+              t.security.callCert().then(n).catch(function(r) {
+                t.log.warn("Failed to get certificate:", r), t.security.rejectOnCertFailure ? e.reject(r) : n(null);
               });
             },
             /** Generate unique ID used to map a response to a call. */
@@ -318,16 +318,16 @@ function ve() {
               return (new Array(e + 1).join("0") + (Math.random() * Math.pow(36, e) << 0).toString(36)).slice(-e);
             }
           },
-          dataPromise: function(e, r, n, o) {
-            return t.tools.promise(function(s, i) {
-              var l = {
+          dataPromise: function(e, n, r, o) {
+            return t.tools.promise(function(s, l) {
+              var b = {
                 call: e,
-                promise: { resolve: s, reject: i },
-                params: r,
-                signature: n,
+                promise: { resolve: s, reject: l },
+                params: n,
+                signature: r,
                 timestamp: o
               };
-              t.websocket.connection.sendData(l);
+              t.websocket.connection.sendData(b);
             });
           },
           /** Library of promises awaiting a response, uid -> promise */
@@ -337,8 +337,8 @@ function ve() {
           /** Calls all functions registered to listen for errors. */
           callError: function(e) {
             if (Array.isArray(t.websocket.errorCallbacks))
-              for (var r = 0; r < t.websocket.errorCallbacks.length; r++)
-                t.websocket.errorCallbacks[r](e);
+              for (var n = 0; n < t.websocket.errorCallbacks.length; n++)
+                t.websocket.errorCallbacks[n](e);
             else
               t.websocket.errorCallbacks(e);
           },
@@ -347,8 +347,8 @@ function ve() {
           /** Calls all functions registered to listen for closing. */
           callClose: function(e) {
             if (Array.isArray(t.websocket.closedCallbacks))
-              for (var r = 0; r < t.websocket.closedCallbacks.length; r++)
-                t.websocket.closedCallbacks[r](e);
+              for (var n = 0; n < t.websocket.closedCallbacks.length; n++)
+                t.websocket.closedCallbacks[n](e);
             else
               t.websocket.closedCallbacks(e);
           }
@@ -386,8 +386,8 @@ function ve() {
           /** Calls all functions registered to listen for serial events. */
           callSerial: function(e) {
             if (Array.isArray(t.serial.serialCallbacks))
-              for (var r = 0; r < t.serial.serialCallbacks.length; r++)
-                t.serial.serialCallbacks[r](e);
+              for (var n = 0; n < t.serial.serialCallbacks.length; n++)
+                t.serial.serialCallbacks[n](e);
             else
               t.serial.serialCallbacks(e);
           }
@@ -398,8 +398,8 @@ function ve() {
           /** Calls all functions registered to listen for network socket events. */
           callSocket: function(e) {
             if (Array.isArray(t.socket.socketCallbacks))
-              for (var r = 0; r < t.socket.socketCallbacks.length; r++)
-                t.socket.socketCallbacks[r](e);
+              for (var n = 0; n < t.socket.socketCallbacks.length; n++)
+                t.socket.socketCallbacks[n](e);
             else
               t.socket.socketCallbacks(e);
           }
@@ -410,8 +410,8 @@ function ve() {
           /** Calls all functions registered to listen for usb events. */
           callUsb: function(e) {
             if (Array.isArray(t.usb.usbCallbacks))
-              for (var r = 0; r < t.usb.usbCallbacks.length; r++)
-                t.usb.usbCallbacks[r](e);
+              for (var n = 0; n < t.usb.usbCallbacks.length; n++)
+                t.usb.usbCallbacks[n](e);
             else
               t.usb.usbCallbacks(e);
           }
@@ -422,8 +422,8 @@ function ve() {
           /** Calls all functions registered to listen for hid events. */
           callHid: function(e) {
             if (Array.isArray(t.hid.hidCallbacks))
-              for (var r = 0; r < t.hid.hidCallbacks.length; r++)
-                t.hid.hidCallbacks[r](e);
+              for (var n = 0; n < t.hid.hidCallbacks.length; n++)
+                t.hid.hidCallbacks[n](e);
             else
               t.hid.hidCallbacks(e);
           }
@@ -434,8 +434,8 @@ function ve() {
           /** Calls all functions registered to listen for printer events. */
           callPrinter: function(e) {
             if (Array.isArray(t.printers.printerCallbacks))
-              for (var r = 0; r < t.printers.printerCallbacks.length; r++)
-                t.printers.printerCallbacks[r](e);
+              for (var n = 0; n < t.printers.printerCallbacks.length; n++)
+                t.printers.printerCallbacks[n](e);
             else
               t.printers.printerCallbacks(e);
           }
@@ -446,16 +446,16 @@ function ve() {
           /** Calls all functions registered to listen for file events. */
           callFile: function(e) {
             if (Array.isArray(t.file.fileCallbacks))
-              for (var r = 0; r < t.file.fileCallbacks.length; r++)
-                t.file.fileCallbacks[r](e);
+              for (var n = 0; n < t.file.fileCallbacks.length; n++)
+                t.file.fileCallbacks[n](e);
             else
               t.file.fileCallbacks(e);
           }
         },
         security: {
           /** Function used to resolve promise when acquiring site's public certificate. */
-          certHandler: function(e, r) {
-            r();
+          certHandler: function(e, n) {
+            n();
           },
           /** Called to create new promise (using {@link _qz.security.certHandler}) for certificate retrieval. */
           callCert: function() {
@@ -475,7 +475,7 @@ function ve() {
           signAlgorithm: "SHA1",
           rejectOnCertFailure: !1,
           needsSigned: function(e) {
-            const r = [
+            const n = [
               "printers.getStatus",
               "printers.stopListening",
               "usb.isClaimed",
@@ -488,7 +488,7 @@ function ve() {
               "file.stopListening",
               "getVersion"
             ];
-            return e != null && r.indexOf(e) === -1;
+            return e != null && n.indexOf(e) === -1;
           }
         },
         tools: {
@@ -502,19 +502,19 @@ function ve() {
           },
           /** Stub for rejecting with an Error from withing a Promise */
           reject: function(e) {
-            return t.tools.promise(function(r, n) {
-              n(e);
+            return t.tools.promise(function(n, r) {
+              r(e);
             });
           },
           stringify: function(e) {
-            var r = Array.prototype.toJSON;
+            var n = Array.prototype.toJSON;
             delete Array.prototype.toJSON;
-            function n(s, i) {
+            function r(s, l) {
               if (s !== "promise")
-                return i;
+                return l;
             }
-            var o = JSON.stringify(e, n);
-            return r && (Array.prototype.toJSON = r), o;
+            var o = JSON.stringify(e, r);
+            return n && (Array.prototype.toJSON = n), o;
           },
           hash: function(e) {
             return typeof Sha256 < "u" ? Sha256.hash(e) : t.SHA.hash(e);
@@ -553,55 +553,55 @@ function ve() {
           },
           absolute: function(e) {
             if (typeof window < "u" && typeof document.createElement == "function") {
-              var r = document.createElement("a");
-              return r.href = e, r.href;
+              var n = document.createElement("a");
+              return n.href = e, n.href;
             } else
               return he.resolve(e);
           },
           relative: function(e) {
-            for (var r = 0; r < e.length; r++)
-              if (e[r].constructor === Object) {
-                var n = !1;
-                e[r].data && e[r].data.search && e[r].data.search(/data:image\/\w+;base64,/) === 0 ? (e[r].flavor = "base64", e[r].data = e[r].data.replace(/^data:image\/\w+;base64,/, "")) : e[r].flavor ? ["FILE", "XML"].indexOf(e[r].flavor.toUpperCase()) > -1 && (n = !0) : (e[r].format && ["HTML", "IMAGE", "PDF", "FILE", "XML"].indexOf(e[r].format.toUpperCase()) > -1 || e[r].type && (["PIXEL", "IMAGE", "PDF"].indexOf(e[r].type.toUpperCase()) > -1 && !e[r].format || ["HTML", "PDF"].indexOf(e[r].type.toUpperCase()) > -1 && (!e[r].format || e[r].format.toUpperCase() === "FILE"))) && (n = !0), n && (e[r].data = t.tools.absolute(e[r].data)), e[r].options && typeof e[r].options.overlay == "string" && (e[r].options.overlay = t.tools.absolute(e[r].options.overlay));
+            for (var n = 0; n < e.length; n++)
+              if (e[n].constructor === Object) {
+                var r = !1;
+                e[n].data && e[n].data.search && e[n].data.search(/data:image\/\w+;base64,/) === 0 ? (e[n].flavor = "base64", e[n].data = e[n].data.replace(/^data:image\/\w+;base64,/, "")) : e[n].flavor ? ["FILE", "XML"].indexOf(e[n].flavor.toUpperCase()) > -1 && (r = !0) : (e[n].format && ["HTML", "IMAGE", "PDF", "FILE", "XML"].indexOf(e[n].format.toUpperCase()) > -1 || e[n].type && (["PIXEL", "IMAGE", "PDF"].indexOf(e[n].type.toUpperCase()) > -1 && !e[n].format || ["HTML", "PDF"].indexOf(e[n].type.toUpperCase()) > -1 && (!e[n].format || e[n].format.toUpperCase() === "FILE"))) && (r = !0), r && (e[n].data = t.tools.absolute(e[n].data)), e[n].options && typeof e[n].options.overlay == "string" && (e[n].options.overlay = t.tools.absolute(e[n].options.overlay));
               }
           },
           /** Performs deep copy to target from remaining params */
           extend: function(e) {
             typeof e != "object" && (e = {});
-            for (var r = 1; r < arguments.length; r++) {
-              var n = arguments[r];
-              if (n) {
-                for (var o in n)
-                  if (n.hasOwnProperty(o)) {
-                    if (e === n[o])
+            for (var n = 1; n < arguments.length; n++) {
+              var r = arguments[n];
+              if (r) {
+                for (var o in r)
+                  if (r.hasOwnProperty(o)) {
+                    if (e === r[o])
                       continue;
-                    if (n[o] && n[o].constructor && n[o].constructor === Object) {
+                    if (r[o] && r[o].constructor && r[o].constructor === Object) {
                       var s;
-                      Array.isArray(n[o]) ? s = e[o] || [] : s = e[o] || {}, e[o] = t.tools.extend(s, n[o]);
-                    } else n[o] !== void 0 && (e[o] = n[o]);
+                      Array.isArray(r[o]) ? s = e[o] || [] : s = e[o] || {}, e[o] = t.tools.extend(s, r[o]);
+                    } else r[o] !== void 0 && (e[o] = r[o]);
                   }
               }
             }
             return e;
           },
-          versionCompare: function(e, r, n, o) {
+          versionCompare: function(e, n, r, o) {
             if (t.tools.assertActive()) {
               var s = t.websocket.connection.semver;
               if (Array.isArray(s)) {
                 if (e != null && s.length > 0 && s[0] != e)
                   return s[0] - e;
-                if (r != null && s.length > 1 && s[1] != r)
-                  return s[1] - r;
-                if (n != null && s.length > 2 && s[2] != n)
-                  return s[2] - n;
+                if (n != null && s.length > 1 && s[1] != n)
+                  return s[1] - n;
+                if (r != null && s.length > 2 && s[2] != r)
+                  return s[2] - r;
                 if (o != null && s.length > 3 && s[3] != o)
                   return Number.isInteger(s[3]) && Number.isInteger(o) ? s[3] - o : s[3].toString().localeCompare(o.toString());
               }
               return 0;
             }
           },
-          isVersion: function(e, r, n, o) {
-            return t.tools.versionCompare(e, r, n, o) == 0;
+          isVersion: function(e, n, r, o) {
+            return t.tools.versionCompare(e, n, r, o) == 0;
           },
           isActive: function() {
             return !t.websocket.shutdown && t.websocket.connection != null && t.websocket.connection.readyState === t.tools.ws.OPEN;
@@ -612,12 +612,12 @@ function ve() {
             throw new Error("A connection to " + t.TITLE + " has not been established yet");
           },
           uint8ArrayToHex: function(e) {
-            return Array.from(e).map(function(r) {
-              return r.toString(16).padStart(2, "0");
+            return Array.from(e).map(function(n) {
+              return n.toString(16).padStart(2, "0");
             }).join("");
           },
           uint8ArrayToBase64: function(e) {
-            var r = [
+            var n = [
               "A",
               "B",
               "C",
@@ -682,58 +682,58 @@ function ve() {
               "9",
               "+",
               "/"
-            ], n = "", o, s = e.length;
+            ], r = "", o, s = e.length;
             for (o = 2; o < s; o += 3)
-              n += r[e[o - 2] >> 2], n += r[(e[o - 2] & 3) << 4 | e[o - 1] >> 4], n += r[(e[o - 1] & 15) << 2 | e[o] >> 6], n += r[e[o] & 63];
-            return o === s + 1 && (n += r[e[o - 2] >> 2], n += r[(e[o - 2] & 3) << 4], n += "=="), o === s && (n += r[e[o - 2] >> 2], n += r[(e[o - 2] & 3) << 4 | e[o - 1] >> 4], n += r[(e[o - 1] & 15) << 2], n += "="), n;
+              r += n[e[o - 2] >> 2], r += n[(e[o - 2] & 3) << 4 | e[o - 1] >> 4], r += n[(e[o - 1] & 15) << 2 | e[o] >> 6], r += n[e[o] & 63];
+            return o === s + 1 && (r += n[e[o - 2] >> 2], r += n[(e[o - 2] & 3) << 4], r += "=="), o === s && (r += n[e[o - 2] >> 2], r += n[(e[o - 2] & 3) << 4 | e[o - 1] >> 4], r += n[(e[o - 1] & 15) << 2], r += "="), r;
           }
         },
         compatible: {
           /** Converts message format to a previous version's */
           data: function(e) {
-            for (var r = 0; r < e.length; r++)
-              if (e[r].constructor === Object && e[r].data instanceof Uint8Array && e[r].flavor) {
-                var n = e[r].flavor.toString().toUpperCase();
-                switch (n) {
+            for (var n = 0; n < e.length; n++)
+              if (e[n].constructor === Object && e[n].data instanceof Uint8Array && e[n].flavor) {
+                var r = e[n].flavor.toString().toUpperCase();
+                switch (r) {
                   case "BASE64":
-                    e[r].data = t.tools.uint8ArrayToBase64(e[r].data);
+                    e[n].data = t.tools.uint8ArrayToBase64(e[n].data);
                     break;
                   case "HEX":
-                    e[r].data = t.tools.uint8ArrayToHex(e[r].data);
+                    e[n].data = t.tools.uint8ArrayToHex(e[n].data);
                     break;
                   default:
-                    throw new Error("Uint8Array conversion to '" + n + "' is not supported.");
+                    throw new Error("Uint8Array conversion to '" + r + "' is not supported.");
                 }
               }
             if (t.tools.versionCompare(2, 2, 4) < 0)
-              for (var r = 0; r < e.length; r++)
-                e[r].constructor === Object && e[r].options && typeof e[r].options.dotDensity == "string" && (e[r].options.dotDensity = e[r].options.dotDensity.toLowerCase().replace("-legacy", ""));
+              for (var n = 0; n < e.length; n++)
+                e[n].constructor === Object && e[n].options && typeof e[n].options.dotDensity == "string" && (e[n].options.dotDensity = e[n].options.dotDensity.toLowerCase().replace("-legacy", ""));
             if (t.tools.isVersion(2, 0)) {
               t.log.trace("Converting print data to v2.0 for " + t.websocket.connection.version);
-              for (var r = 0; r < e.length; r++)
-                e[r].constructor === Object && (e[r].type && e[r].type.toUpperCase() === "RAW" && e[r].format && e[r].format.toUpperCase() === "IMAGE" && (e[r].flavor && e[r].flavor.toUpperCase() === "BASE64" && (e[r].data = "data:image/compat;base64," + e[r].data), e[r].flavor = "IMAGE"), (e[r].type && e[r].type.toUpperCase() === "RAW" || e[r].format && e[r].format.toUpperCase() === "COMMAND") && (e[r].format = "RAW"), e[r].type = e[r].format, e[r].format = e[r].flavor, delete e[r].flavor);
+              for (var n = 0; n < e.length; n++)
+                e[n].constructor === Object && (e[n].type && e[n].type.toUpperCase() === "RAW" && e[n].format && e[n].format.toUpperCase() === "IMAGE" && (e[n].flavor && e[n].flavor.toUpperCase() === "BASE64" && (e[n].data = "data:image/compat;base64," + e[n].data), e[n].flavor = "IMAGE"), (e[n].type && e[n].type.toUpperCase() === "RAW" || e[n].format && e[n].format.toUpperCase() === "COMMAND") && (e[n].format = "RAW"), e[n].type = e[n].format, e[n].format = e[n].flavor, delete e[n].flavor);
             }
           },
           /* Converts config defaults to match previous version */
-          config: function(e, r) {
-            return t.tools.isVersion(2, 0) && (r.rasterize || (e.rasterize = !0)), t.tools.versionCompare(2, 2) < 0 && e.forceRaw !== "undefined" && (e.altPrinting = e.forceRaw, delete e.forceRaw), t.tools.versionCompare(2, 1, 2, 11) < 0 && e.spool && (e.spool.size && (e.perSpool = e.spool.size, delete e.spool.size), e.spool.end && (e.endOfDoc = e.spool.end, delete e.spool.end), delete e.spool), e;
+          config: function(e, n) {
+            return t.tools.isVersion(2, 0) && (n.rasterize || (e.rasterize = !0)), t.tools.versionCompare(2, 2) < 0 && e.forceRaw !== "undefined" && (e.altPrinting = e.forceRaw, delete e.forceRaw), t.tools.versionCompare(2, 1, 2, 11) < 0 && e.spool && (e.spool.size && (e.perSpool = e.spool.size, delete e.spool.size), e.spool.end && (e.endOfDoc = e.spool.end, delete e.spool.end), delete e.spool), e;
           },
           /** Compat wrapper with previous version **/
-          networking: function(e, r, n, o, s) {
-            return t.tools.isVersion(2, 0) ? t.tools.promise(function(i, l) {
+          networking: function(e, n, r, o, s) {
+            return t.tools.isVersion(2, 0) ? t.tools.promise(function(l, b) {
               t.websocket.dataPromise("websocket.getNetworkInfo", {
                 hostname: e,
-                port: r
-              }, n, o).then(function(m) {
-                i(typeof s < "u" ? s(m) : m);
-              }, l);
-            }) : t.tools.promise(function(i, l) {
+                port: n
+              }, r, o).then(function(w) {
+                l(typeof s < "u" ? s(w) : w);
+              }, b);
+            }) : t.tools.promise(function(l, b) {
               t.websocket.dataPromise("networking.device", {
                 hostname: e,
-                port: r
-              }, n, o).then(function(m) {
-                i({ ipAddress: m.ip, macAddress: m.mac });
-              }, l);
+                port: n
+              }, r, o).then(function(w) {
+                l({ ipAddress: w.ip, macAddress: w.mac });
+              }, b);
             });
           },
           /** Check if QZ version supports chosen algorithm */
@@ -749,7 +749,7 @@ function ve() {
           //@formatter:off - keep this block compact
           hash: function(e) {
             e = t.SHA._utf8Encode(e) + "";
-            for (var r = [
+            for (var n = [
               1116352408,
               1899447441,
               3049323471,
@@ -814,29 +814,29 @@ function ve() {
               2756734187,
               3204031479,
               3329325298
-            ], n = [1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225], o = e.length / 4 + 2, s = Math.ceil(o / 16), i = new Array(s), l = 0; l < s; l++) {
-              i[l] = new Array(16);
+            ], r = [1779033703, 3144134277, 1013904242, 2773480762, 1359893119, 2600822924, 528734635, 1541459225], o = e.length / 4 + 2, s = Math.ceil(o / 16), l = new Array(s), b = 0; b < s; b++) {
+              l[b] = new Array(16);
+              for (var w = 0; w < 16; w++)
+                l[b][w] = e.charCodeAt(b * 64 + w * 4) << 24 | e.charCodeAt(b * 64 + w * 4 + 1) << 16 | e.charCodeAt(b * 64 + w * 4 + 2) << 8 | e.charCodeAt(b * 64 + w * 4 + 3);
+            }
+            l[s - 1][14] = (e.length - 1) * 8 / Math.pow(2, 32), l[s - 1][14] = Math.floor(l[s - 1][14]), l[s - 1][15] = (e.length - 1) * 8 & 4294967295;
+            for (var _ = new Array(64), P, N, E, y, L, C, d, f, b = 0; b < s; b++) {
               for (var m = 0; m < 16; m++)
-                i[l][m] = e.charCodeAt(l * 64 + m * 4) << 24 | e.charCodeAt(l * 64 + m * 4 + 1) << 16 | e.charCodeAt(l * 64 + m * 4 + 2) << 8 | e.charCodeAt(l * 64 + m * 4 + 3);
-            }
-            i[s - 1][14] = (e.length - 1) * 8 / Math.pow(2, 32), i[s - 1][14] = Math.floor(i[s - 1][14]), i[s - 1][15] = (e.length - 1) * 8 & 4294967295;
-            for (var C = new Array(64), x, E, O, k, A, h, c, d, l = 0; l < s; l++) {
-              for (var y = 0; y < 16; y++)
-                C[y] = i[l][y];
-              for (var y = 16; y < 64; y++)
-                C[y] = t.SHA._dev1(C[y - 2]) + C[y - 7] + t.SHA._dev0(C[y - 15]) + C[y - 16] & 4294967295;
-              x = n[0], E = n[1], O = n[2], k = n[3], A = n[4], h = n[5], c = n[6], d = n[7];
-              for (var y = 0; y < 64; y++) {
-                var $ = d + t.SHA._sig1(A) + t.SHA._ch(A, h, c) + r[y] + C[y], ee = t.SHA._sig0(x) + t.SHA._maj(x, E, O);
-                d = c, c = h, h = A, A = k + $ & 4294967295, k = O, O = E, E = x, x = $ + ee & 4294967295;
+                _[m] = l[b][m];
+              for (var m = 16; m < 64; m++)
+                _[m] = t.SHA._dev1(_[m - 2]) + _[m - 7] + t.SHA._dev0(_[m - 15]) + _[m - 16] & 4294967295;
+              P = r[0], N = r[1], E = r[2], y = r[3], L = r[4], C = r[5], d = r[6], f = r[7];
+              for (var m = 0; m < 64; m++) {
+                var u = f + t.SHA._sig1(L) + t.SHA._ch(L, C, d) + n[m] + _[m], x = t.SHA._sig0(P) + t.SHA._maj(P, N, E);
+                f = d, d = C, C = L, L = y + u & 4294967295, y = E, E = N, N = P, P = u + x & 4294967295;
               }
-              n[0] = n[0] + x & 4294967295, n[1] = n[1] + E & 4294967295, n[2] = n[2] + O & 4294967295, n[3] = n[3] + k & 4294967295, n[4] = n[4] + A & 4294967295, n[5] = n[5] + h & 4294967295, n[6] = n[6] + c & 4294967295, n[7] = n[7] + d & 4294967295;
+              r[0] = r[0] + P & 4294967295, r[1] = r[1] + N & 4294967295, r[2] = r[2] + E & 4294967295, r[3] = r[3] + y & 4294967295, r[4] = r[4] + L & 4294967295, r[5] = r[5] + C & 4294967295, r[6] = r[6] + d & 4294967295, r[7] = r[7] + f & 4294967295;
             }
-            return t.SHA._hexStr(n[0]) + t.SHA._hexStr(n[1]) + t.SHA._hexStr(n[2]) + t.SHA._hexStr(n[3]) + t.SHA._hexStr(n[4]) + t.SHA._hexStr(n[5]) + t.SHA._hexStr(n[6]) + t.SHA._hexStr(n[7]);
+            return t.SHA._hexStr(r[0]) + t.SHA._hexStr(r[1]) + t.SHA._hexStr(r[2]) + t.SHA._hexStr(r[3]) + t.SHA._hexStr(r[4]) + t.SHA._hexStr(r[5]) + t.SHA._hexStr(r[6]) + t.SHA._hexStr(r[7]);
           },
           // Rotates right (circular right shift) value x by n positions
-          _rotr: function(e, r) {
-            return r >>> e | r << 32 - e;
+          _rotr: function(e, n) {
+            return n >>> e | n << 32 - e;
           },
           // logical functions
           _sig0: function(e) {
@@ -851,25 +851,25 @@ function ve() {
           _dev1: function(e) {
             return t.SHA._rotr(17, e) ^ t.SHA._rotr(19, e) ^ e >>> 10;
           },
-          _ch: function(e, r, n) {
-            return e & r ^ ~e & n;
+          _ch: function(e, n, r) {
+            return e & n ^ ~e & r;
           },
-          _maj: function(e, r, n) {
-            return e & r ^ e & n ^ r & n;
+          _maj: function(e, n, r) {
+            return e & n ^ e & r ^ n & r;
           },
           // note can't use toString(16) as it is implementation-dependant, and in IE returns signed numbers when used on full words
           _hexStr: function(e) {
-            for (var r = "", n, o = 7; o >= 0; o--)
-              n = e >>> o * 4 & 15, r += n.toString(16);
-            return r;
+            for (var n = "", r, o = 7; o >= 0; o--)
+              r = e >>> o * 4 & 15, n += r.toString(16);
+            return n;
           },
           // implementation of deprecated unescape() based on https://cwestblog.com/2011/05/23/escape-unescape-deprecated/ (and comments)
           _unescape: function(e) {
-            return e.replace(/%(u[\da-f]{4}|[\da-f]{2})/gi, function(r) {
-              if (r.length - 1)
-                return String.fromCharCode(parseInt(r.substring(r.length - 3 ? 2 : 1), 16));
-              var n = r.charCodeAt(0);
-              return n < 256 ? "%" + (0 + n.toString(16)).slice(-2).toUpperCase() : "%u" + ("000" + n.toString(16)).slice(-4).toUpperCase();
+            return e.replace(/%(u[\da-f]{4}|[\da-f]{2})/gi, function(n) {
+              if (n.length - 1)
+                return String.fromCharCode(parseInt(n.substring(n.length - 3 ? 2 : 1), 16));
+              var r = n.charCodeAt(0);
+              return r < 256 ? "%" + (0 + r.toString(16)).slice(-2).toUpperCase() : "%u" + ("000" + r.toString(16)).slice(-4).toUpperCase();
             });
           },
           _utf8Encode: function(e) {
@@ -878,23 +878,23 @@ function ve() {
           //@formatter:on
         }
       };
-      function g(e, r) {
-        this.config = t.tools.extend({}, t.printing.defaultConfig), this._dirtyOpts = {}, this.setPrinter = function(n) {
-          typeof n == "string" && (n = { name: n }), this.printer = n;
+      function h(e, n) {
+        this.config = t.tools.extend({}, t.printing.defaultConfig), this._dirtyOpts = {}, this.setPrinter = function(r) {
+          typeof r == "string" && (r = { name: r }), this.printer = r;
         }, this.getPrinter = function() {
           return this.printer;
-        }, this.reconfigure = function(n) {
-          for (var o in n)
-            n[o] !== void 0 && (this._dirtyOpts[o] = !0);
-          t.tools.extend(this.config, n);
+        }, this.reconfigure = function(r) {
+          for (var o in r)
+            r[o] !== void 0 && (this._dirtyOpts[o] = !0);
+          t.tools.extend(this.config, r);
         }, this.getOptions = function() {
           return t.compatible.config(this.config, this._dirtyOpts);
-        }, this.setPrinter(e), this.reconfigure(r);
+        }, this.setPrinter(e), this.reconfigure(n);
       }
-      g.prototype.print = function(e, r, n) {
-        b.print(this, e, r, n);
+      h.prototype.print = function(e, n, r) {
+        k.print(this, e, n, r);
       };
-      var b = {
+      var k = {
         /**
          * Calls related specifically to the web socket connection.
          * @namespace qz.websocket
@@ -930,41 +930,41 @@ function ve() {
            * @memberof qz.websocket
            */
           connect: function(e) {
-            return t.tools.promise(function(r, n) {
+            return t.tools.promise(function(n, r) {
               if (t.websocket.connection) {
-                const i = t.websocket.connection.readyState;
-                if (i === t.tools.ws.OPEN) {
-                  n(new Error("An open connection with " + t.TITLE + " already exists"));
+                const l = t.websocket.connection.readyState;
+                if (l === t.tools.ws.OPEN) {
+                  r(new Error("An open connection with " + t.TITLE + " already exists"));
                   return;
-                } else if (i === t.tools.ws.CONNECTING) {
-                  n(new Error("The current connection attempt has not returned yet"));
+                } else if (l === t.tools.ws.CONNECTING) {
+                  r(new Error("The current connection attempt has not returned yet"));
                   return;
-                } else if (i === t.tools.ws.CLOSING) {
-                  n(new Error("Waiting for previous disconnect request to complete"));
+                } else if (l === t.tools.ws.CLOSING) {
+                  r(new Error("Waiting for previous disconnect request to complete"));
                   return;
                 }
               }
               if (t.tools.ws) {
                 if (!t.tools.ws.CLOSED || t.tools.ws.CLOSED == 2) {
-                  n(new Error("Unsupported WebSocket version detected: HyBi-00/Hixie-76"));
+                  r(new Error("Unsupported WebSocket version detected: HyBi-00/Hixie-76"));
                   return;
                 }
               } else {
-                n(new Error("WebSocket not supported by this browser"));
+                r(new Error("WebSocket not supported by this browser"));
                 return;
               }
               if (e == null && (e = {}), (typeof location > "u" || location.protocol !== "https:") && typeof e.usingSecure > "u" && (t.log.trace("Disabling secure ports due to insecure page"), e.usingSecure = !1), typeof e.host < "u" && !Array.isArray(e.host) && (e.host = [e.host], t.websocket.connectConfig.usingSurf))
                 for (var o = 0; o < e.host.length; o++)
                   e.host[o] = t.tools.appendSurf(e.host[o]);
               t.websocket.shutdown = !1;
-              var s = function(i) {
-                var l = !1, m = function() {
-                  l || (l = !0, e && i < e.retries ? s(i + 1) : (t.websocket.connection = null, n.apply(null, arguments)));
-                }, C = function() {
-                  var x = t.tools.extend({}, t.websocket.connectConfig, e);
-                  t.websocket.setup.findConnection(x, r, m);
+              var s = function(l) {
+                var b = !1, w = function() {
+                  b || (b = !0, e && l < e.retries ? s(l + 1) : (t.websocket.connection = null, r.apply(null, arguments)));
+                }, _ = function() {
+                  var P = t.tools.extend({}, t.websocket.connectConfig, e);
+                  t.websocket.setup.findConnection(P, n, w);
                 };
-                i == 0 ? C() : setTimeout(C, e.delay * 1e3);
+                l == 0 ? _() : setTimeout(_, e.delay * 1e3);
               };
               s(0);
             });
@@ -977,8 +977,8 @@ function ve() {
            * @memberof qz.websocket
            */
           disconnect: function() {
-            return t.tools.promise(function(e, r) {
-              t.websocket.connection != null ? t.tools.isActive() || t.websocket.connection.readyState === t.tools.ws.CONNECTING ? (t.websocket.shutdown = !0, t.websocket.connection.promise = { resolve: e, reject: r }, t.websocket.connection.close()) : r(new Error("Current connection is still closing")) : r(new Error("No open connection with " + t.TITLE));
+            return t.tools.promise(function(e, n) {
+              t.websocket.connection != null ? t.tools.isActive() || t.websocket.connection.readyState === t.tools.ws.CONNECTING ? (t.websocket.shutdown = !0, t.websocket.connection.promise = { resolve: e, reject: n }, t.websocket.connection.close()) : n(new Error("Current connection is still closing")) : n(new Error("No open connection with " + t.TITLE));
             });
           },
           /**
@@ -1063,8 +1063,8 @@ function ve() {
            *
            * @memberof qz.printers
            */
-          getDefault: function(e, r) {
-            return t.websocket.dataPromise("printers.getDefault", null, e, r);
+          getDefault: function(e, n) {
+            return t.websocket.dataPromise("printers.getDefault", null, e, n);
           },
           /**
            * @param {string} [query] Search for a specific printer. All printers are returned if not provided.
@@ -1076,8 +1076,8 @@ function ve() {
            *
            * @memberof qz.printers
            */
-          find: function(e, r, n) {
-            return t.websocket.dataPromise("printers.find", { query: e }, r, n);
+          find: function(e, n, r) {
+            return t.websocket.dataPromise("printers.find", { query: e }, n, r);
           },
           /**
            * Provides a list, with additional information, for each printer available to QZ.
@@ -1106,12 +1106,12 @@ function ve() {
            *
            * @memberof qz.printers
            */
-          startListening: function(e, r) {
+          startListening: function(e, n) {
             Array.isArray(e) || (e = [e]);
-            var n = {
+            var r = {
               printerNames: e
             };
-            return r && r.jobData == !0 && (n.jobData = !0), r && r.maxJobData && (n.maxJobData = r.maxJobData), r && r.flavor && (n.flavor = r.flavor), t.websocket.dataPromise("printers.startListening", n);
+            return n && n.jobData == !0 && (r.jobData = !0), n && n.maxJobData && (r.maxJobData = n.maxJobData), n && n.flavor && (r.flavor = n.flavor), t.websocket.dataPromise("printers.startListening", r);
           },
           /**
            * Clear the queue of a specified printer or printers. Does not delete retained jobs.
@@ -1252,8 +1252,8 @@ function ve() {
            *
            * @memberof qz.configs
            */
-          create: function(e, r) {
-            return new g(e, r);
+          create: function(e, n) {
+            return new h(e, n);
           }
         },
         /**
@@ -1312,47 +1312,47 @@ function ve() {
          *
          * @memberof qz
          */
-        print: function(e, r) {
-          var n = !1, o = [], s = [];
-          arguments.length >= 3 && (typeof arguments[2] == "boolean" ? (n = arguments[2], arguments.length >= 5 && (o = arguments[3], s = arguments[4])) : arguments.length >= 4 && (o = arguments[2], s = arguments[3]), o && !Array.isArray(o) && (o = [o]), s && !Array.isArray(s) && (s = [s])), Array.isArray(e) || (e = [e]), Array.isArray(r[0]) || (r = [r]);
-          for (var i = 0; i < r.length; i++)
-            t.tools.relative(r[i]), t.compatible.data(r[i]);
-          for (var l = function(k) {
-            var A = {
-              printer: k.config.getPrinter(),
-              options: k.config.getOptions(),
-              data: k.data
+        print: function(e, n) {
+          var r = !1, o = [], s = [];
+          arguments.length >= 3 && (typeof arguments[2] == "boolean" ? (r = arguments[2], arguments.length >= 5 && (o = arguments[3], s = arguments[4])) : arguments.length >= 4 && (o = arguments[2], s = arguments[3]), o && !Array.isArray(o) && (o = [o]), s && !Array.isArray(s) && (s = [s])), Array.isArray(e) || (e = [e]), Array.isArray(n[0]) || (n = [n]);
+          for (var l = 0; l < n.length; l++)
+            t.tools.relative(n[l]), t.compatible.data(n[l]);
+          for (var b = function(y) {
+            var L = {
+              printer: y.config.getPrinter(),
+              options: y.config.getOptions(),
+              data: y.data
             };
-            return t.websocket.dataPromise("print", A, k.signature, k.timestamp);
-          }, m = [], C = 0; C < e.length || C < r.length; C++)
-            (function(k) {
-              var A = {
-                config: e[Math.min(k, e.length - 1)],
-                data: r[Math.min(k, r.length - 1)],
-                signature: o[k],
-                timestamp: s[k]
+            return t.websocket.dataPromise("print", L, y.signature, y.timestamp);
+          }, w = [], _ = 0; _ < e.length || _ < n.length; _++)
+            (function(y) {
+              var L = {
+                config: e[Math.min(y, e.length - 1)],
+                data: n[Math.min(y, n.length - 1)],
+                signature: o[y],
+                timestamp: s[y]
               };
-              m.push(function() {
-                return l(A);
+              w.push(function() {
+                return b(L);
               });
-            })(C);
-          var x = null;
-          if (n) {
-            var E = [];
-            x = function(k) {
-              E.push(k);
-            }, m.push(function() {
-              return t.tools.promise(function(k, A) {
-                E.length ? A(E) : k();
+            })(_);
+          var P = null;
+          if (r) {
+            var N = [];
+            P = function(y) {
+              N.push(y);
+            }, w.push(function() {
+              return t.tools.promise(function(y, L) {
+                N.length ? L(N) : y();
               });
             });
           }
-          var O = null;
-          return m.reduce(function(k, A) {
-            return O = k.catch(x).then(A), O;
-          }, t.tools.promise(function(k) {
-            k();
-          })), O;
+          var E = null;
+          return w.reduce(function(y, L) {
+            return E = y.catch(P).then(L), E;
+          }, t.tools.promise(function(y) {
+            y();
+          })), E;
         },
         /**
          * Calls related to interaction with serial ports.
@@ -1413,12 +1413,12 @@ function ve() {
            *
            * @memberof qz.serial
            */
-          openPort: function(e, r) {
-            var n = {
+          openPort: function(e, n) {
+            var r = {
               port: e,
-              options: r
+              options: n
             };
-            return t.websocket.dataPromise("serial.openPort", n);
+            return t.websocket.dataPromise("serial.openPort", r);
           },
           /**
            * Send commands over a serial port.
@@ -1437,15 +1437,15 @@ function ve() {
            *
            * @memberof qz.serial
            */
-          sendData: function(e, r, n) {
-            t.tools.versionCompare(2, 1, 0, 12) >= 0 && (typeof r != "object" && (r = {
-              data: r,
+          sendData: function(e, n, r) {
+            t.tools.versionCompare(2, 1, 0, 12) >= 0 && (typeof n != "object" && (n = {
+              data: n,
               type: "PLAIN"
-            }), r.type && r.type.toUpperCase() == "FILE" && (r.data = t.tools.absolute(r.data)));
+            }), n.type && n.type.toUpperCase() == "FILE" && (n.data = t.tools.absolute(n.data)));
             var o = {
               port: e,
-              data: r,
-              options: n
+              data: n,
+              options: r
             };
             return t.websocket.dataPromise("serial.sendData", o);
           },
@@ -1475,11 +1475,11 @@ function ve() {
            *
            * @memberof qz.socket
            */
-          open: function(e, r, n) {
+          open: function(e, n, r) {
             var o = {
               host: e,
-              port: r,
-              options: n
+              port: n,
+              options: r
             };
             return t.websocket.dataPromise("socket.open", o);
           },
@@ -1489,12 +1489,12 @@ function ve() {
            *
            * @memberof qz.socket
            */
-          close: function(e, r) {
-            var n = {
+          close: function(e, n) {
+            var r = {
               host: e,
-              port: r
+              port: n
             };
-            return t.websocket.dataPromise("socket.close", n);
+            return t.websocket.dataPromise("socket.close", r);
           },
           /**
            * Send data over an open socket.
@@ -1507,15 +1507,15 @@ function ve() {
            *
            * @memberof qz.socket
            */
-          sendData: function(e, r, n) {
-            typeof n != "object" && (n = {
-              data: n,
+          sendData: function(e, n, r) {
+            typeof r != "object" && (r = {
+              data: r,
               type: "PLAIN"
             });
             var o = {
               host: e,
-              port: r,
-              data: n
+              port: n,
+              data: r
             };
             return t.websocket.dataPromise("socket.sendData", o);
           },
@@ -1985,9 +1985,9 @@ function ve() {
            *
            * @memberof qz.file
            */
-          list: function(e, r) {
-            var n = t.tools.extend({ path: e }, r);
-            return t.websocket.dataPromise("file.list", n);
+          list: function(e, n) {
+            var r = t.tools.extend({ path: e }, n);
+            return t.websocket.dataPromise("file.list", r);
           },
           /**
            * Reads contents of file at the given path.<br/>
@@ -2002,9 +2002,9 @@ function ve() {
            *
            * @memberof qz.file
            */
-          read: function(e, r) {
-            var n = t.tools.extend({ path: e }, r);
-            return t.websocket.dataPromise("file.read", n);
+          read: function(e, n) {
+            var r = t.tools.extend({ path: e }, n);
+            return t.websocket.dataPromise("file.read", r);
           },
           /**
            * Writes data to the file at the given path.<br/>
@@ -2021,9 +2021,9 @@ function ve() {
            *
            * @memberof qz.file
            */
-          write: function(e, r) {
-            var n = t.tools.extend({ path: e }, r);
-            return t.websocket.dataPromise("file.write", n);
+          write: function(e, n) {
+            var r = t.tools.extend({ path: e }, n);
+            return t.websocket.dataPromise("file.write", r);
           },
           /**
            * Deletes a file at given path.<br/>
@@ -2037,9 +2037,9 @@ function ve() {
            *
            * @memberof qz.file
            */
-          remove: function(e, r) {
-            var n = t.tools.extend({ path: e }, r);
-            return t.websocket.dataPromise("file.remove", n);
+          remove: function(e, n) {
+            var r = t.tools.extend({ path: e }, n);
+            return t.websocket.dataPromise("file.remove", r);
           },
           /**
            * Provides a continuous stream of events (and optionally data) from a local file.
@@ -2062,10 +2062,10 @@ function ve() {
            *
            * @memberof qz.file
            */
-          startListening: function(e, r) {
-            r && typeof r.include < "u" && !Array.isArray(r.include) && (r.include = [r.include]), r && typeof r.exclude < "u" && !Array.isArray(r.exclude) && (r.exclude = [r.exclude]);
-            var n = t.tools.extend({ path: e }, r);
-            return t.websocket.dataPromise("file.startListening", n);
+          startListening: function(e, n) {
+            n && typeof n.include < "u" && !Array.isArray(n.include) && (n.include = [n.include]), n && typeof n.exclude < "u" && !Array.isArray(n.exclude) && (n.exclude = [n.exclude]);
+            var r = t.tools.extend({ path: e }, n);
+            return t.websocket.dataPromise("file.startListening", r);
           },
           /**
            * Closes listeners with the provided settings. Omitting the path parameter will result in all listeners closing.
@@ -2078,9 +2078,9 @@ function ve() {
            *
            * @memberof qz.file
            */
-          stopListening: function(e, r) {
-            var n = t.tools.extend({ path: e }, r);
-            return t.websocket.dataPromise("file.stopListening", n);
+          stopListening: function(e, n) {
+            var r = t.tools.extend({ path: e }, n);
+            return t.websocket.dataPromise("file.stopListening", r);
           },
           /**
            * List of functions called for any response from a file listener.
@@ -2110,12 +2110,12 @@ function ve() {
            * @memberof qz.networking
            * @since 2.1.0
            */
-          device: function(e, r) {
-            return t.tools.isVersion(2, 0) ? t.compatible.networking(e, r, null, null, function(n) {
-              return { ip: n.ipAddress, mac: n.macAddress };
+          device: function(e, n) {
+            return t.tools.isVersion(2, 0) ? t.compatible.networking(e, n, null, null, function(r) {
+              return { ip: r.ipAddress, mac: r.macAddress };
             }) : t.websocket.dataPromise("networking.device", {
               hostname: e,
-              port: r
+              port: n
             });
           },
           /**
@@ -2128,10 +2128,10 @@ function ve() {
            * @memberof qz.networking
            * @since 2.2.2
            */
-          hostname: function(e, r) {
-            return t.tools.versionCompare(2, 2, 2) < 0 ? t.tools.promise(function(n, o) {
-              t.websocket.dataPromise("networking.device", { hostname: e, port: r }).then(function(s) {
-                console.log(s), n(s.hostname);
+          hostname: function(e, n) {
+            return t.tools.versionCompare(2, 2, 2) < 0 ? t.tools.promise(function(r, o) {
+              t.websocket.dataPromise("networking.device", { hostname: e, port: n }).then(function(s) {
+                console.log(s), r(s.hostname);
               });
             }) : t.websocket.dataPromise("networking.hostname");
           },
@@ -2143,12 +2143,12 @@ function ve() {
            * @memberof qz.networking
            * @since 2.1.0
            */
-          devices: function(e, r) {
-            return t.tools.isVersion(2, 0) ? t.compatible.networking(e, r, null, null, function(n) {
-              return [{ ip: n.ipAddress, mac: n.macAddress }];
+          devices: function(e, n) {
+            return t.tools.isVersion(2, 0) ? t.compatible.networking(e, n, null, null, function(r) {
+              return [{ ip: r.ipAddress, mac: r.macAddress }];
             }) : t.websocket.dataPromise("networking.devices", {
               hostname: e,
-              port: r
+              port: n
             });
           }
         },
@@ -2166,8 +2166,8 @@ function ve() {
            *  @param {boolean} [options.rejectOnFailure=[false]] Overrides default behavior to call resolve with a blank certificate on failure.
            * @memberof qz.security
            */
-          setCertificatePromise: function(e, r) {
-            t.security.certHandler = e, t.security.rejectOnCertFailure = !!(r && r.rejectOnFailure);
+          setCertificatePromise: function(e, n) {
+            t.security.certHandler = e, t.security.rejectOnCertFailure = !!(n && n.rejectOnFailure);
           },
           /**
            * Set promise factory for calls to sign API calls.
@@ -2271,8 +2271,8 @@ function ve() {
            * @memberof qz.api
            * @since 2.1.0-4
            */
-          isVersionGreater: function(e, r, n, o) {
-            return t.tools.versionCompare(e, r, n, o) > 0;
+          isVersionGreater: function(e, n, r, o) {
+            return t.tools.versionCompare(e, n, r, o) > 0;
           },
           /**
            * Checks if the connected QZ Tray application is less than the specified version.
@@ -2286,8 +2286,8 @@ function ve() {
            * @memberof qz.api
            * @since 2.1.0-4
            */
-          isVersionLess: function(e, r, n, o) {
-            return t.tools.versionCompare(e, r, n, o) < 0;
+          isVersionLess: function(e, n, r, o) {
+            return t.tools.versionCompare(e, n, r, o) < 0;
           },
           /**
            * Change the promise library used by QZ API.
@@ -2343,39 +2343,61 @@ function ve() {
          */
         version: t.VERSION
       };
-      return b;
+      return k;
     })();
     (function() {
-      f.exports = p;
+      c.exports = p;
     })();
-  })(V)), V.exports;
+  })(z)), z.exports;
 }
-var we = ve();
-const T = /* @__PURE__ */ ae(we);
-async function Ce() {
-  await j(null, { layoutTest: !0 });
-  const [f, u] = await Promise.allSettled([T.printers.find(), T.printers.getDefault()]);
-  if (f.status === "rejected") throw f.reason;
+var Ce = we();
+const I = /* @__PURE__ */ le(Ce);
+async function Se() {
+  await Q(null, { layoutTest: !0 });
+  const [c, i] = await Promise.allSettled([I.printers.find(), I.printers.getDefault()]);
+  if (c.status === "rejected") throw c.reason;
   return {
-    printers: Array.isArray(f.value) ? f.value : f.value ? [f.value] : [],
-    defaultPrinter: u.status === "fulfilled" && u.value || ""
+    printers: Array.isArray(c.value) ? c.value : c.value ? [c.value] : [],
+    defaultPrinter: i.status === "fulfilled" && i.value || ""
   };
 }
-async function Se(f) {
-  const u = X(f), p = K(ie, u);
-  await j(null, { layoutTest: !0 });
-  const t = u.printer || await T.printers.getDefault();
-  return await T.print(T.configs.create(t, { encoding: "UTF-8" }), p), t;
+async function xe(c) {
+  const i = Y(c), p = X(ue, i);
+  await Q(null, { layoutTest: !0 });
+  const t = i.printer || await I.printers.getDefault();
+  return await I.print(I.configs.create(t, { encoding: "UTF-8" }), p), t;
 }
-function xe(f, { layoutTest: u = !1 } = {}) {
-  T.security.setCertificatePromise(async () => {
-    const p = u ? "/api/method/product_qr.wo_labels.qz_signing.layout_certificate" : `/api/method/product_qr.wo_labels.qz_signing.certificate?work_order=${encodeURIComponent(f)}`, t = await fetch(p, {
+function ne(c, i) {
+  try {
+    const t = JSON.parse(c?._server_messages || "[]").map((h) => JSON.parse(h).message).filter(Boolean).join(" ");
+    if (t) return t;
+  } catch {
+  }
+  return i;
+}
+async function Ae(c) {
+  const i = await fetch("/api/method/product_qr.wo_labels.labels.get_existing_label_numbers", {
+    method: "POST",
+    credentials: "same-origin",
+    cache: "no-store",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Frappe-CSRF-Token": window.csrf_token || ""
+    },
+    body: JSON.stringify({ name: c })
+  }), p = await i.json();
+  if (!i.ok) throw new Error(ne(p, "Gagal memuat nomor urut label yang sudah terbit"));
+  return p.message || [];
+}
+function _e(c, { layoutTest: i = !1 } = {}) {
+  I.security.setCertificatePromise(async () => {
+    const p = i ? "/api/method/product_qr.wo_labels.qz_signing.layout_certificate" : `/api/method/product_qr.wo_labels.qz_signing.certificate?work_order=${encodeURIComponent(c)}`, t = await fetch(p, {
       cache: "no-store"
     });
     if (!t.ok) throw new Error("Sertifikat QZ Tray belum tersedia atau akses ditolak");
     return (await t.json()).message;
-  }, { rejectOnFailure: !0 }), T.security.setSignatureAlgorithm("SHA512"), T.security.setSignaturePromise(async (p) => {
-    const t = await fetch(u ? "/api/method/product_qr.wo_labels.qz_signing.layout_sign" : "/api/method/product_qr.wo_labels.qz_signing.sign", {
+  }, { rejectOnFailure: !0 }), I.security.setSignatureAlgorithm("SHA512"), I.security.setSignaturePromise(async (p) => {
+    const t = await fetch(i ? "/api/method/product_qr.wo_labels.qz_signing.layout_sign" : "/api/method/product_qr.wo_labels.qz_signing.sign", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -2383,140 +2405,257 @@ function xe(f, { layoutTest: u = !1 } = {}) {
       },
       credentials: "same-origin",
       cache: "no-store",
-      body: JSON.stringify(u ? { request: p } : { work_order: f, request: p })
+      body: JSON.stringify(i ? { request: p } : { work_order: c, request: p })
     });
     if (!t.ok) throw new Error("Gagal menandatangani permintaan QZ Tray");
     return (await t.json()).message;
   });
 }
-async function j(f, u) {
-  xe(f, u), T.websocket.isActive() || await T.websocket.connect({ retries: 2, delay: 1 });
+async function Q(c, i) {
+  _e(c, i), I.websocket.isActive() || await I.websocket.connect({ retries: 2, delay: 1 });
 }
-async function Ae(f, u = 0) {
+async function Pe(c, i = 0) {
+  const p = i && typeof i == "object" ? i : { extra: i }, t = { name: c, extra: p.extra ?? 0 };
+  p.appendCount !== void 0 && (t.append_count = p.appendCount), p.labelNumbers !== void 0 && (t.label_numbers = p.labelNumbers);
   try {
-    await j(f);
-    const p = await fetch("/api/method/product_qr.wo_labels.labels.get_label_data", {
+    await Q(c);
+    const h = await fetch("/api/method/product_qr.wo_labels.labels.get_label_data", {
       method: "POST",
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json",
         "X-Frappe-CSRF-Token": window.csrf_token || ""
       },
-      body: JSON.stringify({ name: f, extra: u })
-    }), t = await p.json();
-    if (!p.ok) {
-      let o = "";
-      try {
-        o = JSON.parse(t._server_messages || "[]").map((i) => JSON.parse(i).message).filter(Boolean).join(" ");
-      } catch {
-      }
-      throw new Error(o || "Gagal mengambil data label");
-    }
-    const { message: g } = t;
-    if (!g)
+      body: JSON.stringify(t)
+    }), k = await h.json();
+    if (!h.ok)
+      throw new Error(ne(k, "Gagal mengambil data label"));
+    const { message: e } = k;
+    if (!e)
       throw new Error("Data label kosong");
-    const b = Z();
-    let e = b?.printer || await T.printers.getDefault();
-    const r = g.labels?.length || 0;
-    if (!r || r !== g.label_count) throw new Error("Jumlah serial label tidak sesuai");
-    const n = T.configs.create(e, {
+    const n = K();
+    let r = n?.printer || await I.printers.getDefault();
+    const o = e.labels?.length || 0;
+    if (!o || o !== e.label_count) throw new Error("Jumlah label tidak sesuai");
+    const s = I.configs.create(r, {
       encoding: "UTF-8"
     });
-    return await T.print(n, K(g, b)), !0;
-  } catch (p) {
-    throw console.error("QZ Tray Error:", p), p;
+    return await I.print(s, X(e, n)), !0;
+  } catch (h) {
+    throw console.error("QZ Tray Error:", h), h;
   }
 }
-const Pe = { id: "label-print-title" }, _e = ["max"], Le = { key: 0 }, Te = {
+const Le = { id: "label-print-title" }, Ee = ["disabled"], Te = {
+  key: 0,
+  class: "label-count-field"
+}, Ne = ["max"], Oe = {
   key: 1,
-  style: { color: "#b3261e" }
-}, Ee = { class: "dlg-actions" }, Oe = ["disabled"], Ne = { id: "wo-label-error-title" }, Ue = { class: "error-dialog-message" }, He = {
+  class: "label-count-field"
+}, Ue = {
+  key: 0,
+  class: "label-print-note"
+}, Ie = {
+  key: 2,
+  class: "label-count-field"
+}, He = { class: "label-print-note" }, Fe = { key: 0 }, qe = {
+  key: 0,
+  class: "label-print-note"
+}, De = {
+  key: 1,
+  class: "label-print-note warning"
+}, $e = {
+  key: 2,
+  class: "label-print-note"
+}, je = ["value"], Me = {
+  key: 4,
+  class: "label-print-note"
+}, Re = { key: 3 }, Ve = { key: 4 }, ze = { key: 5 }, Qe = {
+  key: 6,
+  class: "label-print-note warning"
+}, Ge = { class: "dlg-actions" }, Je = ["disabled"], Be = { id: "wo-label-error-title" }, We = { class: "error-dialog-message" }, Ze = {
   key: 0,
   class: "error-dialog-details"
-}, Ie = { class: "dlg-actions" }, xt = {
+}, Ke = { class: "dlg-actions" }, Xe = {
   __name: "WorkOrderLabelDialogs",
-  setup(f) {
-    const u = _(null), p = _(null), t = _(null), g = _(null), b = _(0), e = q(
-      () => b.value !== "" && Number.isInteger(Number(b.value)) && Number(b.value) >= 0 && P.labelCount + Number(b.value) <= 1e4
-    ), r = q(() => P.labelCount + Number(b.value || 0));
-    Q(() => P.workOrder, (i) => {
-      i && (b.value = 0, B(() => {
-        u.value?.open || u.value?.showModal();
+  setup(c) {
+    const i = A(null), p = A(null), t = A(null), h = A(null), k = A("automatic"), e = A(1), n = A(0), r = A([]), o = A(""), s = A(null), l = A(!1), b = A("");
+    let w = 0;
+    const _ = q(() => n.value !== "" && Number.isInteger(Number(n.value)) && Number(n.value) >= 0), P = q(() => e.value !== "" && Number.isInteger(Number(e.value)) && Number(e.value) >= 1 && Number(e.value) <= 1e4), N = q(() => Math.max(0, ...r.value.map((m) => Number(m.label_number) || 0))), E = q(() => k.value === "automatic" ? T.labelCount + Number(n.value || 0) : k.value === "append" ? Number(e.value || 0) : o.value ? 1 : 0), y = q(() => k.value === "automatic" ? _.value && E.value >= 1 && E.value <= 1e4 : k.value === "append" ? r.value.length > 0 && P.value : r.value.some((m) => Number(m.label_number) === Number(o.value)));
+    async function L(m = T.workOrder) {
+      if (!m) return;
+      const u = ++w;
+      l.value = !0, b.value = "";
+      try {
+        const x = await Ae(m);
+        u === w && m === T.workOrder && (r.value = x?.labels || [], s.value = x?.adonan_ke ?? null);
+      } catch (x) {
+        u === w && (r.value = [], s.value = null, b.value = x.message || "Gagal memuat nomor urut label.");
+      } finally {
+        u === w && (l.value = !1);
+      }
+    }
+    G(() => T.workOrder, (m) => {
+      m && (k.value = "automatic", e.value = 1, n.value = 0, r.value = [], o.value = "", s.value = null, L(m), J(() => {
+        i.value?.open || i.value?.showModal();
       }));
-    }), Q(g, (i) => {
-      i && B(() => {
+    }), G(h, (m) => {
+      m && J(() => {
         p.value?.open || p.value?.showModal(), t.value?.focus();
       });
     });
-    function n() {
-      u.value?.open && u.value.close(), b.value = 0, P.workOrder = "", P.labelCount = 0, P.afterSave = "";
+    function C() {
+      i.value?.open && i.value.close(), w++, k.value = "automatic", e.value = 1, n.value = 0, r.value = [], o.value = "", s.value = null, l.value = !1, b.value = "", T.workOrder = "", T.labelCount = 0, T.afterSave = "";
     }
-    async function o() {
-      const i = P.workOrder;
-      if (!(!i || !e.value))
+    async function d() {
+      const m = T.workOrder;
+      if (!(!m || !y.value))
         try {
-          await Ae(i, Number(b.value)), n();
-        } catch (l) {
-          g.value = {
+          const u = k.value === "automatic" ? { extra: Number(n.value) } : k.value === "append" ? { appendCount: Number(e.value) } : { labelNumbers: [Number(o.value)] };
+          await Pe(m, u), C();
+        } catch (u) {
+          h.value = {
             title: "Cetak Label Gagal",
-            message: l.message || "Gagal terhubung ke QZ Tray atau printer.",
+            message: u.message || "Gagal terhubung ke QZ Tray atau printer.",
             details: [],
-            hint: /sign|sertifikat|certificate/i.test(l.message || "") ? "Periksa sertifikat QZ Tray di komputer dan private key di server." : "Pastikan QZ Tray sedang berjalan di komputer Anda."
+            hint: /sign|sertifikat|certificate/i.test(u.message || "") ? "Periksa sertifikat QZ Tray di komputer dan private key di server." : "Pastikan QZ Tray sedang berjalan di komputer Anda."
           };
         }
     }
-    function s() {
-      p.value?.open && p.value.close(), g.value = null;
+    function f() {
+      p.value?.open && p.value.close(), h.value = null;
     }
-    return (i, l) => (v(), w(U, null, [
+    return (m, u) => (g(), v(D, null, [
       a("dialog", {
         ref_key: "labelPrintDialog",
-        ref: u,
+        ref: i,
         class: "dialog",
         "aria-labelledby": "label-print-title",
-        onCancel: D(n, ["prevent"]),
-        onClick: D(n, ["self"])
+        onCancel: R(C, ["prevent"]),
+        onClick: R(C, ["self"])
       }, [
-        a("h3", Pe, S(L(P).afterSave ? `${L(P).afterSave} tersimpan` : "Cetak label?"), 1),
+        a("h3", Le, S(U(T).afterSave ? `${U(T).afterSave} tersimpan` : "Cetak label?"), 1),
         a("p", null, [
-          l[1] || (l[1] = H("Cetak label untuk Work Order ", -1)),
-          a("strong", null, S(L(P).workOrder), 1),
-          l[2] || (l[2] = H("?", -1))
+          u[4] || (u[4] = O("Cetak label untuk Work Order ", -1)),
+          a("strong", null, S(U(T).workOrder), 1),
+          u[5] || (u[5] = O("?", -1))
         ]),
-        a("p", null, "Label sesuai Good Qty: " + S(L(P).labelCount), 1),
-        l[4] || (l[4] = a("label", { for: "extra-label-count" }, "Label tambahan", -1)),
-        N(a("input", {
-          id: "extra-label-count",
-          "onUpdate:modelValue": l[0] || (l[0] = (m) => b.value = m),
-          type: "number",
-          min: "0",
-          max: Math.max(0, 1e4 - L(P).labelCount),
-          step: "1",
-          inputmode: "numeric",
-          class: "input",
+        a("p", null, [
+          u[6] || (u[6] = O("Usulan otomatis dari Good Qty dan UOM: ", -1)),
+          a("strong", null, S(U(T).labelCount) + " label", 1)
+        ]),
+        u[21] || (u[21] = a("label", { for: "label-count-mode" }, "Cara menentukan jumlah", -1)),
+        H(a("select", {
+          id: "label-count-mode",
+          "onUpdate:modelValue": u[0] || (u[0] = (x) => k.value = x),
+          class: "input label-dialog-select",
           style: { display: "block", width: "100%", "margin-top": "6px" }
-        }, null, 8, _e), [
-          [
-            I,
-            b.value,
-            void 0,
-            { number: !0 }
-          ]
+        }, [
+          u[7] || (u[7] = a("option", { value: "automatic" }, "Otomatis dari Good Qty", -1)),
+          a("option", {
+            value: "append",
+            disabled: l.value || !r.value.length
+          }, "Tambah setelah cetak awal", 8, Ee),
+          u[8] || (u[8] = a("option", { value: "specific" }, "Pilih nomor urut label untuk cetak ulang", -1))
+        ], 512), [
+          [M, k.value]
         ]),
-        e.value ? (v(), w("p", Le, [
-          l[3] || (l[3] = H("Total cetak: ", -1)),
-          a("strong", null, S(r.value) + " label", 1)
-        ])) : (v(), w("p", Te, "Masukkan bilangan bulat 0 atau lebih; maksimal 10.000 label per cetakan.")),
-        a("div", Ee, [
+        k.value === "automatic" ? (g(), v("div", Te, [
+          u[9] || (u[9] = a("label", { for: "extra-label-count" }, "Label tambahan", -1)),
+          H(a("input", {
+            id: "extra-label-count",
+            "onUpdate:modelValue": u[1] || (u[1] = (x) => n.value = x),
+            type: "number",
+            min: "0",
+            max: Math.max(0, 1e4 - U(T).labelCount),
+            step: "1",
+            inputmode: "numeric",
+            class: "input",
+            style: { display: "block", width: "100%", "margin-top": "6px" }
+          }, null, 8, Ne), [
+            [
+              $,
+              n.value,
+              void 0,
+              { number: !0 }
+            ]
+          ]),
+          u[10] || (u[10] = a("p", { class: "label-print-note" }, "Jumlah awal mengikuti Good Qty.", -1))
+        ])) : F("", !0),
+        k.value === "append" ? (g(), v("div", Oe, [
+          u[11] || (u[11] = a("label", { for: "append-label-count" }, "Jumlah label lanjutan", -1)),
+          H(a("input", {
+            id: "append-label-count",
+            "onUpdate:modelValue": u[2] || (u[2] = (x) => e.value = x),
+            type: "number",
+            min: "1",
+            max: "10000",
+            step: "1",
+            inputmode: "numeric",
+            class: "input",
+            style: { display: "block", width: "100%", "margin-top": "6px" }
+          }, null, 512), [
+            [
+              $,
+              e.value,
+              void 0,
+              { number: !0 }
+            ]
+          ]),
+          P.value ? (g(), v("p", Ue, "Nomor baru: #" + S(N.value + 1) + "–#" + S(N.value + Number(e.value)) + " · setelah label awal yang sudah terbit.", 1)) : F("", !0)
+        ])) : F("", !0),
+        k.value === "specific" ? (g(), v("div", Ie, [
+          u[17] || (u[17] = a("label", { for: "label-number-select" }, "Nomor urut label yang dicetak ulang", -1)),
+          a("p", He, [
+            u[12] || (u[12] = O("Nomor urut terikat ke Work Order ini", -1)),
+            s.value !== null ? (g(), v("span", Fe, " · Adonan ke " + S(s.value), 1)) : F("", !0),
+            u[13] || (u[13] = O(".", -1))
+          ]),
+          l.value ? (g(), v("p", qe, "Memuat nomor urut label…")) : b.value ? (g(), v("p", De, S(b.value), 1)) : r.value.length ? H((g(), v("select", {
+            key: 3,
+            id: "label-number-select",
+            "onUpdate:modelValue": u[3] || (u[3] = (x) => o.value = x),
+            class: "input label-dialog-select",
+            style: { display: "block", width: "100%", "margin-top": "6px" }
+          }, [
+            u[14] || (u[14] = a("option", { value: "" }, "Pilih nomor label", -1)),
+            (g(!0), v(D, null, j(r.value, (x) => (g(), v("option", {
+              key: x.label_number,
+              value: x.label_number
+            }, " Label #" + S(x.label_number) + " · Adonan ke " + S(x.adonan_ke ?? "—"), 9, je))), 128))
+          ], 512)), [
+            [
+              M,
+              o.value,
+              void 0,
+              { number: !0 }
+            ]
+          ]) : (g(), v("p", $e, "Belum ada label terbit untuk Work Order ini. Cetak otomatis dari Good Qty dahulu.")),
+          o.value ? (g(), v("p", Me, [
+            u[15] || (u[15] = O("Dipilih: ", -1)),
+            a("strong", null, "Label #" + S(o.value), 1),
+            u[16] || (u[16] = O(". QR akan memakai mapping label yang sama.", -1))
+          ])) : F("", !0)
+        ])) : F("", !0),
+        y.value && k.value === "automatic" ? (g(), v("p", Re, [
+          u[18] || (u[18] = O("Total cetak otomatis: ", -1)),
+          a("strong", null, S(E.value) + " label", 1)
+        ])) : y.value && k.value === "append" ? (g(), v("p", Ve, [
+          u[19] || (u[19] = O("Label lanjutan: ", -1)),
+          a("strong", null, S(E.value) + " label", 1)
+        ])) : y.value && k.value === "specific" ? (g(), v("p", ze, [
+          u[20] || (u[20] = O("Total cetak ulang: ", -1)),
+          a("strong", null, S(E.value) + " label", 1)
+        ])) : (g(), v("p", Qe, S(k.value === "append" ? "Masukkan jumlah label lanjutan 1–10.000." : k.value === "specific" ? "Pilih satu nomor label untuk dicetak ulang." : "Masukkan jumlah ekstra bulat yang valid; batas 10.000 label per cetakan."), 1)),
+        a("div", Ge, [
           a("button", {
             class: "btn",
-            onClick: n
+            onClick: C
           }, "Nanti saja"),
           a("button", {
             class: "btn btn-primary",
-            disabled: !e.value,
-            onClick: o
-          }, "Ya, Cetak Label", 8, Oe)
+            disabled: !y.value,
+            onClick: d
+          }, "Ya, Cetak Label", 8, Je)
         ])
       ], 544),
       a("dialog", {
@@ -2524,338 +2663,338 @@ const Pe = { id: "label-print-title" }, _e = ["max"], Le = { key: 0 }, Te = {
         ref: p,
         class: "dialog error-dialog",
         "aria-labelledby": "wo-label-error-title",
-        onCancel: D(s, ["prevent"]),
-        onClick: D(s, ["self"])
+        onCancel: R(f, ["prevent"]),
+        onClick: R(f, ["self"])
       }, [
-        l[5] || (l[5] = a("div", {
+        u[22] || (u[22] = a("div", {
           class: "error-dialog-icon",
           "aria-hidden": "true"
         }, "!", -1)),
-        a("h2", Ne, S(g.value?.title), 1),
-        a("p", Ue, S(g.value?.message), 1),
-        g.value?.details?.length ? (v(), w("ul", He, [
-          (v(!0), w(U, null, F(g.value.details, (m) => (v(), w("li", { key: m }, S(m), 1))), 128))
-        ])) : M("", !0),
-        a("div", Ie, [
+        a("h2", Be, S(h.value?.title), 1),
+        a("p", We, S(h.value?.message), 1),
+        h.value?.details?.length ? (g(), v("ul", Ze, [
+          (g(!0), v(D, null, j(h.value.details, (x) => (g(), v("li", { key: x }, S(x), 1))), 128))
+        ])) : F("", !0),
+        a("div", Ke, [
           a("button", {
             ref_key: "errorClose",
             ref: t,
             class: "btn btn-primary",
-            onClick: s
+            onClick: f
           }, "Tutup", 512)
         ])
       ], 544)
     ], 64));
   }
-};
-function Fe({ selected: f = "", printers: u = [], defaultPrinter: p = "", loaded: t = !1, lastPrinted: g = "" } = {}) {
-  const b = f || p;
-  return b ? t && u.includes(b) ? { name: b, detail: "Terdeteksi oleh QZ Tray. Status fisik online/offline belum diperiksa." } : g === b ? { name: b, detail: "Tujuan cetak TEST terakhir. Pengiriman job bukan konfirmasi hasil cetak fisik." } : { name: b, detail: t ? "Belum terdeteksi dalam daftar QZ Tray. Periksa printer atau muat ulang daftar." : "Nama tersimpan; belum diverifikasi oleh QZ Tray." } : {
+}, Mt = /* @__PURE__ */ te(Xe, [["__scopeId", "data-v-d2f3e72f"]]);
+function Ye({ selected: c = "", printers: i = [], defaultPrinter: p = "", loaded: t = !1, lastPrinted: h = "" } = {}) {
+  const k = c || p;
+  return k ? t && i.includes(k) ? { name: k, detail: "Terdeteksi oleh QZ Tray. Status fisik online/offline belum diperiksa." } : h === k ? { name: k, detail: "Tujuan cetak TEST terakhir. Pengiriman job bukan konfirmasi hasil cetak fisik." } : { name: k, detail: t ? "Belum terdeteksi dalam daftar QZ Tray. Periksa printer atau muat ulang daftar." : "Nama tersimpan; belum diverifikasi oleh QZ Tray." } : {
     name: "Belum diketahui",
     detail: t ? "Printer default sistem belum tersedia. Pilih printer dari daftar." : "Klik Hubungkan / muat printer untuk melihat nama printer."
   };
 }
-const qe = {
+const et = {
   class: "panel settings-panel pqr-layout",
   "aria-labelledby": "pqr-layout-title"
-}, De = { class: "panel-head" }, ze = { class: "p-ico" }, Re = { class: "panel-body" }, Ve = { class: "settings-block" }, Me = { class: "settings-control" }, je = { class: "form-grid cols2" }, $e = { class: "field" }, Qe = { value: "" }, Be = ["value"], Ge = {
+}, tt = { class: "panel-head" }, nt = { class: "p-ico" }, rt = { class: "panel-body" }, ot = { class: "settings-block" }, at = { class: "settings-control" }, st = { class: "form-grid cols2" }, it = { class: "field" }, lt = { value: "" }, ut = ["value"], ct = {
   class: "settings-note",
   "data-label-printer-destination": "",
   "aria-live": "polite"
-}, Je = { class: "pqr-layout-actions" }, We = ["disabled"], Ze = ["disabled"], Ke = { class: "settings-block" }, Xe = { class: "settings-control" }, Ye = { class: "form-grid cols2" }, et = ["for"], tt = ["id"], rt = ["id", "onUpdate:modelValue", "min", "max", "step"], nt = { class: "hint" }, ot = { class: "settings-block" }, st = { class: "settings-control" }, at = { class: "form-grid cols2" }, it = ["for"], lt = ["id", "onUpdate:modelValue", "min", "max", "step"], ut = { class: "settings-block" }, ct = { class: "settings-control" }, ft = { class: "form-grid cols2" }, dt = ["for"], pt = ["id", "onUpdate:modelValue", "min", "max", "step"], bt = { class: "field" }, mt = { class: "field wide" }, gt = {
+}, dt = { class: "pqr-layout-actions" }, ft = ["disabled"], pt = ["disabled"], bt = { class: "settings-block" }, mt = { class: "settings-control" }, kt = { class: "form-grid cols2" }, gt = ["for"], vt = ["id"], yt = ["id", "onUpdate:modelValue", "min", "max", "step"], ht = { class: "hint" }, wt = { class: "settings-block" }, Ct = { class: "settings-control" }, St = { class: "form-grid cols2" }, xt = ["for"], At = ["id", "onUpdate:modelValue", "min", "max", "step"], _t = { class: "settings-block" }, Pt = { class: "settings-control" }, Lt = { class: "form-grid cols2" }, Et = ["for"], Tt = ["id", "onUpdate:modelValue", "min", "max", "step"], Nt = { class: "field" }, Ot = { class: "field wide" }, Ut = {
   key: 0,
   class: "settings-alerts"
-}, kt = { class: "panel-foot" }, yt = ["disabled"], ht = ["disabled"], At = {
+}, It = { class: "panel-foot" }, Ht = ["disabled"], Ft = ["disabled"], Rt = {
   __name: "LabelLayoutSettings",
-  setup(f) {
-    const u = _(Z() || { ...G }), p = q(() => X(u.value)), t = _([]), g = _(""), b = _(!1), e = _(""), r = _(!1), n = _(""), o = _(!1), s = q(() => [...new Set([u.value.printer, ...t.value].filter(Boolean))]), i = q(() => Fe({
-      selected: u.value.printer,
+  setup(c) {
+    const i = A(K() || { ...B }), p = q(() => Y(i.value)), t = A([]), h = A(""), k = A(!1), e = A(""), n = A(!1), r = A(""), o = A(!1), s = q(() => [...new Set([i.value.printer, ...t.value].filter(Boolean))]), l = q(() => Ye({
+      selected: i.value.printer,
       printers: t.value,
-      defaultPrinter: g.value,
-      loaded: b.value,
+      defaultPrinter: h.value,
+      loaded: k.value,
       lastPrinted: e.value
-    })), l = R.filter((h) => ["leftX", "leftY", "qrSize"].includes(h.key)), m = R.filter((h) => ["rightX", "rightY", "textWidth", "prefixFontSize", "fontSize", "productFontSize", "lineHeight", "nameLines"].includes(h.key)), C = R.filter((h) => !l.includes(h) && !m.includes(h));
-    async function x(h, c) {
-      if (!r.value) {
-        r.value = !0, n.value = "", o.value = !1;
+    })), b = V.filter((C) => ["leftX", "leftY", "qrSize"].includes(C.key)), w = V.filter((C) => ["rightX", "rightY", "textWidth", "prefixFontSize", "fontSize", "productFontSize", "lineHeight", "nameLines"].includes(C.key)), _ = V.filter((C) => !b.includes(C) && !w.includes(C));
+    async function P(C, d) {
+      if (!n.value) {
+        n.value = !0, r.value = "", o.value = !1;
         try {
-          await h(), n.value = c;
-        } catch (d) {
-          o.value = !0, n.value = d.message || "Pengaturan label gagal.";
+          await C(), r.value = d;
+        } catch (f) {
+          o.value = !0, r.value = f.message || "Pengaturan label gagal.";
         } finally {
-          r.value = !1;
+          n.value = !1;
         }
       }
     }
-    function E() {
-      x(() => {
-        u.value = le(u.value);
+    function N() {
+      P(() => {
+        i.value = ce(i.value);
       }, "Pengaturan label disimpan di perangkat ini.");
     }
-    function O() {
-      x(() => {
-        ue(), u.value = { ...G };
+    function E() {
+      P(() => {
+        de(), i.value = { ...B };
       }, "Kembali menggunakan default ZPL asli.");
     }
-    function k() {
-      x(async () => {
+    function y() {
+      P(async () => {
         try {
-          const h = await Ce();
-          t.value = h.printers, g.value = h.defaultPrinter, b.value = !0;
-        } catch (h) {
-          throw t.value = [], g.value = "", b.value = !1, e.value = "", h;
+          const C = await Se();
+          t.value = C.printers, h.value = C.defaultPrinter, k.value = !0;
+        } catch (C) {
+          throw t.value = [], h.value = "", k.value = !1, e.value = "", C;
         }
       }, "Daftar printer diperbarui.");
     }
-    function A() {
-      x(async () => {
-        const h = p.value, c = await Se(h);
-        e.value = c, h.printer || (g.value = c);
+    function L() {
+      P(async () => {
+        const C = p.value, d = await xe(C);
+        e.value = d, C.printer || (h.value = d);
       }, "Label TEST dikirim. Tidak ada serial produksi yang dibuat.");
     }
-    return (h, c) => (v(), w("section", qe, [
-      a("div", De, [
-        a("span", ze, [
-          W(L(oe), {
+    return (C, d) => (g(), v("section", et, [
+      a("div", tt, [
+        a("span", nt, [
+          Z(U(se), {
             size: 15,
             "stroke-width": 1.9
           })
         ]),
-        c[4] || (c[4] = a("h2", { id: "pqr-layout-title" }, "Pengaturan layout label", -1)),
-        c[5] || (c[5] = a("span", { class: "lead" }, "Khusus browser dan perangkat ini.", -1))
+        d[4] || (d[4] = a("h2", { id: "pqr-layout-title" }, "Pengaturan layout label", -1)),
+        d[5] || (d[5] = a("span", { class: "lead" }, "Khusus browser dan perangkat ini.", -1))
       ]),
-      a("div", Re, [
-        a("div", Ve, [
-          c[9] || (c[9] = a("div", { class: "settings-block-head" }, [
+      a("div", rt, [
+        a("div", ot, [
+          d[9] || (d[9] = a("div", { class: "settings-block-head" }, [
             a("h3", null, "Printer label"),
             a("p", { class: "hint" }, "Gunakan printer ZPL. Cetak TEST hanya untuk memeriksa layout dengan data contoh, tanpa Work Order.")
           ], -1)),
-          a("div", Me, [
-            a("div", je, [
-              a("div", $e, [
-                c[6] || (c[6] = a("label", { for: "pqr-printer" }, "Printer label", -1)),
-                N(a("select", {
+          a("div", at, [
+            a("div", st, [
+              a("div", it, [
+                d[6] || (d[6] = a("label", { for: "pqr-printer" }, "Printer label", -1)),
+                H(a("select", {
                   id: "pqr-printer",
-                  "onUpdate:modelValue": c[0] || (c[0] = (d) => u.value.printer = d),
+                  "onUpdate:modelValue": d[0] || (d[0] = (f) => i.value.printer = f),
                   class: "input"
                 }, [
-                  a("option", Qe, S(g.value ? `Default sistem — ${g.value}` : "Printer default sistem (nama belum dimuat)"), 1),
-                  (v(!0), w(U, null, F(s.value, (d) => (v(), w("option", {
-                    key: d,
-                    value: d
-                  }, S(d) + S(b.value && !t.value.includes(d) ? " — belum terdeteksi" : ""), 9, Be))), 128))
+                  a("option", lt, S(h.value ? `Default sistem — ${h.value}` : "Printer default sistem (nama belum dimuat)"), 1),
+                  (g(!0), v(D, null, j(s.value, (f) => (g(), v("option", {
+                    key: f,
+                    value: f
+                  }, S(f) + S(k.value && !t.value.includes(f) ? " — belum terdeteksi" : ""), 9, ut))), 128))
                 ], 512), [
-                  [z, u.value.printer]
+                  [M, i.value.printer]
                 ])
               ])
             ]),
-            a("p", Ge, [
-              c[7] || (c[7] = H("Printer tujuan: ", -1)),
-              a("strong", null, S(i.value.name), 1),
-              c[8] || (c[8] = a("br", null, null, -1)),
-              H(S(i.value.detail), 1)
+            a("p", ct, [
+              d[7] || (d[7] = O("Printer tujuan: ", -1)),
+              a("strong", null, S(l.value.name), 1),
+              d[8] || (d[8] = a("br", null, null, -1)),
+              O(S(l.value.detail), 1)
             ]),
-            a("div", Je, [
+            a("div", dt, [
               a("button", {
                 type: "button",
                 class: "btn",
-                disabled: r.value,
-                onClick: k
-              }, "Hubungkan / muat printer", 8, We),
+                disabled: n.value,
+                onClick: y
+              }, "Hubungkan / muat printer", 8, ft),
               a("button", {
                 type: "button",
                 class: "btn",
-                disabled: r.value,
-                onClick: A
-              }, "Cetak label TEST", 8, Ze)
+                disabled: n.value,
+                onClick: L
+              }, "Cetak label TEST", 8, pt)
             ])
           ])
         ]),
-        a("div", Ke, [
-          c[12] || (c[12] = a("div", { class: "settings-block-head" }, [
+        a("div", bt, [
+          d[12] || (d[12] = a("div", { class: "settings-block-head" }, [
             a("h3", null, "Ukuran dan media"),
             a("p", { class: "hint" }, "Dasar ZPL asli: 2 kolom, ^PW800, ^LL160, 203 DPI. Pengaturan ini hanya untuk penyesuaian.")
           ], -1)),
-          a("div", Xe, [
-            a("div", Ye, [
-              (v(!0), w(U, null, F(L(C), (d) => (v(), w("div", {
-                key: d.key,
+          a("div", mt, [
+            a("div", kt, [
+              (g(!0), v(D, null, j(U(_), (f) => (g(), v("div", {
+                key: f.key,
                 class: "field"
               }, [
                 a("label", {
-                  for: `pqr-${d.key}`
-                }, S(d.label), 9, et),
-                d.key === "dpi" ? N((v(), w("select", {
+                  for: `pqr-${f.key}`
+                }, S(f.label), 9, gt),
+                f.key === "dpi" ? H((g(), v("select", {
                   key: 0,
-                  id: `pqr-${d.key}`,
-                  "onUpdate:modelValue": c[1] || (c[1] = (y) => u.value.dpi = y),
+                  id: `pqr-${f.key}`,
+                  "onUpdate:modelValue": d[1] || (d[1] = (m) => i.value.dpi = m),
                   class: "input"
-                }, [...c[10] || (c[10] = [
+                }, [...d[10] || (d[10] = [
                   a("option", { value: 203 }, "203", -1),
                   a("option", { value: 300 }, "300", -1),
                   a("option", { value: 600 }, "600", -1)
-                ])], 8, tt)), [
+                ])], 8, vt)), [
                   [
-                    z,
-                    u.value.dpi,
+                    M,
+                    i.value.dpi,
                     void 0,
                     { number: !0 }
                   ]
-                ]) : N((v(), w("input", {
+                ]) : H((g(), v("input", {
                   key: 1,
-                  id: `pqr-${d.key}`,
-                  "onUpdate:modelValue": (y) => u.value[d.key] = y,
+                  id: `pqr-${f.key}`,
+                  "onUpdate:modelValue": (m) => i.value[f.key] = m,
                   class: "input",
                   type: "number",
-                  min: d.min,
-                  max: d.max,
-                  step: d.step
-                }, null, 8, rt)), [
+                  min: f.min,
+                  max: f.max,
+                  step: f.step
+                }, null, 8, yt)), [
                   [
-                    I,
-                    u.value[d.key],
+                    $,
+                    i.value[f.key],
                     void 0,
                     { number: !0 }
                   ]
                 ])
               ]))), 128))
             ]),
-            a("p", nt, "Lebar media: " + S(p.value.width * p.value.columns + p.value.gap * (p.value.columns - 1)) + " mm.", 1),
-            c[11] || (c[11] = a("p", { class: "settings-note" }, "Margin tambahan 0 mempertahankan posisi asli. Pengaturan konten kiri/kanan di bawah berlaku di dalam setiap label, bukan untuk membedakan dua kolom cetak. Samakan ukuran media dan sensor gap di printer.", -1))
+            a("p", ht, "Lebar media: " + S(p.value.width * p.value.columns + p.value.gap * (p.value.columns - 1)) + " mm.", 1),
+            d[11] || (d[11] = a("p", { class: "settings-note" }, "Margin tambahan 0 mempertahankan posisi asli. Pengaturan konten kiri/kanan di bawah berlaku di dalam setiap label, bukan untuk membedakan dua kolom cetak. Samakan ukuran media dan sensor gap di printer.", -1))
           ])
         ]),
-        a("div", ot, [
-          c[14] || (c[14] = a("div", { class: "settings-block-head" }, [
+        a("div", wt, [
+          d[14] || (d[14] = a("div", { class: "settings-block-head" }, [
             a("h3", null, "Konten kiri — QR"),
             a("p", { class: "hint" }, "Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama.")
           ], -1)),
-          a("div", st, [
-            a("div", at, [
-              (v(!0), w(U, null, F(L(l), (d) => (v(), w("div", {
-                key: d.key,
+          a("div", Ct, [
+            a("div", St, [
+              (g(!0), v(D, null, j(U(b), (f) => (g(), v("div", {
+                key: f.key,
                 class: "field"
               }, [
                 a("label", {
-                  for: `pqr-${d.key}`
-                }, S(d.label), 9, it),
-                N(a("input", {
-                  id: `pqr-${d.key}`,
-                  "onUpdate:modelValue": (y) => u.value[d.key] = y,
+                  for: `pqr-${f.key}`
+                }, S(f.label), 9, xt),
+                H(a("input", {
+                  id: `pqr-${f.key}`,
+                  "onUpdate:modelValue": (m) => i.value[f.key] = m,
                   class: "input",
                   type: "number",
-                  min: d.min,
-                  max: d.max,
-                  step: d.step
-                }, null, 8, lt), [
+                  min: f.min,
+                  max: f.max,
+                  step: f.step
+                }, null, 8, At), [
                   [
-                    I,
-                    u.value[d.key],
+                    $,
+                    i.value[f.key],
                     void 0,
                     { number: !0 }
                   ]
                 ])
               ]))), 128))
             ]),
-            c[13] || (c[13] = a("p", { class: "settings-note" }, "Geser 0 memakai posisi ZPL asli. Nilai negatif menggeser ke kiri/atas, positif ke kanan/bawah; posisi tidak melewati titik nol media. QR acuan 16 memakai magnifikasi 4 pada 203 DPI. Perbesar area label bila konten terpotong.", -1))
+            d[13] || (d[13] = a("p", { class: "settings-note" }, "Geser 0 memakai posisi ZPL asli. Nilai negatif menggeser ke kiri/atas, positif ke kanan/bawah; posisi tidak melewati titik nol media. QR acuan 16 memakai magnifikasi 4 pada 203 DPI. Perbesar area label bila konten terpotong.", -1))
           ])
         ]),
-        a("div", ut, [
-          c[19] || (c[19] = a("div", { class: "settings-block-head" }, [
+        a("div", _t, [
+          d[19] || (d[19] = a("div", { class: "settings-block-head" }, [
             a("h3", null, "Konten kanan — Teks"),
             a("p", { class: "hint" }, "Atur blok prefix, nama produk, SKU, MFG, EXP, footer dan nomor urut secara terpisah dari QR. Nama produk tetap dicetak.")
           ], -1)),
-          a("div", ct, [
-            a("div", ft, [
-              (v(!0), w(U, null, F(L(m), (d) => (v(), w("div", {
-                key: d.key,
+          a("div", Pt, [
+            a("div", Lt, [
+              (g(!0), v(D, null, j(U(w), (f) => (g(), v("div", {
+                key: f.key,
                 class: "field"
               }, [
                 a("label", {
-                  for: `pqr-${d.key}`
-                }, S(d.label), 9, dt),
-                N(a("input", {
-                  id: `pqr-${d.key}`,
-                  "onUpdate:modelValue": (y) => u.value[d.key] = y,
+                  for: `pqr-${f.key}`
+                }, S(f.label), 9, Et),
+                H(a("input", {
+                  id: `pqr-${f.key}`,
+                  "onUpdate:modelValue": (m) => i.value[f.key] = m,
                   class: "input",
                   type: "number",
-                  min: d.min,
-                  max: d.max,
-                  step: d.step
-                }, null, 8, pt), [
+                  min: f.min,
+                  max: f.max,
+                  step: f.step
+                }, null, 8, Tt), [
                   [
-                    I,
-                    u.value[d.key],
+                    $,
+                    i.value[f.key],
                     void 0,
                     { number: !0 }
                   ]
                 ])
               ]))), 128)),
-              a("div", bt, [
-                c[16] || (c[16] = a("label", { for: "pqr-align" }, "Perataan teks", -1)),
-                N(a("select", {
+              a("div", Nt, [
+                d[16] || (d[16] = a("label", { for: "pqr-align" }, "Perataan teks", -1)),
+                H(a("select", {
                   id: "pqr-align",
-                  "onUpdate:modelValue": c[2] || (c[2] = (d) => u.value.align = d),
+                  "onUpdate:modelValue": d[2] || (d[2] = (f) => i.value.align = f),
                   class: "input"
-                }, [...c[15] || (c[15] = [
+                }, [...d[15] || (d[15] = [
                   a("option", { value: "left" }, "Kiri", -1),
                   a("option", { value: "center" }, "Tengah", -1),
                   a("option", { value: "right" }, "Kanan", -1)
                 ])], 512), [
-                  [z, u.value.align]
+                  [M, i.value.align]
                 ])
               ]),
-              a("div", mt, [
-                c[17] || (c[17] = a("label", { for: "pqr-footer" }, "Footer", -1)),
-                N(a("input", {
+              a("div", Ot, [
+                d[17] || (d[17] = a("label", { for: "pqr-footer" }, "Footer", -1)),
+                H(a("input", {
                   id: "pqr-footer",
-                  "onUpdate:modelValue": c[3] || (c[3] = (d) => u.value.footer = d),
+                  "onUpdate:modelValue": d[3] || (d[3] = (f) => i.value.footer = f),
                   maxlength: "100",
                   class: "input"
                 }, null, 512), [
-                  [I, u.value.footer]
+                  [$, i.value.footer]
                 ])
               ])
             ]),
-            c[18] || (c[18] = a("p", { class: "settings-note" }, "Lebar 0 mengikuti sisa area label; ukuran prefix 0 mengikuti font asli. Jumlah baris nama menambah ruang sebelum SKU/MFG/EXP. Geser teks juga memindahkan nomor urut, tanpa menggeser QR. Periksa hasil penyesuaian dengan cetak TEST.", -1))
+            d[18] || (d[18] = a("p", { class: "settings-note" }, "Lebar 0 mengikuti sisa area label; ukuran prefix 0 mengikuti font asli. Jumlah baris nama menambah ruang sebelum SKU/MFG/EXP. Geser teks juga memindahkan nomor urut, tanpa menggeser QR. Periksa hasil penyesuaian dengan cetak TEST.", -1))
           ])
         ])
       ]),
-      n.value ? (v(), w("div", gt, [
+      r.value ? (g(), v("div", Ut, [
         a("p", {
           role: "status",
-          class: re(o.value ? "err" : "hint")
-        }, S(n.value), 3)
-      ])) : M("", !0),
-      a("div", kt, [
+          class: oe(o.value ? "err" : "hint")
+        }, S(r.value), 3)
+      ])) : F("", !0),
+      a("div", It, [
         a("button", {
           type: "button",
           class: "btn btn-primary",
-          disabled: r.value,
-          onClick: E
-        }, "Simpan layout label", 8, yt),
+          disabled: n.value,
+          onClick: N
+        }, "Simpan layout label", 8, Ht),
         a("button", {
           type: "button",
           class: "btn",
-          disabled: r.value,
-          onClick: O
-        }, "Pulihkan default ZPL", 8, ht)
+          disabled: n.value,
+          onClick: E
+        }, "Pulihkan default ZPL", 8, Ft)
       ])
     ]));
   }
 };
-function Pt(f, u = 0) {
-  const p = `/product_qr_work_order_label?name=${encodeURIComponent(f)}`;
-  return u > 0 ? `${p}&extra=${u}` : p;
+function Vt(c, i = 0) {
+  const p = `/product_qr_work_order_label?name=${encodeURIComponent(c)}`;
+  return i > 0 ? `${p}&extra=${i}` : p;
 }
 export {
-  At as LabelLayoutSettings,
-  St as WorkOrderLabelButton,
-  xt as WorkOrderLabelDialogs,
-  j as connectQz,
-  fe as labelCountForWorkOrder,
-  P as labelPrintPrompt,
-  Y as labelSource,
-  de as offerLabelPrint,
-  Ae as printLabels,
-  Pt as workOrderLabelUrl
+  Rt as LabelLayoutSettings,
+  jt as WorkOrderLabelButton,
+  Mt as WorkOrderLabelDialogs,
+  Q as connectQz,
+  pe as labelCountForWorkOrder,
+  T as labelPrintPrompt,
+  ee as labelSource,
+  be as offerLabelPrint,
+  Pe as printLabels,
+  Vt as workOrderLabelUrl
 };

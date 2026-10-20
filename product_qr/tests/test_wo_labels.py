@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, call, patch
 
 import frappe
 from cryptography import x509
@@ -23,6 +23,7 @@ class TestWoLabelData(TestCase):
 	def setUp(self):
 		self.wo = frappe._dict(name="WO-LABEL-TEST", production_item="SKU-TEST", custom_uom="Pack",
 			custom_prepacking_confirmed=1, custom_good_qty_prepacking=12,
+			custom_adonan_ke=7,
 			actual_start_date="2026-10-19", planned_start_date="2026-10-18", creation="2026-10-17",
 			check_permission=Mock(), reload=Mock())
 		self.batch = frappe._dict(name="BATCH-TEST", manufacturing_date="2026-10-19", expiry_date="2026-11-30")
@@ -58,7 +59,7 @@ class TestWoLabelData(TestCase):
 				self.serials[serial.name] = serial
 				return serial
 			self.assertEqual(values["doctype"], labels.MAPPING_DOCTYPE)
-			self.mappings.append(frappe._dict(product_qr_serial=values["product_qr_serial"]))
+			self.mappings.append(frappe._dict(values))
 			return frappe._dict(values)
 		return Mock(insert=insert)
 
@@ -92,6 +93,108 @@ class TestWoLabelData(TestCase):
 		self.assertEqual(len(self.serials), 5)
 		self.assertEqual(len(self.mappings), 5)
 		self.assertEqual(labels.label_data(self.wo.name)["labels"], first["labels"])
+
+	def test_append_count_issues_only_new_labels_after_highest_ordinal(self):
+		first = labels.get_label_data(self.wo.name)
+		appended = labels.get_label_data(self.wo.name, append_count=2)
+		self.assertEqual(appended["label_count"], 2)
+		self.assertEqual([row["serial_no"] for row in appended["labels"]], ["S004", "S005"])
+		self.assertEqual([row["label_number"] for row in appended["labels"]], [4, 5])
+		self.assertTrue(set(row["qr_value"] for row in first["labels"]).isdisjoint(
+			row["qr_value"] for row in appended["labels"]
+		))
+		self.assertEqual(len(self.mappings), 5)
+
+	def test_append_count_requires_initial_labels_and_uses_packing_guard(self):
+		with self.assertRaisesRegex(ValueError, "Cetak label awal otomatis"):
+			labels.get_label_data(self.wo.name, append_count=1)
+		self.assertFalse(self.serials)
+		labels.get_label_data(self.wo.name)
+		self.wo.custom_prepacking_confirmed = 0
+		self.wo.custom_good_qty_prepacking = 0
+		with self.assertRaisesRegex(ValueError, "Good Qty"):
+			labels.get_label_data(self.wo.name, append_count=1)
+		self.assertEqual(len(self.serials), 3)
+		self.assertEqual(len(self.mappings), 3)
+
+	def test_selected_label_number_reprints_same_identity_and_ordinal_without_new_serials(self):
+		first = labels.get_label_data(self.wo.name)
+		self.mappings[0].label_number = 2
+		self.mappings[1].label_number = 5
+		self.mappings[2].label_number = 7
+		self.wo.custom_adonan_ke = 8
+		self.wo.custom_prepacking_confirmed = 0
+		self.wo.custom_good_qty_prepacking = 0
+		selected = labels.get_label_data(self.wo.name, label_numbers=[5])
+		self.assertEqual(selected["label_count"], 1)
+		self.assertEqual(selected["labels"][0]["serial_no"], first["labels"][1]["serial_no"])
+		self.assertEqual(selected["labels"][0]["qr_value"], first["labels"][1]["qr_value"])
+		self.assertEqual(selected["labels"][0]["label_number"], 5)
+		self.assertEqual(selected["adonan_ke"], 7)
+		self.assertEqual(selected["labels"][0]["adonan_ke"], 7)
+		self.assertEqual(len(self.serials), 3)
+		self.assertEqual(len(self.mappings), 3)
+
+	def test_append_and_reprint_modes_cannot_be_combined(self):
+		labels.get_label_data(self.wo.name)
+		with self.assertRaisesRegex(ValueError, "terpisah dari mode"):
+			labels.get_label_data(self.wo.name, append_count=1, label_numbers=[2])
+		self.assertEqual(len(self.serials), 3)
+		self.assertEqual(len(self.mappings), 3)
+
+	def test_existing_ordinal_follows_saved_mapping_not_query_position(self):
+		self.serials.update({
+			"PQR-S001": frappe._dict(item_code="SKU-TEST", batch_no="BATCH-TEST", serial_no="S001", qr_payload="QR-1"),
+			"PQR-S002": frappe._dict(item_code="SKU-TEST", batch_no="BATCH-TEST", serial_no="S002", qr_payload="QR-2"),
+		})
+		serials, _batch = labels._mapped_serials(self.wo, [
+			frappe._dict(product_qr_serial="PQR-S001", label_number=5, adonan_ke=7),
+			frappe._dict(product_qr_serial="PQR-S002", label_number=2, adonan_ke=8),
+		])
+		self.assertEqual([(row.label_number, row.serial_no, row.adonan_ke) for row in serials], [
+			(2, "S002", 8), (5, "S001", 7),
+		])
+
+	def test_selected_label_number_only_reprints_existing_mapping(self):
+		first = labels.get_label_data(self.wo.name)
+		with self.assertRaisesRegex(ValueError, "terpisah dari penerbitan"):
+			labels.get_label_data(self.wo.name, extra=2, label_numbers=[2])
+		selected = labels.get_label_data(self.wo.name, label_numbers=[2])
+		self.assertEqual(selected["labels"], [first["labels"][1]])
+		self.assertEqual(len(self.serials), 3)
+		self.assertEqual(len(self.mappings), 3)
+
+	def test_invalid_or_duplicate_label_numbers_fail_before_extra_issuance(self):
+		self.assertEqual(labels._selected_label_numbers([10001]), [10001])
+		labels.get_label_data(self.wo.name)
+		for numbers in ([4], [0], [2, 2], ["1.5"], [2147483648]):
+			with self.subTest(numbers=numbers), self.assertRaises(ValueError):
+				labels.get_label_data(self.wo.name, label_numbers=numbers)
+		self.assertEqual(len(self.serials), 3)
+		self.assertEqual(len(self.mappings), 3)
+
+	def test_existing_label_numbers_are_read_only_and_linked_to_work_order_adonan(self):
+		self.assertEqual(labels.get_existing_label_numbers(self.wo.name), {
+			"work_order": self.wo.name, "adonan_ke": 7, "labels": [],
+		})
+		self.assertFalse(self.serials)
+		self.assertFalse(self.locks)
+		labels.get_label_data(self.wo.name)
+		self.wo.custom_prepacking_confirmed = 0
+		self.wo.custom_good_qty_prepacking = 0
+		self.assertEqual(labels.get_existing_label_numbers(self.wo.name), {
+			"work_order": self.wo.name,
+			"adonan_ke": 7,
+			"labels": [{"label_number": i, "adonan_ke": 7} for i in range(1, 4)],
+		})
+		self.assertEqual(len(self.serials), 3)
+		self.assertEqual(self.wo.check_permission.call_args.args, ("write",))
+
+	def test_empty_explicit_label_selection_does_not_fall_through_to_new_issuance(self):
+		with self.assertRaisesRegex(ValueError, "Pilih minimal satu nomor urut"):
+			labels.get_label_data(self.wo.name, label_numbers=[])
+		self.assertFalse(self.serials)
+		self.assertFalse(self.mappings)
 
 	def test_browser_requires_existing_serials_and_does_not_write(self):
 		with self.assertRaises(ValueError):
@@ -134,6 +237,9 @@ class TestWoLabelData(TestCase):
 		for extra in (-1, "1.5", "abc", 10000):
 			with self.subTest(extra=extra), self.assertRaises(ValueError):
 				labels.get_label_data(self.wo.name, extra)
+		for append_count in (0, -1, "1.5", "abc", 10001):
+			with self.subTest(append_count=append_count), self.assertRaises(ValueError):
+				labels.get_label_data(self.wo.name, append_count=append_count)
 		self.assertFalse(self.serials)
 
 	def test_dates_name_and_fallback_match_source(self):
@@ -261,9 +367,32 @@ class TestWoLabelOwnership(TestCase):
 		meta = json.loads((package / "product_qr/doctype/work_order_qr_label/work_order_qr_label.json").read_text())
 		self.assertEqual(meta["module"], "Product QR")
 		self.assertEqual(meta["name"], "Work Order QR Label")
+		self.assertIn("label_number", meta["field_order"])
+		self.assertIn("adonan_ke", meta["field_order"])
 		self.assertFalse((package / "wo_labels/schema/work_order_qr_label.json").exists())
 		production_export = package.parents[1] / "production_app/production_app/production_app/doctype/work_order_qr_label/work_order_qr_label.json"
 		self.assertFalse(production_export.exists())
+
+	def test_existing_mapping_backfill_preserves_saved_numbers_and_snapshots_adonan(self):
+		from product_qr.patches import backfill_work_order_label_ordinals
+		rows = [
+			frappe._dict(name="MAP-1", work_order="WO-1", label_number=None, adonan_ke=None),
+			frappe._dict(name="MAP-2", work_order="WO-1", label_number=None, adonan_ke=None),
+			frappe._dict(name="MAP-3", work_order="WO-2", label_number=5, adonan_ke=3),
+			frappe._dict(name="MAP-4", work_order="WO-2", label_number=0, adonan_ke=3),
+		]
+		with (
+			patch.object(frappe.db, "table_exists", return_value=True),
+			patch.object(frappe, "get_all", return_value=rows),
+			patch.object(frappe.db, "get_value", side_effect=lambda _doctype, name, _field: {"WO-1": 7, "WO-2": 9}[name]),
+			patch.object(frappe.db, "set_value") as set_value,
+		):
+			backfill_work_order_label_ordinals.execute()
+		self.assertEqual(set_value.call_args_list, [
+			call("Work Order QR Label", "MAP-1", {"label_number": 1, "adonan_ke": 7}, update_modified=False),
+			call("Work Order QR Label", "MAP-2", {"label_number": 2, "adonan_ke": 7}, update_modified=False),
+			call("Work Order QR Label", "MAP-4", {"label_number": 6}, update_modified=False),
+		])
 
 	def test_legacy_routes_delegate_to_product_qr(self):
 		from product_qr import hooks
@@ -299,4 +428,13 @@ class TestWoLabelMapping(TestCase):
 		values = ["SKU-1", frappe._dict(item_code="SKU-1", batch_no="BATCH-1"), frappe._dict(item="SKU-1", reference_doctype="Work Order", reference_name="WO-OTHER")]
 		with patch.object(frappe.db, "get_value", side_effect=values), patch("product_qr.wo_labels.mapping._", side_effect=lambda text: text), patch.object(frappe, "throw", side_effect=_throw):
 			with self.assertRaisesRegex(ValueError, "Batch must belong"):
+				WorkOrderQRLabel.validate(doc)
+
+	def test_new_mapping_requires_unique_positive_ordinal(self):
+		from product_qr.wo_labels.mapping import WorkOrderQRLabel
+		doc = Mock(work_order="WO-1", product_qr_serial="PQR-1", label_number=5, adonan_ke=7, doctype="Work Order QR Label")
+		doc.is_new.return_value = True
+		values = ["SKU-1", frappe._dict(item_code="SKU-1", batch_no=None), "PQR-LABEL-5"]
+		with patch.object(frappe.db, "get_value", side_effect=values), patch("product_qr.wo_labels.mapping._", side_effect=lambda text: text), patch.object(frappe, "throw", side_effect=_throw):
+			with self.assertRaisesRegex(ValueError, "unique within its Work Order"):
 				WorkOrderQRLabel.validate(doc)

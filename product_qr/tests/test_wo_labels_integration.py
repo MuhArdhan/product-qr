@@ -87,7 +87,7 @@ class TestWoLabelsNative(IntegrationTestCase):
 			"company": warehouse.company, "qty": 3, "planned_start_date": nowdate(),
 			"source_warehouse": warehouse.name, "wip_warehouse": warehouse.name,
 			"fg_warehouse": warehouse.name, "scrap_warehouse": warehouse.name,
-			"custom_prepacking_confirmed": 1, "custom_good_qty_prepacking": 3,
+			"custom_prepacking_confirmed": 1, "custom_good_qty_prepacking": 3, "custom_adonan_ke": 7,
 			"custom_uom": uom,
 		}).insert()
 		batch = frappe.get_doc({
@@ -105,6 +105,14 @@ class TestWoLabelsNative(IntegrationTestCase):
 		extra = labels.get_label_data(wo.name, extra=2)
 		self.assertEqual(extra["labels"][:3], first["labels"])
 		self.assertEqual([row["serial_no"] for row in extra["labels"]], [f"S{i:03}" for i in range(1, 6)])
-		self.assertEqual(frappe.db.count(labels.MAPPING_DOCTYPE, {"work_order": wo.name}), 5)
-		self.assertEqual(frappe.db.count(labels.SERIAL_DOCTYPE, {"item_code": fg.name, "batch_no": batch.name}), 5)
+		selected = labels.get_label_data(wo.name, label_numbers=[5])
+		self.assertEqual(selected["labels"], [extra["labels"][4]])
+		self.assertEqual(selected["labels"][0]["label_number"], 5)
+		self.assertEqual(selected["labels"][0]["adonan_ke"], 7)
+		self.assertEqual(selected["labels"][0]["qr_value"], extra["labels"][4]["qr_value"])
+		appended = labels.get_label_data(wo.name, append_count=2)
+		self.assertEqual([row["label_number"] for row in appended["labels"]], [6, 7])
+		self.assertEqual([row["serial_no"] for row in appended["labels"]], ["S006", "S007"])
+		self.assertEqual(frappe.db.count(labels.MAPPING_DOCTYPE, {"work_order": wo.name}), 7)
+		self.assertEqual(frappe.db.count(labels.SERIAL_DOCTYPE, {"item_code": fg.name, "batch_no": batch.name}), 7)
 		self.assertEqual(labels.label_data(wo.name)["labels"], first["labels"])

@@ -25,6 +25,33 @@ export async function printTestLabel(raw) {
   return printer;
 }
 
+function serverError(data, fallback) {
+  try {
+    const messages = JSON.parse(data?._server_messages || '[]');
+    const detail = messages.map(message => JSON.parse(message).message).filter(Boolean).join(' ');
+    if (detail) return detail;
+  } catch (_error) {
+    // Keep the generic message if Frappe did not return structured errors.
+  }
+  return fallback;
+}
+
+export async function getExistingLabelNumbers(workOrder) {
+  const response = await fetch('/api/method/product_qr.wo_labels.labels.get_existing_label_numbers', {
+    method: 'POST',
+    credentials: 'same-origin',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Frappe-CSRF-Token': window.csrf_token || ''
+    },
+    body: JSON.stringify({ name: workOrder })
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(serverError(data, 'Gagal memuat nomor urut label yang sudah terbit'));
+  return data.message || [];
+}
+
 function configureSigning(workOrder, { layoutTest = false } = {}) {
   qz.security.setCertificatePromise(async () => {
     const endpoint = layoutTest ? '/api/method/product_qr.wo_labels.qz_signing.layout_certificate'
@@ -60,7 +87,13 @@ export async function connectQz(workOrder, options) {
   }
 }
 
-export async function printLabels(workOrder, extraCount = 0) {
+export async function printLabels(workOrder, printOptions = 0) {
+  const options = printOptions && typeof printOptions === 'object'
+    ? printOptions
+    : { extra: printOptions };
+  const request = { name: workOrder, extra: options.extra ?? 0 };
+  if (options.appendCount !== undefined) request.append_count = options.appendCount;
+  if (options.labelNumbers !== undefined) request.label_numbers = options.labelNumbers;
   try {
     await connectQz(workOrder);
     const res = await fetch('/api/method/product_qr.wo_labels.labels.get_label_data', {
@@ -70,18 +103,11 @@ export async function printLabels(workOrder, extraCount = 0) {
         'Content-Type': 'application/json',
         'X-Frappe-CSRF-Token': window.csrf_token || ''
       },
-      body: JSON.stringify({ name: workOrder, extra: extraCount })
+      body: JSON.stringify(request)
     });
     const data = await res.json();
     if (!res.ok) {
-      let detail = '';
-      try {
-        const messages = JSON.parse(data._server_messages || '[]');
-        detail = messages.map(message => JSON.parse(message).message).filter(Boolean).join(' ');
-      } catch (_error) {
-        // Keep the generic message if Frappe did not return structured errors.
-      }
-      throw new Error(detail || 'Gagal mengambil data label');
+      throw new Error(serverError(data, 'Gagal mengambil data label'));
     }
     const { message: labelData } = data;
 
@@ -93,7 +119,7 @@ export async function printLabels(workOrder, extraCount = 0) {
     let printer = layout?.printer || await qz.printers.getDefault();
 
     const count = labelData.labels?.length || 0;
-    if (!count || count !== labelData.label_count) throw new Error('Jumlah serial label tidak sesuai');
+    if (!count || count !== labelData.label_count) throw new Error('Jumlah label tidak sesuai');
 
     const config = qz.configs.create(printer, {
       encoding: 'UTF-8'
