@@ -10,6 +10,20 @@ app_license = "mit"
 
 required_apps = ["erpnext"]
 
+# Product QR owns both current and legacy WO label routes after the cutover.
+website_redirects = [{
+	"source": r"/qz-certificate",
+	"target": "/api/method/product_qr.wo_labels.qz_signing.download_certificate",
+	"redirect_http_status": 302,
+}]
+website_route_rules = [{"from_route": "/work_order_label", "to_route": "product_qr_work_order_label"}]
+override_whitelisted_methods = {
+	"production_app.api.work_order.get_label_data": "product_qr.wo_labels.labels.get_label_data",
+	"production_app.api.qz_signing.certificate": "product_qr.wo_labels.qz_signing.certificate",
+	"production_app.api.qz_signing.sign": "product_qr.wo_labels.qz_signing.sign",
+	"production_app.api.qz_signing.download_certificate": "product_qr.wo_labels.qz_signing.download_certificate",
+}
+
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{
