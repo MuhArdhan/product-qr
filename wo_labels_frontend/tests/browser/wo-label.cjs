@@ -22,7 +22,8 @@ async function main() {
   const errors = []
   const unknown = []
   const apiCalls = []
-  const resources = []
+    const resources = []
+  const labelAssets = []
   let downloads = 0
   try {
     page.on('download', () => downloads++)
@@ -66,6 +67,12 @@ async function main() {
     await page.route('**/assets/production_app/workspace/assets/*', route => {
       const name = path.basename(new URL(route.request().url()).pathname)
       const file = path.join(path.dirname(htmlPath), 'assets', name)
+      return route.fulfill({ contentType: name.endsWith('.css') ? 'text/css' : 'text/javascript', body: fs.readFileSync(file) })
+    })
+    await page.route('**/assets/product_qr/wo_labels/*', route => {
+      labelAssets.push(route.request().url())
+      const name = path.basename(new URL(route.request().url()).pathname)
+      const file = path.join(apps, 'product_qr/product_qr/public/wo_labels', name)
       return route.fulfill({ contentType: name.endsWith('.css') ? 'text/css' : 'text/javascript', body: fs.readFileSync(file) })
     })
     await page.route('**/api/method/**', async route => {
@@ -119,6 +126,61 @@ async function main() {
     assert.equal(await settings.locator('.settings-block').count(), 4); checks++
     assert.equal(await settings.getByRole('switch').count(), 0); checks++
     assert.equal(await settings.locator('iframe,input[type="checkbox"]').count(), 0); checks++
+    async function checkRuntimeInjection() {
+      // Runtime is independent of the host bundle, idempotent and route-aware.
+      assert.ok(labelAssets.some(url => url.includes('runtime.js?v=')))
+      assert.ok(labelAssets.some(url => url.includes('runtime.css?v='))); checks++
+      await page.evaluate(async () => {
+        const script = performance.getEntriesByType('resource').find(entry => entry.name.includes('/wo_labels/runtime.js?v='))
+        const runtime = await import(script.name)
+        runtime.start()
+      })
+      assert.equal(await page.locator('[data-product-qr-dialogs]').count(), 1)
+      assert.equal(await settings.count(), 1); checks++
+      const emitPacking = (stage, skipPrepacking) => page.evaluate(({ stage, skipPrepacking }) => {
+        window.dispatchEvent(new CustomEvent('production:packing-saved', { detail: {
+          stage, workOrder: { id: 'WO-QR-BROWSER-TEST', skipPrepacking,
+            stockUom: 'Pcs', displayUom: 'Pack', qtyInPack: 6,
+            prepacking: { confirmed: true, goodQty: 18 }, postpacking: { confirmed: true, goodQty: 12 } }
+        } }))
+      }, { stage, skipPrepacking })
+      for (const [stage, skip, count] of [['prepacking', false, 3], ['postpacking', true, 2]]) {
+        await emitPacking(stage, skip)
+        await dialog.waitFor({ state: 'visible' })
+        assert.match(await dialog.innerText(), new RegExp(`Usulan otomatis dari Good Qty dan UOM: ${count} label`)); checks++
+        await dialog.getByRole('button', { name: 'Nanti saja', exact: true }).click()
+      }
+      await emitPacking('postpacking', false)
+      await emitPacking('prepacking', true)
+      assert.equal(await dialog.isVisible(), false); checks++
+      // Removing a settings slot unmounts its Vue tree; returning creates one tree.
+      await page.evaluate(() => { location.hash = '#/wo/WO-QR-BROWSER-TEST' })
+      await page.getByRole('heading', { name: 'Post-Packing', exact: true }).waitFor()
+      assert.equal(await settings.count(), 0); checks++
+      await page.evaluate(() => {
+        const slot = document.querySelector('[data-product-qr-slot="actions"]')
+        const wo = JSON.parse(slot.dataset.workOrder)
+        wo.postpacking = { ...wo.postpacking, confirmed: true, goodQty: 24 }
+        slot.dataset.workOrder = JSON.stringify(wo)
+      })
+      await print.waitFor({ state: 'visible' })
+      await print.click()
+      await dialog.waitFor({ state: 'visible' })
+      assert.match(await dialog.innerText(), /Usulan otomatis dari Good Qty dan UOM: 4 label/); checks++
+      await dialog.getByRole('button', { name: 'Nanti saja', exact: true }).click()
+      await page.evaluate(() => { location.hash = '#/settings' })
+      await settings.waitFor()
+      assert.equal(await settings.count(), 1)
+      assert.equal(await page.locator('[data-product-qr-dialogs]').count(), 1); checks++
+      // Optional runtime failure must leave the host Work Order page usable.
+      await page.route('**/assets/product_qr/wo_labels/runtime-version.json', route => route.fulfill({ status: 404, body: '{}' }))
+      await page.goto(`${base}/production_workspace#/wo/WO-QR-BROWSER-TEST`, { waitUntil: 'networkidle' })
+      await page.reload({ waitUntil: 'networkidle' })
+      await page.getByText('Fitur label Product QR gagal dimuat. Muat ulang halaman untuk mencoba lagi.', { exact: true }).waitFor()
+      await page.getByRole('heading', { name: 'Post-Packing', exact: true }).waitFor()
+      assert.equal(await page.locator('[data-product-qr-dialogs]').count(), 0); checks++
+      await page.unroute('**/assets/product_qr/wo_labels/runtime-version.json')
+    }
     if (process.env.WO_LABEL_SCREENSHOTS) {
       const directory = fs.mkdtempSync(path.join(temp, 'wo-label-style-'))
       await settings.screenshot({ path: path.join(directory, 'desktop.png') })
@@ -311,6 +373,7 @@ async function main() {
     assert.equal(await settings.getByLabel('Geser QR horizontal (mm)', { exact: true }).inputValue(), '0')
     assert.equal(await settings.getByLabel('Geser teks horizontal (mm)', { exact: true }).inputValue(), '0')
     assert.equal(await settings.locator('iframe,input[type="checkbox"]').count(), 0); checks++
+    await checkRuntimeInjection()
     // Exercise the standalone browser-print entry with read-only issued-label
     // fixtures, not a live operator session or an issuance endpoint.
     await page.route('**/assets/product_qr/wo_labels/*', route => {
