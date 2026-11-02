@@ -1,6 +1,6 @@
-import { reactive as le, unref as T, openBlock as m, createElementBlock as k, createElementVNode as s, createVNode as ne, createTextVNode as I, createCommentVNode as D, ref as P, computed as $, watch as K, nextTick as X, Fragment as M, toDisplayString as v, withModifiers as R, withDirectives as H, vModelSelect as V, vModelText as z, renderList as j, onMounted as ue, normalizeClass as ce } from "vue";
+import { reactive as le, unref as T, openBlock as m, createElementBlock as k, createElementVNode as s, createVNode as ne, createTextVNode as I, createCommentVNode as D, ref as P, computed as $, watch as K, nextTick as X, Fragment as M, toDisplayString as v, withModifiers as V, withDirectives as H, vModelSelect as R, vModelText as z, renderList as j, onMounted as ue, normalizeClass as ce } from "vue";
 import { Printer as de, QrCode as fe } from "lucide-vue-next";
-import { g as pe, a as be, b as me, n as G, l as W, c as ae, S as ke, L as Y, d as Q, s as ge, r as ve } from "./label-layout-CO62hXZW.js";
+import { g as pe, a as be, b as me, n as G, l as W, c as ae, S as ke, L as Y, d as Q, s as ge, r as ve } from "./label-layout-DRPTv2NI.js";
 function ye(p) {
   return !!p?.displayUom && p.displayUom !== p.stockUom && Number.isFinite(p.qtyInPack) && p.qtyInPack > 0;
 }
@@ -2513,7 +2513,7 @@ const Fe = {
 }, je = {
   key: 2,
   class: "label-count-field"
-}, Ve = { class: "label-print-note" }, Re = { key: 0 }, Qe = {
+}, Re = { class: "label-print-note" }, Ve = { key: 0 }, Qe = {
   key: 0,
   class: "label-print-note"
 }, Ge = {
@@ -2594,8 +2594,8 @@ const Fe = {
         ref: l,
         class: "dialog",
         "aria-labelledby": "label-print-title",
-        onCancel: R(d, ["prevent"]),
-        onClick: R(d, ["self"])
+        onCancel: V(d, ["prevent"]),
+        onClick: V(d, ["self"])
       }, [
         s("h3", Ie, v(T(N).afterSave ? `${T(N).afterSave} tersimpan` : "Cetak label?"), 1),
         s("p", null, [
@@ -2621,7 +2621,7 @@ const Fe = {
           }, "Tambah setelah cetak awal", 8, He),
           f[9] || (f[9] = s("option", { value: "specific" }, "Pilih nomor urut label untuk cetak ulang", -1))
         ], 512), [
-          [V, r.value]
+          [R, r.value]
         ]),
         r.value === "automatic" ? (m(), k("div", De, [
           f[10] || (f[10] = s("label", { for: "extra-label-count" }, "Label tambahan", -1)),
@@ -2669,9 +2669,9 @@ const Fe = {
         ])) : D("", !0),
         r.value === "specific" ? (m(), k("div", je, [
           f[18] || (f[18] = s("label", { for: "label-number-select" }, "Nomor urut label yang dicetak ulang", -1)),
-          s("p", Ve, [
+          s("p", Re, [
             f[13] || (f[13] = I("Nomor urut terikat ke Work Order ini", -1)),
-            b.value !== null ? (m(), k("span", Re, " · Adonan ke " + v(b.value), 1)) : D("", !0),
+            b.value !== null ? (m(), k("span", Ve, " · Adonan ke " + v(b.value), 1)) : D("", !0),
             f[14] || (f[14] = I(".", -1))
           ]),
           h.value ? (m(), k("p", Qe, "Memuat nomor urut label…")) : S.value ? (m(), k("p", Ge, v(S.value), 1)) : o.value.length ? H((m(), k("select", {
@@ -2688,7 +2688,7 @@ const Fe = {
             }, " Label #" + v(x.label_number) + " · Adonan ke " + v(x.adonan_ke ?? "—"), 9, Je))), 128))
           ], 512)), [
             [
-              V,
+              R,
               u.value,
               void 0,
               { number: !0 }
@@ -2728,8 +2728,8 @@ const Fe = {
         ref: c,
         class: "dialog error-dialog",
         "aria-labelledby": "wo-label-error-title",
-        onCancel: R(q, ["prevent"]),
-        onClick: R(q, ["self"])
+        onCancel: V(q, ["prevent"]),
+        onClick: V(q, ["self"])
       }, [
         f[23] || (f[23] = s("div", {
           class: "error-dialog-icon",
@@ -2766,7 +2766,7 @@ const ut = {
   class: "settings-note",
   "data-label-printer-destination": "",
   "aria-live": "polite"
-}, St = { class: "pqr-layout-actions" }, xt = ["disabled"], At = ["disabled"], Pt = { class: "settings-block" }, _t = { class: "settings-control" }, Lt = { class: "form-grid cols2" }, Tt = ["for"], Et = ["id"], Nt = ["id", "onUpdate:modelValue", "min", "max", "step"], Ot = { class: "hint" }, qt = { class: "settings-block" }, Ut = { class: "settings-control" }, Ft = { class: "form-grid cols2" }, It = ["for"], Ht = ["id", "onUpdate:modelValue", "min", "max", "step"], Dt = { class: "settings-block" }, $t = { class: "settings-control" }, zt = { class: "form-grid cols2" }, Mt = ["for"], jt = ["id", "onUpdate:modelValue", "min", "max", "step"], Vt = { class: "field" }, Rt = { class: "field wide" }, Qt = {
+}, St = { class: "pqr-layout-actions" }, xt = ["disabled"], At = ["disabled"], Pt = { class: "settings-block" }, _t = { class: "settings-control" }, Lt = { class: "form-grid cols2" }, Tt = ["for"], Et = ["id"], Nt = ["id", "onUpdate:modelValue", "min", "max", "step"], Ot = { class: "hint" }, qt = { class: "settings-block" }, Ut = { class: "settings-control" }, Ft = { class: "form-grid cols2" }, It = ["for"], Ht = ["id", "onUpdate:modelValue", "min", "max", "step"], Dt = { class: "settings-block" }, $t = { class: "settings-control" }, zt = { class: "form-grid cols2" }, Mt = ["for"], jt = ["id", "onUpdate:modelValue", "min", "max", "step"], Rt = { class: "field" }, Vt = { class: "field wide" }, Qt = {
   key: 0,
   class: "settings-alerts"
 }, Gt = { class: "panel-foot" }, Wt = ["disabled"], Jt = ["disabled"], er = {
@@ -2849,7 +2849,7 @@ const ut = {
                     value: i
                   }, v(i) + v(y.value && !t.value.includes(i) ? " — belum terdeteksi" : ""), 9, vt))), 128))
                 ], 512), [
-                  [V, l.value.printer]
+                  [R, l.value.printer]
                 ])
               ]),
               s("div", yt, [
@@ -2924,7 +2924,7 @@ const ut = {
                   s("option", { value: 600 }, "600", -1)
                 ])], 8, Et)), [
                   [
-                    V,
+                    R,
                     l.value.dpi,
                     void 0,
                     { number: !0 }
@@ -2955,7 +2955,7 @@ const ut = {
         s("div", qt, [
           d[16] || (d[16] = s("div", { class: "settings-block-head" }, [
             s("h3", null, "Konten kiri — QR"),
-            s("p", { class: "hint" }, "Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama.")
+            s("p", { class: "hint" }, 'Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama. Kotak "adonan ke" di kiri atas ikut bergeser bersama QR.')
           ], -1)),
           s("div", Ut, [
             s("div", Ft, [
@@ -3018,7 +3018,7 @@ const ut = {
                   ]
                 ])
               ]))), 128)),
-              s("div", Vt, [
+              s("div", Rt, [
                 d[18] || (d[18] = s("label", { for: "pqr-align" }, "Perataan teks", -1)),
                 H(s("select", {
                   id: "pqr-align",
@@ -3029,10 +3029,10 @@ const ut = {
                   s("option", { value: "center" }, "Tengah", -1),
                   s("option", { value: "right" }, "Kanan", -1)
                 ])], 512), [
-                  [V, l.value.align]
+                  [R, l.value.align]
                 ])
               ]),
-              s("div", Rt, [
+              s("div", Vt, [
                 d[19] || (d[19] = s("label", { for: "pqr-footer" }, "Footer", -1)),
                 H(s("input", {
                   id: "pqr-footer",

@@ -146,6 +146,23 @@ test('specific reprints retain their original label ordinal in ZPL and browser o
   assert.match(html, />2<\/div>/)
 })
 
+test('adonan ke prints boxed top-left per label, follows QR offsets, absent keeps golden', async () => {
+  const data = { ...originalData, adonan_ke: 7, labels: [
+    { label_number: 1, adonan_ke: 7, qr_value: 'Q1' }, { label_number: 2, adonan_ke: 12, qr_value: 'Q2' }] }
+  const zpl = buildLayoutZpl(data, {})[0]
+  assert.match(zpl, /\^FO13,22\^GB29,29,2\^FS\n\^FO8,28\^A0N,18,18\^FB29,1,0,C\^FD7\^FS\n\^FO9,28/)
+  assert.match(zpl, /\^FO413,22\^GB29,29,2\^FS\n\^FO408,28\^A0N,18,18\^FB29,1,0,C\^FD12\^FS/)
+  assert.match(buildLayoutZpl(data, { leftX: 1, leftY: 1 })[0], /\^FO21,30\^GB/)
+  // Square and proportional: a bigger font grows the box equally on both sides.
+  assert.match(buildLayoutZpl(data, { fontSize: 14.9 })[0], /\^GB58,58,4\^FS\n\^FO\d+,\d+\^A0N,36,36\^FB58,/)
+  assert.match(buildLayoutZpl(data, { dpi: 300 })[0], /\^GB43,43,3\^FS/)
+  assert.match(buildLayoutZpl({ ...originalData, adonan_ke: 3 }, {})[0], /\^FD3\^FS/, 'falls back to WO-level adonan')
+  assert.deepEqual(buildLayoutZpl({ ...originalData, adonan_ke: null }, {}), [originalZpl])
+  const html = await buildLayoutHTML(data, {})
+  assert.match(html, /class="adonan" style="left:1\.62\d*mm[^>]*border:[^>]*><\/div><div class="adonan" style="left:1\.00\d*mm[^>]*>7<\/div>/)
+  assert.match(html, /class="adonan"[^>]*>12<\/div>/)
+})
+
 test('left QR and right text offsets are independent and preserve the default golden', () => {
   const left = buildLayoutZpl(originalData, { leftX: 1, leftY: -1 })[0]
   assert.equal(left, originalZpl.replace('^FO68,32^BQN', '^FO76,24^BQN'))

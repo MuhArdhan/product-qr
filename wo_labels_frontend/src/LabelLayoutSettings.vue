@@ -120,7 +120,7 @@ onMounted(refresh)
       <div class="settings-block">
         <div class="settings-block-head">
           <h3>Konten kiri — QR</h3>
-          <p class="hint">Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama.</p>
+          <p class="hint">Atur posisi dan ukuran QR tanpa menggeser konten kanan. QR selalu dicetak dengan identitas serial yang sama. Kotak "adonan ke" di kiri atas ikut bergeser bersama QR.</p>
         </div>
         <div class="settings-control">
           <div class="form-grid cols2">
