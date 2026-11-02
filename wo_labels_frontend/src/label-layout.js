@@ -81,8 +81,8 @@ const dots = (mm, c) => Math.round(mm * c.dpi / 25.4)
 
 export const SAMPLE_LABEL_DATA = Object.freeze({
   sku: 'SKU-TEST', item_name: 'Dough Ropi Butter', item_name_prefix: 'Dough', item_name_main: 'Ropi Butter', manufacturing_date: '2026-10-20',
-  expiry_date: '2026-11-20', label_count: 1,
-  labels: [{ label_number: 1, qr_value: 'TEST-NOT-A-PRODUCTION-SERIAL', serial_no: 'TEST' }]
+  expiry_date: '2026-11-20', label_count: 1, adonan_ke: 1,
+  labels: [{ label_number: 1, adonan_ke: 1, qr_value: 'TEST-NOT-A-PRODUCTION-SERIAL', serial_no: 'TEST' }]
 })
 
 function geometry(c) {
@@ -129,6 +129,23 @@ function labelText(data, seq, c, g) {
   return parts
 }
 
+// Boxed "adonan ke" mirrors the top-right sequence in the free area left of the
+// QR, and follows the left (QR) offsets. Absent value => nothing printed.
+function adonanBox(value, c, g) {
+  if (value == null || value === '') return null
+  const size = Math.round(18 * g.fontRatio)
+  // Square sized from the font (not DPI alone) so box, border and digits scale together.
+  const side = Math.round(size * 1.6)
+  const pad = Math.round((side - size) / 2)
+  // Text row lines up with the top-right sequence (y=28 in original dots).
+  const x = Math.max(0, g.unit(8) + g.shift + dots(c.leftX, c))
+  return {
+    // Only the frame sits 5 dots right of the digits (requested placement).
+    x, boxX: x + g.unit(5), y: Math.max(0, g.unit(28) - pad + g.shift + dots(c.leftY, c)),
+    w: side, h: side, border: Math.max(1, Math.round(size / 9)), size, pad, text: String(value)
+  }
+}
+
 const field = value => {
   const text = String(value ?? '')
   const escaped = zpl(text)
@@ -161,6 +178,12 @@ export function buildLayoutZpl(data, raw) {
       const offset = col * (g.column + g.gap)
       const parts = labelText(data, label.label_number ?? start + col + 1, c, g)
       if (parts[0]?.sequence) job += text(parts.shift(), offset)
+      const box = adonanBox(label.adonan_ke ?? data.adonan_ke, c, g)
+      if (box) {
+        const x = offset + box.x
+        const draw = dx => `^FO${dx},${box.y + box.pad}^A0N,${box.size},${box.size}^FB${box.w},1,0,C${field(box.text)}`
+        job += `^FO${offset + box.boxX},${box.y}^GB${box.w},${box.h},${box.border}^FS\n` + draw(x) + (c.bold ? draw(x + g.unit(1)) : '')
+      }
       job += `^FO${offset + g.qrX},${g.qrY}^BQN,2,${g.qrScale}${field(`QA,${label.qr_value}`)}`
       for (const part of parts) job += text(part, offset)
     }
@@ -185,7 +208,10 @@ export async function buildLayoutHTML(data, raw) {
         const bounded = wraps || (!part.sequence && c.textWidth > 0)
         return `<div class="label-text" style="left:${mm(part.x)}mm;top:${mm(part.y)}mm;font-size:${mm(part.size)}mm;width:${mm(width)}mm;text-align:${part.sequence ? 'right' : c.align};font-weight:${c.bold ? 700 : 400};white-space:${wraps ? 'normal' : 'nowrap'};${bounded ? `overflow-wrap:anywhere;max-height:${mm(part.size * part.lines)}mm;overflow:hidden;` : ''}">${escapeHtml(part.text)}</div>`
       }).join('')
-      return `<article><div class="qr" style="left:${mm(g.qrX)}mm;top:${mm(g.qrY)}mm;width:${mm(qrWidth)}mm;height:${mm(qrWidth)}mm">${qr}</div>${text}</article>`
+      const box = adonanBox(label.adonan_ke ?? data.adonan_ke, c, g)
+      const boxPos = left => `left:${mm(left)}mm;top:${mm(box.y)}mm;width:${mm(box.w)}mm;height:${mm(box.h)}mm`
+      const boxHtml = box ? `<div class="adonan" style="${boxPos(box.boxX)};border:${mm(box.border)}mm solid #000"></div><div class="adonan" style="${boxPos(box.x)};font-size:${mm(box.size)}mm;font-weight:${c.bold ? 700 : 400}">${escapeHtml(box.text)}</div>` : ''
+      return `<article>${boxHtml}<div class="qr" style="left:${mm(g.qrX)}mm;top:${mm(g.qrY)}mm;width:${mm(qrWidth)}mm;height:${mm(qrWidth)}mm">${qr}</div>${text}</article>`
     }))
     rows.push(`<section>${labels.join('')}</section>`)
   }
@@ -194,7 +220,7 @@ export async function buildLayoutHTML(data, raw) {
     @page{size:${paper}mm ${c.height}mm;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Arial,sans-serif;color:#000}
     section{width:${paper}mm;height:${c.height}mm;display:flex;gap:${c.gap}mm;break-after:page;page-break-after:always}section:last-child{break-after:auto;page-break-after:auto}
     article{width:${c.width}mm;height:${c.height}mm;position:relative;overflow:hidden;flex-shrink:0;background:white}
-    .qr,.label-text{position:absolute}.qr svg{width:100%;height:100%;display:block}.label-text{font-family:Arial,sans-serif;font-weight:700;line-height:1;white-space:nowrap}
+    .qr,.label-text,.adonan{position:absolute}.adonan{display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;line-height:1}.qr svg{width:100%;height:100%;display:block}.label-text{font-family:Arial,sans-serif;font-weight:700;line-height:1;white-space:nowrap}
     @media screen{body{background:#eee}section{margin-bottom:4px}}
     </style></head><body>${rows.join('')}</body></html>`
 }

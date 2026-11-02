@@ -1,4 +1,4 @@
-function de(t) {
+function ge(t) {
   return t && t.__esModule && Object.prototype.hasOwnProperty.call(t, "default") ? t.default : t;
 }
 function Fe(t) {
@@ -25,15 +25,15 @@ function Fe(t) {
     });
   }), r;
 }
-var x = {}, X, Mt;
-function he() {
-  return Mt || (Mt = 1, X = function() {
+var D = {}, G, At;
+function me() {
+  return At || (At = 1, G = function() {
     return typeof Promise == "function" && Promise.prototype && Promise.prototype.then;
-  }), X;
+  }), G;
 }
-var G = {}, z = {}, Rt;
-function D() {
-  if (Rt) return z;
+var Q = {}, x = {}, Rt;
+function z() {
+  if (Rt) return x;
   Rt = 1;
   let t;
   const o = [
@@ -80,30 +80,30 @@ function D() {
     3532,
     3706
   ];
-  return z.getSymbolSize = function(e) {
+  return x.getSymbolSize = function(e) {
     if (!e) throw new Error('"version" cannot be null or undefined');
     if (e < 1 || e > 40) throw new Error('"version" should be in range from 1 to 40');
     return e * 4 + 17;
-  }, z.getSymbolTotalCodewords = function(e) {
+  }, x.getSymbolTotalCodewords = function(e) {
     return o[e];
-  }, z.getBCHDigit = function(r) {
+  }, x.getBCHDigit = function(r) {
     let e = 0;
     for (; r !== 0; )
       e++, r >>>= 1;
     return e;
-  }, z.setToSJISFunction = function(e) {
+  }, x.setToSJISFunction = function(e) {
     if (typeof e != "function")
       throw new Error('"toSJISFunc" is not a valid function.');
     t = e;
-  }, z.isKanjiModeEnabled = function() {
+  }, x.isKanjiModeEnabled = function() {
     return typeof t < "u";
-  }, z.toSJIS = function(e) {
+  }, x.toSJIS = function(e) {
     return t(e);
-  }, z;
+  }, x;
 }
-var W = {}, At;
-function bt() {
-  return At || (At = 1, (function(t) {
+var W = {}, Tt;
+function Et() {
+  return Tt || (Tt = 1, (function(t) {
     t.L = { bit: 1 }, t.M = { bit: 0 }, t.Q = { bit: 3 }, t.H = { bit: 2 };
     function o(r) {
       if (typeof r != "string")
@@ -138,10 +138,10 @@ function bt() {
     };
   })(W)), W;
 }
-var Z, Tt;
-function ge() {
-  if (Tt) return Z;
-  Tt = 1;
+var Z, Pt;
+function pe() {
+  if (Pt) return Z;
+  Pt = 1;
   function t() {
     this.buffer = [], this.length = 0;
   }
@@ -163,10 +163,10 @@ function ge() {
     }
   }, Z = t, Z;
 }
-var tt, Pt;
-function me() {
-  if (Pt) return tt;
-  Pt = 1;
+var tt, Nt;
+function ye() {
+  if (Nt) return tt;
+  Nt = 1;
   function t(o) {
     if (!o || o < 1)
       throw new Error("BitMatrix size must be defined and greater than 0");
@@ -183,10 +183,10 @@ function me() {
     return this.reservedBit[o * this.size + r];
   }, tt = t, tt;
 }
-var et = {}, Nt;
-function pe() {
-  return Nt || (Nt = 1, (function(t) {
-    const o = D().getSymbolSize;
+var et = {}, It;
+function we() {
+  return It || (It = 1, (function(t) {
+    const o = z().getSymbolSize;
     t.getRowColCoords = function(e) {
       if (e === 1) return [];
       const n = Math.floor(e / 7) + 2, i = o(e), s = i === 145 ? 26 : Math.ceil((i - 13) / (2 * n - 2)) * 2, a = [i - 7];
@@ -204,11 +204,11 @@ function pe() {
     };
   })(et)), et;
 }
-var nt = {}, It;
-function we() {
-  if (It) return nt;
-  It = 1;
-  const t = D().getSymbolSize, o = 7;
+var nt = {}, _t;
+function be() {
+  if (_t) return nt;
+  _t = 1;
+  const t = z().getSymbolSize, o = 7;
   return nt.getPositions = function(e) {
     const n = t(e);
     return [
@@ -221,9 +221,9 @@ function we() {
     ];
   }, nt;
 }
-var rt = {}, qt;
-function ye() {
-  return qt || (qt = 1, (function(t) {
+var rt = {}, kt;
+function Ee() {
+  return kt || (kt = 1, (function(t) {
     t.Patterns = {
       PATTERN000: 0,
       PATTERN001: 1,
@@ -247,11 +247,11 @@ function ye() {
     }, t.getPenaltyN1 = function(n) {
       const i = n.size;
       let s = 0, a = 0, u = 0, l = null, c = null;
-      for (let g = 0; g < i; g++) {
+      for (let m = 0; m < i; m++) {
         a = u = 0, l = c = null;
-        for (let m = 0; m < i; m++) {
-          let f = n.get(g, m);
-          f === l ? a++ : (a >= 5 && (s += o.N1 + (a - 5)), l = f, a = 1), f = n.get(m, g), f === c ? u++ : (u >= 5 && (s += o.N1 + (u - 5)), c = f, u = 1);
+        for (let f = 0; f < i; f++) {
+          let d = n.get(m, f);
+          d === l ? a++ : (a >= 5 && (s += o.N1 + (a - 5)), l = d, a = 1), d = n.get(f, m), d === c ? u++ : (u >= 5 && (s += o.N1 + (u - 5)), c = d, u = 1);
         }
         a >= 5 && (s += o.N1 + (a - 5)), u >= 5 && (s += o.N1 + (u - 5));
       }
@@ -319,11 +319,11 @@ function ye() {
     };
   })(rt)), rt;
 }
-var H = {}, Lt;
-function ee() {
-  if (Lt) return H;
-  Lt = 1;
-  const t = bt(), o = [
+var H = {}, qt;
+function ne() {
+  if (qt) return H;
+  qt = 1;
+  const t = Et(), o = [
     // L  M  Q  H
     1,
     1,
@@ -676,10 +676,10 @@ function ee() {
     }
   }, H;
 }
-var ot = {}, O = {}, _t;
-function be() {
-  if (_t) return O;
-  _t = 1;
+var ot = {}, O = {}, Lt;
+function Ce() {
+  if (Lt) return O;
+  Lt = 1;
   const t = new Uint8Array(512), o = new Uint8Array(256);
   return (function() {
     let e = 1;
@@ -696,10 +696,10 @@ function be() {
     return e === 0 || n === 0 ? 0 : t[o[e] + o[n]];
   }, O;
 }
-var kt;
-function Ee() {
-  return kt || (kt = 1, (function(t) {
-    const o = be();
+var vt;
+function Se() {
+  return vt || (vt = 1, (function(t) {
+    const o = Ce();
     t.mul = function(e, n) {
       const i = new Uint8Array(e.length + n.length - 1);
       for (let s = 0; s < e.length; s++)
@@ -725,11 +725,11 @@ function Ee() {
     };
   })(ot)), ot;
 }
-var it, vt;
-function Ce() {
-  if (vt) return it;
-  vt = 1;
-  const t = Ee();
+var it, xt;
+function Be() {
+  if (xt) return it;
+  xt = 1;
+  const t = Se();
   function o(r) {
     this.genPoly = void 0, this.degree = r, this.degree && this.initialize(this.degree);
   }
@@ -749,34 +749,34 @@ function Ce() {
   }, it = o, it;
 }
 var st = {}, at = {}, ut = {}, zt;
-function ne() {
+function re() {
   return zt || (zt = 1, ut.isValid = function(o) {
     return !isNaN(o) && o >= 1 && o <= 40;
   }), ut;
 }
-var L = {}, Dt;
-function re() {
-  if (Dt) return L;
-  Dt = 1;
+var k = {}, $t;
+function oe() {
+  if ($t) return k;
+  $t = 1;
   const t = "[0-9]+", o = "[A-Z $%*+\\-./:]+";
   let r = "(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+";
   r = r.replace(/u/g, "\\u");
   const e = "(?:(?![A-Z0-9 $%*+\\-./:]|" + r + `)(?:.|[\r
 ]))+`;
-  L.KANJI = new RegExp(r, "g"), L.BYTE_KANJI = new RegExp("[^A-Z0-9 $%*+\\-./:]+", "g"), L.BYTE = new RegExp(e, "g"), L.NUMERIC = new RegExp(t, "g"), L.ALPHANUMERIC = new RegExp(o, "g");
+  k.KANJI = new RegExp(r, "g"), k.BYTE_KANJI = new RegExp("[^A-Z0-9 $%*+\\-./:]+", "g"), k.BYTE = new RegExp(e, "g"), k.NUMERIC = new RegExp(t, "g"), k.ALPHANUMERIC = new RegExp(o, "g");
   const n = new RegExp("^" + r + "$"), i = new RegExp("^" + t + "$"), s = new RegExp("^[A-Z0-9 $%*+\\-./:]+$");
-  return L.testKanji = function(u) {
+  return k.testKanji = function(u) {
     return n.test(u);
-  }, L.testNumeric = function(u) {
+  }, k.testNumeric = function(u) {
     return i.test(u);
-  }, L.testAlphanumeric = function(u) {
+  }, k.testAlphanumeric = function(u) {
     return s.test(u);
-  }, L;
+  }, k;
 }
 var Ft;
-function F() {
+function $() {
   return Ft || (Ft = 1, (function(t) {
-    const o = ne(), r = re();
+    const o = re(), r = oe();
     t.NUMERIC = {
       id: "Numeric",
       bit: 1,
@@ -835,77 +835,77 @@ function F() {
     };
   })(at)), at;
 }
-var Ut;
-function Se() {
-  return Ut || (Ut = 1, (function(t) {
-    const o = D(), r = ee(), e = bt(), n = F(), i = ne(), s = 7973, a = o.getBCHDigit(s);
-    function u(m, f, A) {
-      for (let y = 1; y <= 40; y++)
-        if (f <= t.getCapacity(y, A, m))
-          return y;
+var Dt;
+function Me() {
+  return Dt || (Dt = 1, (function(t) {
+    const o = z(), r = ne(), e = Et(), n = $(), i = re(), s = 7973, a = o.getBCHDigit(s);
+    function u(f, d, M) {
+      for (let p = 1; p <= 40; p++)
+        if (d <= t.getCapacity(p, M, f))
+          return p;
     }
-    function l(m, f) {
-      return n.getCharCountIndicator(m, f) + 4;
+    function l(f, d) {
+      return n.getCharCountIndicator(f, d) + 4;
     }
-    function c(m, f) {
-      let A = 0;
-      return m.forEach(function(y) {
-        const N = l(y.mode, f);
-        A += N + y.getBitsLength();
-      }), A;
+    function c(f, d) {
+      let M = 0;
+      return f.forEach(function(p) {
+        const N = l(p.mode, d);
+        M += N + p.getBitsLength();
+      }), M;
     }
-    function g(m, f) {
-      for (let A = 1; A <= 40; A++)
-        if (c(m, A) <= t.getCapacity(A, f, n.MIXED))
-          return A;
+    function m(f, d) {
+      for (let M = 1; M <= 40; M++)
+        if (c(f, M) <= t.getCapacity(M, d, n.MIXED))
+          return M;
     }
-    t.from = function(f, A) {
-      return i.isValid(f) ? parseInt(f, 10) : A;
-    }, t.getCapacity = function(f, A, y) {
-      if (!i.isValid(f))
+    t.from = function(d, M) {
+      return i.isValid(d) ? parseInt(d, 10) : M;
+    }, t.getCapacity = function(d, M, p) {
+      if (!i.isValid(d))
         throw new Error("Invalid QR Code version");
-      typeof y > "u" && (y = n.BYTE);
-      const N = o.getSymbolTotalCodewords(f), S = r.getTotalCodewordsCount(f, A), P = (N - S) * 8;
-      if (y === n.MIXED) return P;
-      const R = P - l(y, f);
-      switch (y) {
+      typeof p > "u" && (p = n.BYTE);
+      const N = o.getSymbolTotalCodewords(d), T = r.getTotalCodewordsCount(d, M), b = (N - T) * 8;
+      if (p === n.MIXED) return b;
+      const A = b - l(p, d);
+      switch (p) {
         case n.NUMERIC:
-          return Math.floor(R / 10 * 3);
+          return Math.floor(A / 10 * 3);
         case n.ALPHANUMERIC:
-          return Math.floor(R / 11 * 2);
+          return Math.floor(A / 11 * 2);
         case n.KANJI:
-          return Math.floor(R / 13);
+          return Math.floor(A / 13);
         case n.BYTE:
         default:
-          return Math.floor(R / 8);
+          return Math.floor(A / 8);
       }
-    }, t.getBestVersionForData = function(f, A) {
-      let y;
-      const N = e.from(A, e.M);
-      if (Array.isArray(f)) {
-        if (f.length > 1)
-          return g(f, N);
-        if (f.length === 0)
+    }, t.getBestVersionForData = function(d, M) {
+      let p;
+      const N = e.from(M, e.M);
+      if (Array.isArray(d)) {
+        if (d.length > 1)
+          return m(d, N);
+        if (d.length === 0)
           return 1;
-        y = f[0];
+        p = d[0];
       } else
-        y = f;
-      return u(y.mode, y.getLength(), N);
-    }, t.getEncodedBits = function(f) {
-      if (!i.isValid(f) || f < 7)
+        p = d;
+      return u(p.mode, p.getLength(), N);
+    }, t.getEncodedBits = function(d) {
+      if (!i.isValid(d) || d < 7)
         throw new Error("Invalid QR Code version");
-      let A = f << 12;
-      for (; o.getBCHDigit(A) - a >= 0; )
-        A ^= s << o.getBCHDigit(A) - a;
-      return f << 12 | A;
+      let M = d << 12;
+      for (; o.getBCHDigit(M) - a >= 0; )
+        M ^= s << o.getBCHDigit(M) - a;
+      return d << 12 | M;
     };
   })(st)), st;
 }
-var lt = {}, xt;
-function Be() {
-  if (xt) return lt;
-  xt = 1;
-  const t = D(), o = 1335, r = 21522, e = t.getBCHDigit(o);
+var lt = {}, Ut;
+function Ae() {
+  if (Ut) return lt;
+  Ut = 1;
+  const t = z(), o = 1335, r = 21522, e = t.getBCHDigit(o);
   return lt.getEncodedBits = function(i, s) {
     const a = i.bit << 3 | s;
     let u = a << 10;
@@ -914,11 +914,11 @@ function Be() {
     return (a << 10 | u) ^ r;
   }, lt;
 }
-var ct = {}, ft, $t;
-function Me() {
-  if ($t) return ft;
-  $t = 1;
-  const t = F();
+var ct = {}, ft, Ot;
+function Re() {
+  if (Ot) return ft;
+  Ot = 1;
+  const t = $();
   function o(r) {
     this.mode = t.NUMERIC, this.data = r.toString();
   }
@@ -936,11 +936,11 @@ function Me() {
     a > 0 && (i = this.data.substr(n), s = parseInt(i, 10), e.put(s, a * 3 + 1));
   }, ft = o, ft;
 }
-var dt, Ot;
-function Re() {
-  if (Ot) return dt;
-  Ot = 1;
-  const t = F(), o = [
+var dt, Yt;
+function Te() {
+  if (Yt) return dt;
+  Yt = 1;
+  const t = $(), o = [
     "0",
     "1",
     "2",
@@ -1005,11 +1005,11 @@ function Re() {
     this.data.length % 2 && n.put(o.indexOf(this.data[i]), 6);
   }, dt = r, dt;
 }
-var ht, Yt;
-function Ae() {
-  if (Yt) return ht;
-  Yt = 1;
-  const t = F();
+var ht, Ht;
+function Pe() {
+  if (Ht) return ht;
+  Ht = 1;
+  const t = $();
   function o(r) {
     this.mode = t.BYTE, typeof r == "string" ? this.data = new TextEncoder().encode(r) : this.data = new Uint8Array(r);
   }
@@ -1024,11 +1024,11 @@ function Ae() {
       r.put(this.data[e], 8);
   }, ht = o, ht;
 }
-var gt, Ht;
-function Te() {
-  if (Ht) return gt;
-  Ht = 1;
-  const t = F(), o = D();
+var gt, jt;
+function Ne() {
+  if (jt) return gt;
+  jt = 1;
+  const t = $(), o = z();
   function r(e) {
     this.mode = t.KANJI, this.data = e;
   }
@@ -1055,23 +1055,23 @@ Make sure your charset is UTF-8`
     }
   }, gt = r, gt;
 }
-var mt = { exports: {} }, jt;
-function Pe() {
-  return jt || (jt = 1, (function(t) {
+var mt = { exports: {} }, Vt;
+function Ie() {
+  return Vt || (Vt = 1, (function(t) {
     var o = {
       single_source_shortest_paths: function(r, e, n) {
         var i = {}, s = {};
         s[e] = 0;
         var a = o.PriorityQueue.make();
         a.push(e, 0);
-        for (var u, l, c, g, m, f, A, y, N; !a.empty(); ) {
-          u = a.pop(), l = u.value, g = u.cost, m = r[l] || {};
-          for (c in m)
-            m.hasOwnProperty(c) && (f = m[c], A = g + f, y = s[c], N = typeof s[c] > "u", (N || y > A) && (s[c] = A, a.push(c, A), i[c] = l));
+        for (var u, l, c, m, f, d, M, p, N; !a.empty(); ) {
+          u = a.pop(), l = u.value, m = u.cost, f = r[l] || {};
+          for (c in f)
+            f.hasOwnProperty(c) && (d = f[c], M = m + d, p = s[c], N = typeof s[c] > "u", (N || p > M) && (s[c] = M, a.push(c, M), i[c] = l));
         }
         if (typeof n < "u" && typeof s[n] > "u") {
-          var S = ["Could not find a path from ", e, " to ", n, "."].join("");
-          throw new Error(S);
+          var T = ["Could not find a path from ", e, " to ", n, "."].join("");
+          throw new Error(T);
         }
         return i;
       },
@@ -1123,280 +1123,280 @@ function Pe() {
     t.exports = o;
   })(mt)), mt.exports;
 }
-var Vt;
-function Ne() {
-  return Vt || (Vt = 1, (function(t) {
-    const o = F(), r = Me(), e = Re(), n = Ae(), i = Te(), s = re(), a = D(), u = Pe();
-    function l(S) {
-      return unescape(encodeURIComponent(S)).length;
+var Kt;
+function _e() {
+  return Kt || (Kt = 1, (function(t) {
+    const o = $(), r = Re(), e = Te(), n = Pe(), i = Ne(), s = oe(), a = z(), u = Ie();
+    function l(T) {
+      return unescape(encodeURIComponent(T)).length;
     }
-    function c(S, P, R) {
-      const B = [];
+    function c(T, b, A) {
+      const C = [];
       let I;
-      for (; (I = S.exec(R)) !== null; )
-        B.push({
+      for (; (I = T.exec(A)) !== null; )
+        C.push({
           data: I[0],
           index: I.index,
-          mode: P,
+          mode: b,
           length: I[0].length
         });
-      return B;
+      return C;
     }
-    function g(S) {
-      const P = c(s.NUMERIC, o.NUMERIC, S), R = c(s.ALPHANUMERIC, o.ALPHANUMERIC, S);
-      let B, I;
-      return a.isKanjiModeEnabled() ? (B = c(s.BYTE, o.BYTE, S), I = c(s.KANJI, o.KANJI, S)) : (B = c(s.BYTE_KANJI, o.BYTE, S), I = []), P.concat(R, B, I).sort(function(E, b) {
-        return E.index - b.index;
-      }).map(function(E) {
+    function m(T) {
+      const b = c(s.NUMERIC, o.NUMERIC, T), A = c(s.ALPHANUMERIC, o.ALPHANUMERIC, T);
+      let C, I;
+      return a.isKanjiModeEnabled() ? (C = c(s.BYTE, o.BYTE, T), I = c(s.KANJI, o.KANJI, T)) : (C = c(s.BYTE_KANJI, o.BYTE, T), I = []), b.concat(A, C, I).sort(function(S, E) {
+        return S.index - E.index;
+      }).map(function(S) {
         return {
-          data: E.data,
-          mode: E.mode,
-          length: E.length
+          data: S.data,
+          mode: S.mode,
+          length: S.length
         };
       });
     }
-    function m(S, P) {
-      switch (P) {
+    function f(T, b) {
+      switch (b) {
         case o.NUMERIC:
-          return r.getBitsLength(S);
+          return r.getBitsLength(T);
         case o.ALPHANUMERIC:
-          return e.getBitsLength(S);
+          return e.getBitsLength(T);
         case o.KANJI:
-          return i.getBitsLength(S);
+          return i.getBitsLength(T);
         case o.BYTE:
-          return n.getBitsLength(S);
+          return n.getBitsLength(T);
       }
     }
-    function f(S) {
-      return S.reduce(function(P, R) {
-        const B = P.length - 1 >= 0 ? P[P.length - 1] : null;
-        return B && B.mode === R.mode ? (P[P.length - 1].data += R.data, P) : (P.push(R), P);
+    function d(T) {
+      return T.reduce(function(b, A) {
+        const C = b.length - 1 >= 0 ? b[b.length - 1] : null;
+        return C && C.mode === A.mode ? (b[b.length - 1].data += A.data, b) : (b.push(A), b);
       }, []);
     }
-    function A(S) {
-      const P = [];
-      for (let R = 0; R < S.length; R++) {
-        const B = S[R];
-        switch (B.mode) {
+    function M(T) {
+      const b = [];
+      for (let A = 0; A < T.length; A++) {
+        const C = T[A];
+        switch (C.mode) {
           case o.NUMERIC:
-            P.push([
-              B,
-              { data: B.data, mode: o.ALPHANUMERIC, length: B.length },
-              { data: B.data, mode: o.BYTE, length: B.length }
+            b.push([
+              C,
+              { data: C.data, mode: o.ALPHANUMERIC, length: C.length },
+              { data: C.data, mode: o.BYTE, length: C.length }
             ]);
             break;
           case o.ALPHANUMERIC:
-            P.push([
-              B,
-              { data: B.data, mode: o.BYTE, length: B.length }
+            b.push([
+              C,
+              { data: C.data, mode: o.BYTE, length: C.length }
             ]);
             break;
           case o.KANJI:
-            P.push([
-              B,
-              { data: B.data, mode: o.BYTE, length: l(B.data) }
+            b.push([
+              C,
+              { data: C.data, mode: o.BYTE, length: l(C.data) }
             ]);
             break;
           case o.BYTE:
-            P.push([
-              { data: B.data, mode: o.BYTE, length: l(B.data) }
+            b.push([
+              { data: C.data, mode: o.BYTE, length: l(C.data) }
             ]);
         }
       }
-      return P;
+      return b;
     }
-    function y(S, P) {
-      const R = {}, B = { start: {} };
+    function p(T, b) {
+      const A = {}, C = { start: {} };
       let I = ["start"];
-      for (let h = 0; h < S.length; h++) {
-        const E = S[h], b = [];
-        for (let d = 0; d < E.length; d++) {
-          const M = E[d], p = "" + h + d;
-          b.push(p), R[p] = { node: M, lastCount: 0 }, B[p] = {};
-          for (let C = 0; C < I.length; C++) {
-            const w = I[C];
-            R[w] && R[w].node.mode === M.mode ? (B[w][p] = m(R[w].lastCount + M.length, M.mode) - m(R[w].lastCount, M.mode), R[w].lastCount += M.length) : (R[w] && (R[w].lastCount = M.length), B[w][p] = m(M.length, M.mode) + 4 + o.getCharCountIndicator(M.mode, P));
+      for (let g = 0; g < T.length; g++) {
+        const S = T[g], E = [];
+        for (let h = 0; h < S.length; h++) {
+          const R = S[h], y = "" + g + h;
+          E.push(y), A[y] = { node: R, lastCount: 0 }, C[y] = {};
+          for (let B = 0; B < I.length; B++) {
+            const w = I[B];
+            A[w] && A[w].node.mode === R.mode ? (C[w][y] = f(A[w].lastCount + R.length, R.mode) - f(A[w].lastCount, R.mode), A[w].lastCount += R.length) : (A[w] && (A[w].lastCount = R.length), C[w][y] = f(R.length, R.mode) + 4 + o.getCharCountIndicator(R.mode, b));
           }
         }
-        I = b;
+        I = E;
       }
-      for (let h = 0; h < I.length; h++)
-        B[I[h]].end = 0;
-      return { map: B, table: R };
+      for (let g = 0; g < I.length; g++)
+        C[I[g]].end = 0;
+      return { map: C, table: A };
     }
-    function N(S, P) {
-      let R;
-      const B = o.getBestModeForData(S);
-      if (R = o.from(P, B), R !== o.BYTE && R.bit < B.bit)
-        throw new Error('"' + S + '" cannot be encoded with mode ' + o.toString(R) + `.
- Suggested mode is: ` + o.toString(B));
-      switch (R === o.KANJI && !a.isKanjiModeEnabled() && (R = o.BYTE), R) {
+    function N(T, b) {
+      let A;
+      const C = o.getBestModeForData(T);
+      if (A = o.from(b, C), A !== o.BYTE && A.bit < C.bit)
+        throw new Error('"' + T + '" cannot be encoded with mode ' + o.toString(A) + `.
+ Suggested mode is: ` + o.toString(C));
+      switch (A === o.KANJI && !a.isKanjiModeEnabled() && (A = o.BYTE), A) {
         case o.NUMERIC:
-          return new r(S);
+          return new r(T);
         case o.ALPHANUMERIC:
-          return new e(S);
+          return new e(T);
         case o.KANJI:
-          return new i(S);
+          return new i(T);
         case o.BYTE:
-          return new n(S);
+          return new n(T);
       }
     }
-    t.fromArray = function(P) {
-      return P.reduce(function(R, B) {
-        return typeof B == "string" ? R.push(N(B, null)) : B.data && R.push(N(B.data, B.mode)), R;
+    t.fromArray = function(b) {
+      return b.reduce(function(A, C) {
+        return typeof C == "string" ? A.push(N(C, null)) : C.data && A.push(N(C.data, C.mode)), A;
       }, []);
-    }, t.fromString = function(P, R) {
-      const B = g(P, a.isKanjiModeEnabled()), I = A(B), h = y(I, R), E = u.find_path(h.map, "start", "end"), b = [];
-      for (let d = 1; d < E.length - 1; d++)
-        b.push(h.table[E[d]].node);
-      return t.fromArray(f(b));
-    }, t.rawSplit = function(P) {
+    }, t.fromString = function(b, A) {
+      const C = m(b, a.isKanjiModeEnabled()), I = M(C), g = p(I, A), S = u.find_path(g.map, "start", "end"), E = [];
+      for (let h = 1; h < S.length - 1; h++)
+        E.push(g.table[S[h]].node);
+      return t.fromArray(d(E));
+    }, t.rawSplit = function(b) {
       return t.fromArray(
-        g(P, a.isKanjiModeEnabled())
+        m(b, a.isKanjiModeEnabled())
       );
     };
   })(ct)), ct;
 }
-var Kt;
-function Ie() {
-  if (Kt) return G;
-  Kt = 1;
-  const t = D(), o = bt(), r = ge(), e = me(), n = pe(), i = we(), s = ye(), a = ee(), u = Ce(), l = Se(), c = Be(), g = F(), m = Ne();
-  function f(h, E) {
-    const b = h.size, d = i.getPositions(E);
-    for (let M = 0; M < d.length; M++) {
-      const p = d[M][0], C = d[M][1];
+var Jt;
+function ke() {
+  if (Jt) return Q;
+  Jt = 1;
+  const t = z(), o = Et(), r = pe(), e = ye(), n = we(), i = be(), s = Ee(), a = ne(), u = Be(), l = Me(), c = Ae(), m = $(), f = _e();
+  function d(g, S) {
+    const E = g.size, h = i.getPositions(S);
+    for (let R = 0; R < h.length; R++) {
+      const y = h[R][0], B = h[R][1];
       for (let w = -1; w <= 7; w++)
-        if (!(p + w <= -1 || b <= p + w))
-          for (let T = -1; T <= 7; T++)
-            C + T <= -1 || b <= C + T || (w >= 0 && w <= 6 && (T === 0 || T === 6) || T >= 0 && T <= 6 && (w === 0 || w === 6) || w >= 2 && w <= 4 && T >= 2 && T <= 4 ? h.set(p + w, C + T, !0, !0) : h.set(p + w, C + T, !1, !0));
+        if (!(y + w <= -1 || E <= y + w))
+          for (let P = -1; P <= 7; P++)
+            B + P <= -1 || E <= B + P || (w >= 0 && w <= 6 && (P === 0 || P === 6) || P >= 0 && P <= 6 && (w === 0 || w === 6) || w >= 2 && w <= 4 && P >= 2 && P <= 4 ? g.set(y + w, B + P, !0, !0) : g.set(y + w, B + P, !1, !0));
     }
   }
-  function A(h) {
-    const E = h.size;
-    for (let b = 8; b < E - 8; b++) {
-      const d = b % 2 === 0;
-      h.set(b, 6, d, !0), h.set(6, b, d, !0);
+  function M(g) {
+    const S = g.size;
+    for (let E = 8; E < S - 8; E++) {
+      const h = E % 2 === 0;
+      g.set(E, 6, h, !0), g.set(6, E, h, !0);
     }
   }
-  function y(h, E) {
-    const b = n.getPositions(E);
-    for (let d = 0; d < b.length; d++) {
-      const M = b[d][0], p = b[d][1];
-      for (let C = -2; C <= 2; C++)
+  function p(g, S) {
+    const E = n.getPositions(S);
+    for (let h = 0; h < E.length; h++) {
+      const R = E[h][0], y = E[h][1];
+      for (let B = -2; B <= 2; B++)
         for (let w = -2; w <= 2; w++)
-          C === -2 || C === 2 || w === -2 || w === 2 || C === 0 && w === 0 ? h.set(M + C, p + w, !0, !0) : h.set(M + C, p + w, !1, !0);
+          B === -2 || B === 2 || w === -2 || w === 2 || B === 0 && w === 0 ? g.set(R + B, y + w, !0, !0) : g.set(R + B, y + w, !1, !0);
     }
   }
-  function N(h, E) {
-    const b = h.size, d = l.getEncodedBits(E);
-    let M, p, C;
+  function N(g, S) {
+    const E = g.size, h = l.getEncodedBits(S);
+    let R, y, B;
     for (let w = 0; w < 18; w++)
-      M = Math.floor(w / 3), p = w % 3 + b - 8 - 3, C = (d >> w & 1) === 1, h.set(M, p, C, !0), h.set(p, M, C, !0);
+      R = Math.floor(w / 3), y = w % 3 + E - 8 - 3, B = (h >> w & 1) === 1, g.set(R, y, B, !0), g.set(y, R, B, !0);
   }
-  function S(h, E, b) {
-    const d = h.size, M = c.getEncodedBits(E, b);
-    let p, C;
-    for (p = 0; p < 15; p++)
-      C = (M >> p & 1) === 1, p < 6 ? h.set(p, 8, C, !0) : p < 8 ? h.set(p + 1, 8, C, !0) : h.set(d - 15 + p, 8, C, !0), p < 8 ? h.set(8, d - p - 1, C, !0) : p < 9 ? h.set(8, 15 - p - 1 + 1, C, !0) : h.set(8, 15 - p - 1, C, !0);
-    h.set(d - 8, 8, 1, !0);
+  function T(g, S, E) {
+    const h = g.size, R = c.getEncodedBits(S, E);
+    let y, B;
+    for (y = 0; y < 15; y++)
+      B = (R >> y & 1) === 1, y < 6 ? g.set(y, 8, B, !0) : y < 8 ? g.set(y + 1, 8, B, !0) : g.set(h - 15 + y, 8, B, !0), y < 8 ? g.set(8, h - y - 1, B, !0) : y < 9 ? g.set(8, 15 - y - 1 + 1, B, !0) : g.set(8, 15 - y - 1, B, !0);
+    g.set(h - 8, 8, 1, !0);
   }
-  function P(h, E) {
-    const b = h.size;
-    let d = -1, M = b - 1, p = 7, C = 0;
-    for (let w = b - 1; w > 0; w -= 2)
+  function b(g, S) {
+    const E = g.size;
+    let h = -1, R = E - 1, y = 7, B = 0;
+    for (let w = E - 1; w > 0; w -= 2)
       for (w === 6 && w--; ; ) {
-        for (let T = 0; T < 2; T++)
-          if (!h.isReserved(M, w - T)) {
+        for (let P = 0; P < 2; P++)
+          if (!g.isReserved(R, w - P)) {
             let v = !1;
-            C < E.length && (v = (E[C] >>> p & 1) === 1), h.set(M, w - T, v), p--, p === -1 && (C++, p = 7);
+            B < S.length && (v = (S[B] >>> y & 1) === 1), g.set(R, w - P, v), y--, y === -1 && (B++, y = 7);
           }
-        if (M += d, M < 0 || b <= M) {
-          M -= d, d = -d;
+        if (R += h, R < 0 || E <= R) {
+          R -= h, h = -h;
           break;
         }
       }
   }
-  function R(h, E, b) {
-    const d = new r();
-    b.forEach(function(T) {
-      d.put(T.mode.bit, 4), d.put(T.getLength(), g.getCharCountIndicator(T.mode, h)), T.write(d);
+  function A(g, S, E) {
+    const h = new r();
+    E.forEach(function(P) {
+      h.put(P.mode.bit, 4), h.put(P.getLength(), m.getCharCountIndicator(P.mode, g)), P.write(h);
     });
-    const M = t.getSymbolTotalCodewords(h), p = a.getTotalCodewordsCount(h, E), C = (M - p) * 8;
-    for (d.getLengthInBits() + 4 <= C && d.put(0, 4); d.getLengthInBits() % 8 !== 0; )
-      d.putBit(0);
-    const w = (C - d.getLengthInBits()) / 8;
-    for (let T = 0; T < w; T++)
-      d.put(T % 2 ? 17 : 236, 8);
-    return B(d, h, E);
+    const R = t.getSymbolTotalCodewords(g), y = a.getTotalCodewordsCount(g, S), B = (R - y) * 8;
+    for (h.getLengthInBits() + 4 <= B && h.put(0, 4); h.getLengthInBits() % 8 !== 0; )
+      h.putBit(0);
+    const w = (B - h.getLengthInBits()) / 8;
+    for (let P = 0; P < w; P++)
+      h.put(P % 2 ? 17 : 236, 8);
+    return C(h, g, S);
   }
-  function B(h, E, b) {
-    const d = t.getSymbolTotalCodewords(E), M = a.getTotalCodewordsCount(E, b), p = d - M, C = a.getBlocksCount(E, b), w = d % C, T = C - w, v = Math.floor(d / C), $ = Math.floor(p / C), le = $ + 1, Ct = v - $, ce = new u(Ct);
+  function C(g, S, E) {
+    const h = t.getSymbolTotalCodewords(S), R = a.getTotalCodewordsCount(S, E), y = h - R, B = a.getBlocksCount(S, E), w = h % B, P = B - w, v = Math.floor(h / B), U = Math.floor(y / B), fe = U + 1, St = v - U, de = new u(St);
     let V = 0;
-    const Y = new Array(C), St = new Array(C);
+    const Y = new Array(B), Bt = new Array(B);
     let K = 0;
-    const fe = new Uint8Array(h.buffer);
-    for (let U = 0; U < C; U++) {
-      const Q = U < T ? $ : le;
-      Y[U] = fe.slice(V, V + Q), St[U] = ce.encode(Y[U]), V += Q, K = Math.max(K, Q);
+    const he = new Uint8Array(g.buffer);
+    for (let F = 0; F < B; F++) {
+      const X = F < P ? U : fe;
+      Y[F] = he.slice(V, V + X), Bt[F] = de.encode(Y[F]), V += X, K = Math.max(K, X);
     }
-    const J = new Uint8Array(d);
-    let Bt = 0, _, k;
-    for (_ = 0; _ < K; _++)
-      for (k = 0; k < C; k++)
-        _ < Y[k].length && (J[Bt++] = Y[k][_]);
-    for (_ = 0; _ < Ct; _++)
-      for (k = 0; k < C; k++)
-        J[Bt++] = St[k][_];
+    const J = new Uint8Array(h);
+    let Mt = 0, q, L;
+    for (q = 0; q < K; q++)
+      for (L = 0; L < B; L++)
+        q < Y[L].length && (J[Mt++] = Y[L][q]);
+    for (q = 0; q < St; q++)
+      for (L = 0; L < B; L++)
+        J[Mt++] = Bt[L][q];
     return J;
   }
-  function I(h, E, b, d) {
-    let M;
-    if (Array.isArray(h))
-      M = m.fromArray(h);
-    else if (typeof h == "string") {
-      let v = E;
+  function I(g, S, E, h) {
+    let R;
+    if (Array.isArray(g))
+      R = f.fromArray(g);
+    else if (typeof g == "string") {
+      let v = S;
       if (!v) {
-        const $ = m.rawSplit(h);
-        v = l.getBestVersionForData($, b);
+        const U = f.rawSplit(g);
+        v = l.getBestVersionForData(U, E);
       }
-      M = m.fromString(h, v || 40);
+      R = f.fromString(g, v || 40);
     } else
       throw new Error("Invalid data");
-    const p = l.getBestVersionForData(M, b);
-    if (!p)
+    const y = l.getBestVersionForData(R, E);
+    if (!y)
       throw new Error("The amount of data is too big to be stored in a QR Code");
-    if (!E)
-      E = p;
-    else if (E < p)
+    if (!S)
+      S = y;
+    else if (S < y)
       throw new Error(
         `
 The chosen QR Code version cannot contain this amount of data.
-Minimum version required to store current data is: ` + p + `.
+Minimum version required to store current data is: ` + y + `.
 `
       );
-    const C = R(E, b, M), w = t.getSymbolSize(E), T = new e(w);
-    return f(T, E), A(T), y(T, E), S(T, b, 0), E >= 7 && N(T, E), P(T, C), isNaN(d) && (d = s.getBestMask(
-      T,
-      S.bind(null, T, b)
-    )), s.applyMask(d, T), S(T, b, d), {
-      modules: T,
-      version: E,
-      errorCorrectionLevel: b,
-      maskPattern: d,
-      segments: M
+    const B = A(S, E, R), w = t.getSymbolSize(S), P = new e(w);
+    return d(P, S), M(P), p(P, S), T(P, E, 0), S >= 7 && N(P, S), b(P, B), isNaN(h) && (h = s.getBestMask(
+      P,
+      T.bind(null, P, E)
+    )), s.applyMask(h, P), T(P, E, h), {
+      modules: P,
+      version: S,
+      errorCorrectionLevel: E,
+      maskPattern: h,
+      segments: R
     };
   }
-  return G.create = function(E, b) {
-    if (typeof E > "u" || E === "")
+  return Q.create = function(S, E) {
+    if (typeof S > "u" || S === "")
       throw new Error("No input text");
-    let d = o.M, M, p;
-    return typeof b < "u" && (d = o.from(b.errorCorrectionLevel, o.M), M = l.from(b.version), p = s.from(b.maskPattern), b.toSJISFunc && t.setToSJISFunction(b.toSJISFunc)), I(E, M, d, p);
-  }, G;
+    let h = o.M, R, y;
+    return typeof E < "u" && (h = o.from(E.errorCorrectionLevel, o.M), R = l.from(E.version), y = s.from(E.maskPattern), E.toSJISFunc && t.setToSJISFunction(E.toSJISFunc)), I(S, R, h, y);
+  }, Q;
 }
-var pt = {}, wt = {}, Jt;
-function oe() {
-  return Jt || (Jt = 1, (function(t) {
+var pt = {}, yt = {}, Xt;
+function ie() {
+  return Xt || (Xt = 1, (function(t) {
     function o(r) {
       if (typeof r == "number" && (r = r.toString()), typeof r != "string")
         throw new Error("Color should be defined as hex string");
@@ -1435,23 +1435,23 @@ function oe() {
       const i = t.getScale(e, n);
       return Math.floor((e + n.margin * 2) * i);
     }, t.qrToImageData = function(e, n, i) {
-      const s = n.modules.size, a = n.modules.data, u = t.getScale(s, i), l = Math.floor((s + i.margin * 2) * u), c = i.margin * u, g = [i.color.light, i.color.dark];
-      for (let m = 0; m < l; m++)
-        for (let f = 0; f < l; f++) {
-          let A = (m * l + f) * 4, y = i.color.light;
-          if (m >= c && f >= c && m < l - c && f < l - c) {
-            const N = Math.floor((m - c) / u), S = Math.floor((f - c) / u);
-            y = g[a[N * s + S] ? 1 : 0];
+      const s = n.modules.size, a = n.modules.data, u = t.getScale(s, i), l = Math.floor((s + i.margin * 2) * u), c = i.margin * u, m = [i.color.light, i.color.dark];
+      for (let f = 0; f < l; f++)
+        for (let d = 0; d < l; d++) {
+          let M = (f * l + d) * 4, p = i.color.light;
+          if (f >= c && d >= c && f < l - c && d < l - c) {
+            const N = Math.floor((f - c) / u), T = Math.floor((d - c) / u);
+            p = m[a[N * s + T] ? 1 : 0];
           }
-          e[A++] = y.r, e[A++] = y.g, e[A++] = y.b, e[A] = y.a;
+          e[M++] = p.r, e[M++] = p.g, e[M++] = p.b, e[M] = p.a;
         }
     };
-  })(wt)), wt;
+  })(yt)), yt;
 }
-var Qt;
+var Gt;
 function qe() {
-  return Qt || (Qt = 1, (function(t) {
-    const o = oe();
+  return Gt || (Gt = 1, (function(t) {
+    const o = ie();
     function r(n, i, s) {
       n.clearRect(0, 0, i.width, i.height), i.style || (i.style = {}), i.height = s, i.width = s, i.style.height = s + "px", i.style.width = s + "px";
     }
@@ -1465,21 +1465,21 @@ function qe() {
     t.render = function(i, s, a) {
       let u = a, l = s;
       typeof u > "u" && (!s || !s.getContext) && (u = s, s = void 0), s || (l = e()), u = o.getOptions(u);
-      const c = o.getImageWidth(i.modules.size, u), g = l.getContext("2d"), m = g.createImageData(c, c);
-      return o.qrToImageData(m.data, i, u), r(g, l, c), g.putImageData(m, 0, 0), l;
+      const c = o.getImageWidth(i.modules.size, u), m = l.getContext("2d"), f = m.createImageData(c, c);
+      return o.qrToImageData(f.data, i, u), r(m, l, c), m.putImageData(f, 0, 0), l;
     }, t.renderToDataURL = function(i, s, a) {
       let u = a;
       typeof u > "u" && (!s || !s.getContext) && (u = s, s = void 0), u || (u = {});
-      const l = t.render(i, s, u), c = u.type || "image/png", g = u.rendererOpts || {};
-      return l.toDataURL(c, g.quality);
+      const l = t.render(i, s, u), c = u.type || "image/png", m = u.rendererOpts || {};
+      return l.toDataURL(c, m.quality);
     };
   })(pt)), pt;
 }
-var yt = {}, Xt;
+var wt = {}, Qt;
 function Le() {
-  if (Xt) return yt;
-  Xt = 1;
-  const t = oe();
+  if (Qt) return wt;
+  Qt = 1;
+  const t = ie();
   function o(n, i) {
     const s = n.a / 255, a = i + '="' + n.hex + '"';
     return s < 1 ? a + " " + i + '-opacity="' + s.toFixed(2).slice(1) + '"' : a;
@@ -1490,56 +1490,56 @@ function Le() {
   }
   function e(n, i, s) {
     let a = "", u = 0, l = !1, c = 0;
-    for (let g = 0; g < n.length; g++) {
-      const m = Math.floor(g % i), f = Math.floor(g / i);
-      !m && !l && (l = !0), n[g] ? (c++, g > 0 && m > 0 && n[g - 1] || (a += l ? r("M", m + s, 0.5 + f + s) : r("m", u, 0), u = 0, l = !1), m + 1 < i && n[g + 1] || (a += r("h", c), c = 0)) : u++;
+    for (let m = 0; m < n.length; m++) {
+      const f = Math.floor(m % i), d = Math.floor(m / i);
+      !f && !l && (l = !0), n[m] ? (c++, m > 0 && f > 0 && n[m - 1] || (a += l ? r("M", f + s, 0.5 + d + s) : r("m", u, 0), u = 0, l = !1), f + 1 < i && n[m + 1] || (a += r("h", c), c = 0)) : u++;
     }
     return a;
   }
-  return yt.render = function(i, s, a) {
-    const u = t.getOptions(s), l = i.modules.size, c = i.modules.data, g = l + u.margin * 2, m = u.color.light.a ? "<path " + o(u.color.light, "fill") + ' d="M0 0h' + g + "v" + g + 'H0z"/>' : "", f = "<path " + o(u.color.dark, "stroke") + ' d="' + e(c, l, u.margin) + '"/>', A = 'viewBox="0 0 ' + g + " " + g + '"', N = '<svg xmlns="http://www.w3.org/2000/svg" ' + (u.width ? 'width="' + u.width + '" height="' + u.width + '" ' : "") + A + ' shape-rendering="crispEdges">' + m + f + `</svg>
+  return wt.render = function(i, s, a) {
+    const u = t.getOptions(s), l = i.modules.size, c = i.modules.data, m = l + u.margin * 2, f = u.color.light.a ? "<path " + o(u.color.light, "fill") + ' d="M0 0h' + m + "v" + m + 'H0z"/>' : "", d = "<path " + o(u.color.dark, "stroke") + ' d="' + e(c, l, u.margin) + '"/>', M = 'viewBox="0 0 ' + m + " " + m + '"', N = '<svg xmlns="http://www.w3.org/2000/svg" ' + (u.width ? 'width="' + u.width + '" height="' + u.width + '" ' : "") + M + ' shape-rendering="crispEdges">' + f + d + `</svg>
 `;
     return typeof a == "function" && a(null, N), N;
-  }, yt;
+  }, wt;
 }
-var Gt;
-function _e() {
-  if (Gt) return x;
-  Gt = 1;
-  const t = he(), o = Ie(), r = qe(), e = Le();
+var Wt;
+function ve() {
+  if (Wt) return D;
+  Wt = 1;
+  const t = me(), o = ke(), r = qe(), e = Le();
   function n(i, s, a, u, l) {
-    const c = [].slice.call(arguments, 1), g = c.length, m = typeof c[g - 1] == "function";
-    if (!m && !t())
+    const c = [].slice.call(arguments, 1), m = c.length, f = typeof c[m - 1] == "function";
+    if (!f && !t())
       throw new Error("Callback required as last argument");
-    if (m) {
-      if (g < 2)
+    if (f) {
+      if (m < 2)
         throw new Error("Too few arguments provided");
-      g === 2 ? (l = a, a = s, s = u = void 0) : g === 3 && (s.getContext && typeof l > "u" ? (l = u, u = void 0) : (l = u, u = a, a = s, s = void 0));
+      m === 2 ? (l = a, a = s, s = u = void 0) : m === 3 && (s.getContext && typeof l > "u" ? (l = u, u = void 0) : (l = u, u = a, a = s, s = void 0));
     } else {
-      if (g < 1)
+      if (m < 1)
         throw new Error("Too few arguments provided");
-      return g === 1 ? (a = s, s = u = void 0) : g === 2 && !s.getContext && (u = a, a = s, s = void 0), new Promise(function(f, A) {
+      return m === 1 ? (a = s, s = u = void 0) : m === 2 && !s.getContext && (u = a, a = s, s = void 0), new Promise(function(d, M) {
         try {
-          const y = o.create(a, u);
-          f(i(y, s, u));
-        } catch (y) {
-          A(y);
+          const p = o.create(a, u);
+          d(i(p, s, u));
+        } catch (p) {
+          M(p);
         }
       });
     }
     try {
-      const f = o.create(a, u);
-      l(null, i(f, s, u));
-    } catch (f) {
-      l(f);
+      const d = o.create(a, u);
+      l(null, i(d, s, u));
+    } catch (d) {
+      l(d);
     }
   }
-  return x.create = o.create, x.toCanvas = n.bind(null, r.render), x.toDataURL = n.bind(null, r.renderToDataURL), x.toString = n.bind(null, function(i, s, a) {
+  return D.create = o.create, D.toCanvas = n.bind(null, r.render), D.toDataURL = n.bind(null, r.renderToDataURL), D.toString = n.bind(null, function(i, s, a) {
     return e.render(i, a);
-  }), x;
+  }), D;
 }
-var ke = _e();
-const Wt = /* @__PURE__ */ de(ke), Et = "product_qr:wo_label_layout:v1", ie = Object.freeze({
+var xe = ve();
+const Zt = /* @__PURE__ */ ge(xe), Ct = "product_qr:wo_label_layout:v1", se = Object.freeze({
   // Original ZPL: 400 dots/column, 160 dots high at 203 DPI; QR ^BQN,2,4.
   // Point sizes round back to the original 21-dot and 26-dot fonts.
   printer: "",
@@ -1569,7 +1569,7 @@ const Wt = /* @__PURE__ */ de(ke), Et = "product_qr:wo_label_layout:v1", ie = Ob
   showPrefix: !0,
   bold: !0,
   qzTimeout: 8
-}), ve = [
+}), ze = [
   { key: "qzTimeout", label: "Timeout koneksi QZ (detik)", min: 1, max: 60, step: 1 },
   { key: "width", label: "Lebar label (mm)", min: 30, max: 120, step: 0.5 },
   { key: "height", label: "Tinggi label (mm)", min: 20, max: 150, step: 0.5 },
@@ -1591,8 +1591,8 @@ const Wt = /* @__PURE__ */ de(ke), Et = "product_qr:wo_label_layout:v1", ie = Ob
 ];
 function j(t = {}) {
   t = t && typeof t == "object" ? t : {};
-  const o = { ...ie };
-  for (const r of ve) {
+  const o = { ...se };
+  for (const r of ze) {
     const e = Number(t[r.key]);
     t[r.key] !== "" && t[r.key] != null && Number.isFinite(e) && (o[r.key] = Math.min(r.max, Math.max(r.min, e)));
   }
@@ -1601,9 +1601,9 @@ function j(t = {}) {
     t[r] != null && (o[r] = t[r] === !0 || t[r] === 1);
   return o.printer = String(t.printer || "").slice(0, 200), o.footer = String(t.footer || "").slice(0, 100), o;
 }
-function Ue(t = globalThis.localStorage) {
+function De(t = globalThis.localStorage) {
   try {
-    const o = t?.getItem(Et);
+    const o = t?.getItem(Ct);
     if (!o) return null;
     const r = JSON.parse(o);
     return r && typeof r == "object" && !Array.isArray(r) ? j(r) : null;
@@ -1611,16 +1611,16 @@ function Ue(t = globalThis.localStorage) {
     return null;
   }
 }
-function xe(t, o = globalThis.localStorage) {
+function Ue(t, o = globalThis.localStorage) {
   const r = j(t);
   if (!o) throw new Error("Penyimpanan browser tidak tersedia.");
-  return o.setItem(Et, JSON.stringify(r)), r;
+  return o.setItem(Ct, JSON.stringify(r)), r;
 }
-function $e(t = globalThis.localStorage) {
+function Oe(t = globalThis.localStorage) {
   if (!t) throw new Error("Penyimpanan browser tidak tersedia.");
-  t.removeItem(Et);
+  t.removeItem(Ct);
 }
-const ze = (t) => String(t ?? "").replace(/[&<>"']/g, (o) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[o]), De = (t) => String(t ?? "").replace(/[_^~\\]/g, (o) => ({ _: "_5F", "^": "_5E", "~": "_7E", "\\": "_5C" })[o]), Zt = (t) => t ? String(t).slice(0, 10).split("-").reverse().map((o, r) => r === 2 ? o.slice(-2) : o).join("-") : "-", q = (t, o) => Math.round(t * o.dpi / 25.4), Oe = Object.freeze({
+const te = (t) => String(t ?? "").replace(/[&<>"']/g, (o) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[o]), $e = (t) => String(t ?? "").replace(/[_^~\\]/g, (o) => ({ _: "_5F", "^": "_5E", "~": "_7E", "\\": "_5C" })[o]), ee = (t) => t ? String(t).slice(0, 10).split("-").reverse().map((o, r) => r === 2 ? o.slice(-2) : o).join("-") : "-", _ = (t, o) => Math.round(t * o.dpi / 25.4), Ye = Object.freeze({
   sku: "SKU-TEST",
   item_name: "Dough Ropi Butter",
   item_name_prefix: "Dough",
@@ -1628,30 +1628,31 @@ const ze = (t) => String(t ?? "").replace(/[&<>"']/g, (o) => ({ "&": "&amp;", "<
   manufacturing_date: "2026-10-20",
   expiry_date: "2026-11-20",
   label_count: 1,
-  labels: [{ label_number: 1, qr_value: "TEST-NOT-A-PRODUCTION-SERIAL", serial_no: "TEST" }]
+  adonan_ke: 1,
+  labels: [{ label_number: 1, adonan_ke: 1, qr_value: "TEST-NOT-A-PRODUCTION-SERIAL", serial_no: "TEST" }]
 });
-function se(t) {
-  const o = t.dpi / 203, r = (s) => Math.round(s * o), e = q(t.margin, t), n = Math.round(t.fontSize * t.dpi / 72), i = Math.round(t.productFontSize * t.dpi / 72);
+function ae(t) {
+  const o = t.dpi / 203, r = (s) => Math.round(s * o), e = _(t.margin, t), n = Math.round(t.fontSize * t.dpi / 72), i = Math.round(t.productFontSize * t.dpi / 72);
   return {
     unit: r,
     shift: e,
     size: n,
     productSize: i,
-    column: q(t.width, t),
-    gap: q(t.gap, t),
-    height: q(t.height, t),
-    qrX: Math.max(0, r(68) + e + q(t.leftX, t)),
-    qrY: Math.max(0, r(32) + e + q(t.leftY, t)),
-    qrScale: Math.min(10, Math.max(2, Math.round(4 * t.qrSize / ie.qrSize * o))),
-    textX: Math.max(0, r(192) + e + q(t.rightX, t)),
-    textY: Math.max(0, r(32) + e + q(t.rightY, t)),
-    sequenceX: Math.max(0, r(355) + e + q(t.rightX, t)),
-    sequenceY: Math.max(0, r(28) + e + q(t.rightY, t)),
+    column: _(t.width, t),
+    gap: _(t.gap, t),
+    height: _(t.height, t),
+    qrX: Math.max(0, r(68) + e + _(t.leftX, t)),
+    qrY: Math.max(0, r(32) + e + _(t.leftY, t)),
+    qrScale: Math.min(10, Math.max(2, Math.round(4 * t.qrSize / se.qrSize * o))),
+    textX: Math.max(0, r(192) + e + _(t.rightX, t)),
+    textY: Math.max(0, r(32) + e + _(t.rightY, t)),
+    sequenceX: Math.max(0, r(355) + e + _(t.rightX, t)),
+    sequenceY: Math.max(0, r(28) + e + _(t.rightY, t)),
     fontRatio: n / 21,
     productRatio: i / 26
   };
 }
-function ae(t, o, r, e) {
+function ue(t, o, r, e) {
   const n = [], i = Math.round(18 * e.fontRatio);
   r.showSequence && n.push({ x: e.sequenceX, y: e.sequenceY, size: i, text: String(o), sequence: !0, lines: 1 });
   let s = e.textY;
@@ -1661,22 +1662,38 @@ function ae(t, o, r, e) {
     r.showPrefix && a(t.item_name_prefix, u), s += Math.round(20 * u / 18 * r.lineHeight), a(t.item_name_main || "", e.productSize, r.nameLines), s += Math.round((28 * e.productRatio + e.productSize * (r.nameLines - 1)) * r.lineHeight);
   } else
     a(t.item_name_main || t.item_name || "", e.productSize, r.nameLines), s += Math.round((30 * e.productRatio + e.productSize * (r.nameLines - 1)) * r.lineHeight);
-  for (const [u, l] of [[r.showSku, `SKU : ${t.sku}`], [r.showMfg, `MFG : ${Zt(t.manufacturing_date)}`], [r.showExp, `EXP : ${Zt(t.expiry_date)}`]])
+  for (const [u, l] of [[r.showSku, `SKU : ${t.sku}`], [r.showMfg, `MFG : ${ee(t.manufacturing_date)}`], [r.showExp, `EXP : ${ee(t.expiry_date)}`]])
     u && a(l, e.size), s += Math.round(24 * e.fontRatio * r.lineHeight);
   return r.footer && a(r.footer, e.size), n;
 }
-const te = (t) => {
-  const o = String(t ?? ""), r = De(o);
+function le(t, o, r) {
+  if (t == null || t === "") return null;
+  const e = Math.round(18 * r.fontRatio), n = Math.round(e * 1.6), i = Math.round((n - e) / 2), s = Math.max(0, r.unit(8) + r.shift + _(o.leftX, o));
+  return {
+    // Only the frame sits 5 dots right of the digits (requested placement).
+    x: s,
+    boxX: s + r.unit(5),
+    y: Math.max(0, r.unit(28) - i + r.shift + _(o.leftY, o)),
+    w: n,
+    h: n,
+    border: Math.max(1, Math.round(e / 9)),
+    size: e,
+    pad: i,
+    text: String(t)
+  };
+}
+const bt = (t) => {
+  const o = String(t ?? ""), r = $e(o);
   return `${r === o ? "" : "^FH_"}^FD${r}^FS
 `;
 };
-function ue(t, o) {
+function ce(t, o) {
   const r = Math.max(1, o.column - o.textX - o.shift);
-  return t.textWidth > 0 ? Math.max(1, Math.min(r, q(t.textWidth, t))) : r;
+  return t.textWidth > 0 ? Math.max(1, Math.min(r, _(t.textWidth, t))) : r;
 }
-function Ye(t, o) {
-  const r = j(o), e = se(r), n = [], i = (s, a) => {
-    const u = r.textWidth > 0 || s.lines > 1 || r.align !== "left", l = s.sequence ? `^FB${e.unit(40)},1,0,R` : u ? `^FB${ue(r, e)},${s.lines},0,${{ left: "L", center: "C", right: "R" }[r.align]}` : "", c = (g) => `^FO${g},${s.y}^A0N,${s.size},${s.size}${l}${te(s.text)}`;
+function He(t, o) {
+  const r = j(o), e = ae(r), n = [], i = (s, a) => {
+    const u = r.textWidth > 0 || s.lines > 1 || r.align !== "left", l = s.sequence ? `^FB${e.unit(40)},1,0,R` : u ? `^FB${ce(r, e)},${s.lines},0,${{ left: "L", center: "C", right: "R" }[r.align]}` : "", c = (m) => `^FO${m},${s.y}^A0N,${s.size},${s.size}${l}${bt(s.text)}`;
     return c(a + s.x) + (r.bold ? c(a + s.x + e.unit(1)) : "");
   };
   for (let s = 0; s < t.labels.length; s += r.columns) {
@@ -1685,24 +1702,31 @@ function Ye(t, o) {
 ^LL${e.height}
 `;
     for (let u = 0; u < r.columns && s + u < t.labels.length; u++) {
-      const l = t.labels[s + u], c = u * (e.column + e.gap), g = ae(t, l.label_number ?? s + u + 1, r, e);
-      g[0]?.sequence && (a += i(g.shift(), c)), a += `^FO${c + e.qrX},${e.qrY}^BQN,2,${e.qrScale}${te(`QA,${l.qr_value}`)}`;
-      for (const m of g) a += i(m, c);
+      const l = t.labels[s + u], c = u * (e.column + e.gap), m = ue(t, l.label_number ?? s + u + 1, r, e);
+      m[0]?.sequence && (a += i(m.shift(), c));
+      const f = le(l.adonan_ke ?? t.adonan_ke, r, e);
+      if (f) {
+        const d = c + f.x, M = (p) => `^FO${p},${f.y + f.pad}^A0N,${f.size},${f.size}^FB${f.w},1,0,C${bt(f.text)}`;
+        a += `^FO${c + f.boxX},${f.y}^GB${f.w},${f.h},${f.border}^FS
+` + M(d) + (r.bold ? M(d + e.unit(1)) : "");
+      }
+      a += `^FO${c + e.qrX},${e.qrY}^BQN,2,${e.qrScale}${bt(`QA,${l.qr_value}`)}`;
+      for (const d of m) a += i(d, c);
     }
     n.push(a + `^XZ
 `);
   }
   return n;
 }
-async function He(t, o) {
-  const r = j(o), e = se(r), n = (a) => a * 25.4 / r.dpi, i = [];
+async function je(t, o) {
+  const r = j(o), e = ae(r), n = (a) => a * 25.4 / r.dpi, i = [];
   for (let a = 0; a < t.labels.length; a += r.columns) {
     const u = await Promise.all(t.labels.slice(a, a + r.columns).map(async (l, c) => {
-      const g = { errorCorrectionLevel: "Q", margin: 0 }, m = await Wt.toString(l.qr_value, { ...g, type: "svg" }), f = Wt.create(l.qr_value, g).modules.size * e.qrScale, A = ae(t, l.label_number ?? a + c + 1, r, e).map((y) => {
-        const N = y.sequence ? e.unit(40) : ue(r, e), S = y.lines > 1, P = S || !y.sequence && r.textWidth > 0;
-        return `<div class="label-text" style="left:${n(y.x)}mm;top:${n(y.y)}mm;font-size:${n(y.size)}mm;width:${n(N)}mm;text-align:${y.sequence ? "right" : r.align};font-weight:${r.bold ? 700 : 400};white-space:${S ? "normal" : "nowrap"};${P ? `overflow-wrap:anywhere;max-height:${n(y.size * y.lines)}mm;overflow:hidden;` : ""}">${ze(y.text)}</div>`;
-      }).join("");
-      return `<article><div class="qr" style="left:${n(e.qrX)}mm;top:${n(e.qrY)}mm;width:${n(f)}mm;height:${n(f)}mm">${m}</div>${A}</article>`;
+      const m = { errorCorrectionLevel: "Q", margin: 0 }, f = await Zt.toString(l.qr_value, { ...m, type: "svg" }), d = Zt.create(l.qr_value, m).modules.size * e.qrScale, M = ue(t, l.label_number ?? a + c + 1, r, e).map((b) => {
+        const A = b.sequence ? e.unit(40) : ce(r, e), C = b.lines > 1, I = C || !b.sequence && r.textWidth > 0;
+        return `<div class="label-text" style="left:${n(b.x)}mm;top:${n(b.y)}mm;font-size:${n(b.size)}mm;width:${n(A)}mm;text-align:${b.sequence ? "right" : r.align};font-weight:${r.bold ? 700 : 400};white-space:${C ? "normal" : "nowrap"};${I ? `overflow-wrap:anywhere;max-height:${n(b.size * b.lines)}mm;overflow:hidden;` : ""}">${te(b.text)}</div>`;
+      }).join(""), p = le(l.adonan_ke ?? t.adonan_ke, r, e), N = (b) => `left:${n(b)}mm;top:${n(p.y)}mm;width:${n(p.w)}mm;height:${n(p.h)}mm`;
+      return `<article>${p ? `<div class="adonan" style="${N(p.boxX)};border:${n(p.border)}mm solid #000"></div><div class="adonan" style="${N(p.x)};font-size:${n(p.size)}mm;font-weight:${r.bold ? 700 : 400}">${te(p.text)}</div>` : ""}<div class="qr" style="left:${n(e.qrX)}mm;top:${n(e.qrY)}mm;width:${n(d)}mm;height:${n(d)}mm">${f}</div>${M}</article>`;
     }));
     i.push(`<section>${u.join("")}</section>`);
   }
@@ -1711,20 +1735,20 @@ async function He(t, o) {
     @page{size:${s}mm ${r.height}mm;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Arial,sans-serif;color:#000}
     section{width:${s}mm;height:${r.height}mm;display:flex;gap:${r.gap}mm;break-after:page;page-break-after:always}section:last-child{break-after:auto;page-break-after:auto}
     article{width:${r.width}mm;height:${r.height}mm;position:relative;overflow:hidden;flex-shrink:0;background:white}
-    .qr,.label-text{position:absolute}.qr svg{width:100%;height:100%;display:block}.label-text{font-family:Arial,sans-serif;font-weight:700;line-height:1;white-space:nowrap}
+    .qr,.label-text,.adonan{position:absolute}.adonan{display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;line-height:1}.qr svg{width:100%;height:100%;display:block}.label-text{font-family:Arial,sans-serif;font-weight:700;line-height:1;white-space:nowrap}
     @media screen{body{background:#eee}section{margin-bottom:4px}}
     </style></head><body>${i.join("")}</body></html>`;
 }
 export {
-  ie as L,
-  Oe as S,
-  de as a,
-  He as b,
-  Ye as c,
-  ve as d,
+  se as L,
+  Ye as S,
+  ge as a,
+  je as b,
+  He as c,
+  ze as d,
   Fe as g,
-  Ue as l,
+  De as l,
   j as n,
-  $e as r,
-  xe as s
+  Oe as r,
+  Ue as s
 };
