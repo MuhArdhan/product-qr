@@ -15,7 +15,16 @@ export function labelCountForWorkOrder(workOrder) {
   return Math.max(1, Math.ceil(goodQty / factor - 1e-8))
 }
 
-export const labelPrintPrompt = reactive({ workOrder: '', labelCount: 0, afterSave: '' })
+// Issued ordinals within [from, to] (either order). Gaps are skipped, never invented.
+export function labelNumbersInRange(labels, from, to) {
+  const a = Number(from), b = Number(to)
+  if (from === '' || to === '' || !Number.isInteger(a) || !Number.isInteger(b)) return []
+  const [lo, hi] = a <= b ? [a, b] : [b, a]
+  return [...new Set(labels.map(row => Number(row.label_number)))]
+    .filter(n => n >= lo && n <= hi).sort((x, y) => x - y)
+}
+
+export const labelPrintPrompt =reactive({ workOrder: '', labelCount: 0, afterSave: '' })
 
 export function offerLabelPrint(workOrder, labelCount, afterSave = '') {
   labelPrintPrompt.workOrder = workOrder
