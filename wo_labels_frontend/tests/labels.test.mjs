@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import qz from 'qz-tray'
 import { connectQz, getExistingLabelNumbers, printLabels } from '../src/qz-tray.js'
-import { labelSource, labelCountForWorkOrder, offerLabelPrint, labelPrintPrompt } from '../src/label-print-prompt.js'
+import { labelSource, labelCountForWorkOrder, offerLabelPrint, labelPrintPrompt, labelNumbersInRange } from '../src/label-print-prompt.js'
 import { workOrderLabelUrl } from '../src/work-order-label.js'
 import { buildLayoutHTML } from '../src/label-layout.js'
 import { browserLabelPrinter } from '../src/browser-print.js'
@@ -289,15 +289,16 @@ test('print dialog supports Good Qty, append-after-first-print and selected ordi
   ]) assert.ok(copy.includes(label))
   assert.doesNotMatch(copy, />Cetak via Browser<\/button>/)
   assert.match(copy, /class="input"/)
-  assert.equal((copy.match(/<select\b/g) || []).length, 2)
-  assert.equal((copy.match(/class="input label-dialog-select"/g) || []).length, 2)
+  assert.equal((copy.match(/<select\b/g) || []).length, 5)
+  assert.equal((copy.match(/class="input label-dialog-select"/g) || []).length, 5)
   assert.match(copy, /appearance: none/)
   assert.match(copy, /border-color: var\(--accent/)
   assert.match(copy, /background-image: url\("data:image\/svg\+xml/)
   assert.match(copy, /:max="Math\.max\(0, 10000 - labelPrintPrompt\.labelCount\)"/)
   assert.match(copy, /appendCount: Number\(appendLabelCount\.value\)/)
   assert.match(copy, /id="label-number-select" v-model\.number="selectedLabelNumber"/)
-  assert.match(copy, /labelNumbers: \[Number\(selectedLabelNumber\.value\)\]/)
+  assert.match(copy, /labelNumbers: reprintNumbers\.value/)
+  assert.match(copy, /id="label-range-from"[\s\S]*id="label-range-to"/)
   assert.doesNotMatch(copy, /label-number-search|selectedLabelNumbers|type="checkbox"/)
   assert.doesNotMatch(copy, /Masukkan jumlah manual|manual-label-count|totalCount/)
   assert.match(copy, /getExistingLabelNumbers/)
@@ -317,4 +318,14 @@ test('label settings reuse host panels and fields without preview or toggles', (
   }
   assert.doesNotMatch(source, /<details|<summary|#cbd5e1|#b3261e|pqr-layout-grid/)
   assert.doesNotMatch(source, /<iframe|preview|role="switch"|type="checkbox"|buildLayoutHTML|onBeforeUnmount|watch\(/i)
+})
+
+test('reprint range keeps only issued ordinals, any order, no gaps invented', () => {
+  const labels = [1, 2, 3, 5, 6, 9].map(label_number => ({ label_number }))
+  assert.deepEqual(labelNumbersInRange(labels, 2, 6), [2, 3, 5, 6])
+  assert.deepEqual(labelNumbersInRange(labels, 6, 2), [2, 3, 5, 6])
+  assert.deepEqual(labelNumbersInRange(labels, 5, 5), [5])
+  assert.deepEqual(labelNumbersInRange(labels, 7, 8), [])
+  assert.deepEqual(labelNumbersInRange(labels, '', 3), [])
+  assert.deepEqual(labelNumbersInRange([...labels, { label_number: 3 }], 1, 3), [1, 2, 3])
 })

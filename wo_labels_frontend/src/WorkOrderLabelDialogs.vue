@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue'
-import { labelPrintPrompt } from './label-print-prompt.js'
+import { labelPrintPrompt, labelNumbersInRange } from './label-print-prompt.js'
 import { getExistingLabelNumbers, printLabels } from './qz-tray.js'
 
 // Same dialog markup/classes as the host's App.vue. Host CSS supplies its skin.
@@ -15,6 +15,9 @@ const appendLabelCount = ref(1)
 const extraLabelCount = ref(0)
 const existingLabels = ref([])
 const selectedLabelNumber = ref('')
+const reprintMode = ref('single')
+const rangeFrom = ref('')
+const rangeTo = ref('')
 const existingAdonanKe = ref(null)
 const labelsLoading = ref(false)
 const labelsError = ref('')
@@ -24,14 +27,23 @@ const validExtraCount = computed(() => extraLabelCount.value !== '' &&
 const validAppendCount = computed(() => appendLabelCount.value !== '' &&
   Number.isInteger(Number(appendLabelCount.value)) && Number(appendLabelCount.value) >= 1 && Number(appendLabelCount.value) <= 10000)
 const latestLabelNumber = computed(() => Math.max(0, ...existingLabels.value.map(row => Number(row.label_number) || 0)))
+const reprintNumbers = computed(() => reprintMode.value === 'range'
+  ? labelNumbersInRange(existingLabels.value, rangeFrom.value, rangeTo.value)
+  : labelNumbersInRange(existingLabels.value, selectedLabelNumber.value, selectedLabelNumber.value))
 const totalLabelCount = computed(() => countMode.value === 'automatic'
   ? labelPrintPrompt.labelCount + Number(extraLabelCount.value || 0)
-  : countMode.value === 'append' ? Number(appendLabelCount.value || 0) : (selectedLabelNumber.value ? 1 : 0))
+  : countMode.value === 'append' ? Number(appendLabelCount.value || 0) : reprintNumbers.value.length)
 const labelCountValid = computed(() => {
   if (countMode.value === 'automatic') return validExtraCount.value && totalLabelCount.value >= 1 && totalLabelCount.value <= 10000
   if (countMode.value === 'append') return existingLabels.value.length > 0 && validAppendCount.value
-  return existingLabels.value.some(row => Number(row.label_number) === Number(selectedLabelNumber.value))
+  return totalLabelCount.value >= 1 && totalLabelCount.value <= 10000
 })
+function resetReprint() {
+  selectedLabelNumber.value = ''
+  reprintMode.value = 'single'
+  rangeFrom.value = ''
+  rangeTo.value = ''
+}
 
 async function refreshExistingLabels(workOrder = labelPrintPrompt.workOrder) {
   if (!workOrder) return
@@ -62,7 +74,7 @@ watch(() => labelPrintPrompt.workOrder, workOrder => {
   appendLabelCount.value = 1
   extraLabelCount.value = 0
   existingLabels.value = []
-  selectedLabelNumber.value = ''
+  resetReprint()
   existingAdonanKe.value = null
   void refreshExistingLabels(workOrder)
   nextTick(() => {
@@ -85,7 +97,7 @@ function closeLabelPrint() {
   appendLabelCount.value = 1
   extraLabelCount.value = 0
   existingLabels.value = []
-  selectedLabelNumber.value = ''
+  resetReprint()
   existingAdonanKe.value = null
   labelsLoading.value = false
   labelsError.value = ''
@@ -102,7 +114,7 @@ async function confirmLabelPrint(output = 'printer') {
         ? { extra: Number(extraLabelCount.value) }
         : countMode.value === 'append'
           ? { appendCount: Number(appendLabelCount.value) }
-         : { labelNumbers: [Number(selectedLabelNumber.value)] }
+         : { labelNumbers: reprintNumbers.value }
     if (output === 'browser') options.output = 'browser'
     const result = await printLabels(workOrder, options)
     if (result?.browserFallback) printNotice.value = 'Cetak QZ gagal. Dialog cetak browser dibuka; pilih printer atau Save as PDF. Periksa label yang mungkin sudah tercetak agar tidak rangkap.'
@@ -156,18 +168,38 @@ function closeError() {
       <p v-if="labelsLoading" class="label-print-note">Memuat nomor urut label…</p>
       <p v-else-if="labelsError" class="label-print-note warning">{{ labelsError }}</p>
       <p v-else-if="!existingLabels.length" class="label-print-note">Belum ada label terbit untuk Work Order ini. Cetak otomatis dari Good Qty dahulu.</p>
-      <select v-else id="label-number-select" v-model.number="selectedLabelNumber" class="input label-dialog-select" style="display: block; width: 100%; margin-top: 6px">
-        <option value="">Pilih nomor label</option>
-        <option v-for="row in existingLabels" :key="row.label_number" :value="row.label_number">
-          Label #{{ row.label_number }} · Adonan ke {{ row.adonan_ke ?? '—' }}
-        </option>
-      </select>
-      <p v-if="selectedLabelNumber" class="label-print-note">Dipilih: <strong>Label #{{ selectedLabelNumber }}</strong>. QR akan memakai mapping label yang sama.</p>
+      <template v-else>
+        <select id="reprint-mode-select" v-model="reprintMode" aria-label="Jenis cetak ulang" class="input label-dialog-select" style="display: block; width: 100%; margin-top: 6px">
+          <option value="single">Satu nomor</option>
+          <option value="range">Rentang nomor</option>
+        </select>
+        <select v-if="reprintMode === 'single'" id="label-number-select" v-model.number="selectedLabelNumber" class="input label-dialog-select" style="display: block; width: 100%; margin-top: 6px">
+          <option value="">Pilih nomor label</option>
+          <option v-for="row in existingLabels" :key="row.label_number" :value="row.label_number">
+            Label #{{ row.label_number }} · Adonan ke {{ row.adonan_ke ?? '—' }}
+          </option>
+        </select>
+        <div v-else class="label-range">
+          <label>Dari
+            <select id="label-range-from" v-model.number="rangeFrom" class="input label-dialog-select">
+              <option value="">#</option>
+              <option v-for="row in existingLabels" :key="row.label_number" :value="row.label_number">#{{ row.label_number }}</option>
+            </select>
+          </label>
+          <label>Sampai
+            <select id="label-range-to" v-model.number="rangeTo" class="input label-dialog-select">
+              <option value="">#</option>
+              <option v-for="row in existingLabels" :key="row.label_number" :value="row.label_number">#{{ row.label_number }}</option>
+            </select>
+          </label>
+        </div>
+      </template>
+      <p v-if="reprintNumbers.length" class="label-print-note">Dipilih: <strong>{{ reprintNumbers.length === 1 ? `Label #${reprintNumbers[0]}` : `Label #${reprintNumbers[0]}–#${reprintNumbers.at(-1)} (${reprintNumbers.length} label)` }}</strong>. QR akan memakai mapping label yang sama.</p>
     </div>
     <p v-if="labelCountValid && countMode === 'automatic'">Total cetak otomatis: <strong>{{ totalLabelCount }} label</strong></p>
     <p v-else-if="labelCountValid && countMode === 'append'">Label lanjutan: <strong>{{ totalLabelCount }} label</strong></p>
     <p v-else-if="labelCountValid && countMode === 'specific'">Total cetak ulang: <strong>{{ totalLabelCount }} label</strong></p>
-    <p v-else class="label-print-note warning">{{ countMode === 'append' ? 'Masukkan jumlah label lanjutan 1–10.000.' : countMode === 'specific' ? 'Pilih satu nomor label untuk dicetak ulang.' : 'Masukkan jumlah ekstra bulat yang valid; batas 10.000 label per cetakan.' }}</p>
+    <p v-else class="label-print-note warning">{{ countMode === 'append' ? 'Masukkan jumlah label lanjutan 1–10.000.' : countMode === 'specific' ? (reprintMode === 'range' ? 'Pilih nomor awal dan akhir rentang label untuk dicetak ulang.' : 'Pilih satu nomor label untuk dicetak ulang.') : 'Masukkan jumlah ekstra bulat yang valid; batas 10.000 label per cetakan.' }}</p>
     <div class="dlg-actions">
       <button class="btn" :disabled="printing" @click="closeLabelPrint">Nanti saja</button>
       <button class="btn btn-primary" :disabled="!labelCountValid || printing" @click="confirmLabelPrint()">{{ printing ? 'Memproses…' : 'Ya, Cetak Label' }}</button>
@@ -190,6 +222,8 @@ function closeError() {
 .dlg-actions { flex-wrap: wrap; }
 .label-count-field { margin-top: 12px; }
 .label-print-note { margin: 6px 0; font-size: 12px; }
+.label-range { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+.label-range label { display: grid; gap: 4px; font-size: 12px; }
 .label-print-note.warning { color: var(--danger, #b3261e); }
 .label-dialog-select.input {
   appearance: none;
